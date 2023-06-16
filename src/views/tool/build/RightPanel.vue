@@ -1057,7 +1057,7 @@
   </div>
 </template>
 
-<script>
+<script lang="jsx">
 import {
   Thumb as ElIconThumb,
   CirclePlusOutline as ElIconCirclePlusOutline,

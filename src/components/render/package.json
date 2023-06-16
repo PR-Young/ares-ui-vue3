@@ -15,14 +15,5 @@
   "bugs": {
     "url": "https://github.com/JakHuang/form-generator/issues"
   },
-  "homepage": "https://github.com/JakHuang/form-generator#readme",
-  "devDependencies": {
-    "@vue/cli-service": "^5.0.1",
-    "@vue/cli-plugin-babel": "^5.0.1",
-    "@babel/core": "^7.12.16"
-  },
-  "dependencies": {
-    "tiny-emitter": "^2.1.0",
-    "core-js": "^3.8.3"
-  }
+  "homepage": "https://github.com/JakHuang/form-generator#readme"
 }

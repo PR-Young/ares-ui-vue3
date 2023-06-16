@@ -64,33 +64,6 @@
 import { isNumberStr } from '@/utils/index'
 import { getTreeNodeId, saveTreeNodeId } from '@/utils/db'
 
-function inheriltClassAndStyle() {
-  const attrs = this.$attrs
-  attrs.class && this.$el.classList.add(attrs.class)
-  attrs.style &&
-    Object.entries(attrs.style).forEach(([k, v]) => {
-      this.$el.style[k] = v
-    })
-}
-
-function inheriltClassAndStyle() {
-  const attrs = this.$attrs
-  attrs.class && this.$el.classList.add(attrs.class)
-  attrs.style &&
-    Object.entries(attrs.style).forEach(([k, v]) => {
-      this.$el.style[k] = v
-    })
-}
-
-function inheriltClassAndStyle() {
-  const attrs = this.$attrs
-  attrs.class && this.$el.classList.add(attrs.class)
-  attrs.style &&
-    Object.entries(attrs.style).forEach(([k, v]) => {
-      this.$el.style[k] = v
-    })
-}
-
 const id = getTreeNodeId()
 
 export default {

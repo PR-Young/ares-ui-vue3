@@ -27,7 +27,7 @@
 import { mapGetters } from 'vuex'
 import Logo from './Logo.vue'
 import SidebarItem from './SidebarItem.vue'
-import variables from '@/assets/styles/variables.scss?inlineq'
+import variables from '@/assets/styles/variables.module.scss?inlineq'
 
 export default {
   components: { SidebarItem, Logo },

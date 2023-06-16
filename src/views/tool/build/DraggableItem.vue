@@ -1,4 +1,4 @@
-<script>
+<script lang="jsx">
 import * as Vue from 'vue'
 import draggable from 'vuedraggable'
 import render from '@/components/render/render'

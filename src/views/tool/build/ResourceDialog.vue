@@ -53,32 +53,6 @@ import {
 } from '@element-plus/icons'
 import { deepClone } from '@/utils/index'
 
-function inheriltClassAndStyle() {
-  const attrs = this.$attrs
-  attrs.class && this.$el.classList.add(attrs.class)
-  attrs.style &&
-    Object.entries(attrs.style).forEach(([k, v]) => {
-      this.$el.style[k] = v
-    })
-}
-
-function inheriltClassAndStyle() {
-  const attrs = this.$attrs
-  attrs.class && this.$el.classList.add(attrs.class)
-  attrs.style &&
-    Object.entries(attrs.style).forEach(([k, v]) => {
-      this.$el.style[k] = v
-    })
-}
-
-function inheriltClassAndStyle() {
-  const attrs = this.$attrs
-  attrs.class && this.$el.classList.add(attrs.class)
-  attrs.style &&
-    Object.entries(attrs.style).forEach(([k, v]) => {
-      this.$el.style[k] = v
-    })
-}
 export default {
   data() {
     return {

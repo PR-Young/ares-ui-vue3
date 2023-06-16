@@ -26,7 +26,7 @@
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
         <el-tooltip content="布局大小" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
+          <size-select id="size-select" style="padding-top:15px" class="right-menu-item hover-effect" />
         </el-tooltip>
       </template>
 
@@ -248,7 +248,7 @@ export default {
     .bell-style {
       font-weight: bold;
       font-size: larger;
-      padding-top: 15px;
+      padding-top: 25px;
     }
   }
 }
