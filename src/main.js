@@ -3,9 +3,15 @@ import * as Vue from 'vue'
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 import Element from 'element-plus'
 import './assets/styles/element-variables.scss'
+import './assets/styles/btn.scss'
+import './assets/styles/element-ui.scss'
+import './assets/styles/mixin.scss'
+import './assets/styles/variables.scss'
+//import './assets/styles/sidebar.scss'
+import './assets/styles/index.scss' // global css
+import './assets/styles/ares.scss' // ares css
+import './assets/styles/transition.scss'
 
-import '@/assets/styles/index.scss' // global css
-import '@/assets/styles/ares.scss' // ares css
 import App from './App.vue'
 import store from './store'
 import router from './router'
@@ -72,7 +78,7 @@ window.$vueApp.use(mavonEditor)
  */
 
 window.$vueApp.use(Element, {
-  size: Cookies.get('size') || 'medium', // set element-ui default size
+  size: Cookies.get('size') || 'default', // set element-ui default size
 })
 
 window.$vueApp.config.globalProperties.routerAppend = (path, pathToAppend) => {

@@ -38,7 +38,7 @@
 
 <script>
 import ScrollPane from './ScrollPane.vue'
-import path from 'path'
+import path from 'path-browserify'
 
 export default {
   components: { ScrollPane },

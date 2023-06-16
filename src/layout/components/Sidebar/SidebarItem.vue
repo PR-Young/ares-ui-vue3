@@ -24,7 +24,7 @@
       v-else
       ref="subMenu"
       :index="resolvePath(item.path)"
-      popper-append-to-body
+      teleported
     >
       <template v-slot:title>
         <item
@@ -51,7 +51,7 @@ import { isExternal } from '@/utils/validate'
 import Item from './Item.vue'
 import AppLink from './Link.vue'
 import FixiOSBug from './FixiOSBug.js'
-import path from 'path'
+import path from 'path-browserify'
 
 export default {
   name: 'SidebarItem',
@@ -108,7 +108,7 @@ export default {
       if (isExternal(this.basePath)) {
         return this.basePath
       }
-      return path.resolve([this.basePath, routePath])
+      return path.resolve(this.basePath, routePath)
     },
   },
 }

@@ -1,5 +1,5 @@
 <script lang="jsx">
-export default function render(_props, _context) {
+export default function render(_props, _context) {debugger
   const context = {
     ..._context,
     props: _props,
@@ -14,7 +14,7 @@ export default function render(_props, _context) {
   }
 
   if (title) {
-    vnodes.push(<span v-slot="title">{title}</span>)
+    vnodes.push(<span name="title">{title}</span>)
   }
   return vnodes
 }

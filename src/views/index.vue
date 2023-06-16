@@ -16,7 +16,7 @@
           <el-button
             type="primary"
             :icon="ElIconSearch"
-            size="mini"
+            size="default"
             @click="handleQuery"
           ></el-button>
         </el-form-item>

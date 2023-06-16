@@ -31,12 +31,7 @@ export default defineConfig(({ command, mode }) => {
     },
     plugins: [
       vue(),
-      vueJsx({
-        transformOn: true,
-        optimize: true,
-        mergeProps: true,
-        enableObjectSlots: true
-      }),
+      vueJsx(),
       viteCommonjs(),
       ViteRequireContext(),
       envCompatible(),
