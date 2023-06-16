@@ -70,10 +70,10 @@
       </el-form-item>
     </el-form>
     <!--  底部  -->
-    <div class="el-login-footer">
+    <!-- <div class="el-login-footer">
       <span></span>
       <router-link to="/blog">返回</router-link>
-    </div>
+    </div> -->
   </div>
 </template>
 

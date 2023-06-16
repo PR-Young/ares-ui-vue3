@@ -170,16 +170,16 @@
                     placeholder="点击选择图标"
                     readonly
                   >
-                    <template v-slot:prefix>
+                    <template v-slot:prefix v-if="form.icon">
                       <svg-icon
-                        v-if="form.icon"
+                        
                         :icon-class="form.icon"
                         class="el-input__icon"
                         style="height: 32px; width: 16px"
                       />
                     </template>
-                    <template v-slot:prefix>
-                      <el-icon class="el-input__icon"
+                    <template v-slot:prefix v-else>
+                      <el-icon  class="el-input__icon"
                         ><el-icon-search
                       /></el-icon>
                     </template>
@@ -265,9 +265,9 @@ import {
   addMenu,
   updateMenu,
 } from '@/api/system/menu'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import IconSelect from '@/components/IconSelect'
+import Treeselect from 'vue3-treeselect'
+import 'vue3-treeselect/dist/vue3-treeselect.css'
+import IconSelect from '@/components/IconSelect/index.vue'
 
 export default {
   data() {

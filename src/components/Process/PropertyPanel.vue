@@ -16,11 +16,11 @@
 
 <script>
 import { $on, $off, $once, $emit } from '../../utils/gogocodeTransfer'
-import taskPanel from './components/nodePanel/task'
-import startEndPanel from './components/nodePanel/startEnd'
-import processPanel from './components/nodePanel/process'
-import sequenceFlowPanel from './components/nodePanel/sequenceFlow'
-import gatewayPanel from './components/nodePanel/gateway'
+import taskPanel from './components/nodePanel/task.vue'
+import startEndPanel from './components/nodePanel/startEnd.vue'
+import processPanel from './components/nodePanel/process.vue'
+import sequenceFlowPanel from './components/nodePanel/sequenceFlow.vue'
+import gatewayPanel from './components/nodePanel/gateway.vue'
 import { NodeName } from './lang/zh'
 
 export default {

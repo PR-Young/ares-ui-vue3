@@ -349,14 +349,14 @@
 
 <script>
 import {
-  Question as ElIconQuestion,
+  QuestionFilled as ElIconQuestion,
   Search as ElIconSearch,
   Refresh as ElIconRefresh,
   Plus as ElIconPlus,
   Edit as ElIconEdit,
   Delete as ElIconDelete,
   Download as ElIconDownload,
-  SOperation as ElIconSOperation,
+  Operation as ElIconSOperation,
   CaretRight as ElIconCaretRight,
   View as ElIconView,
 } from '@element-plus/icons'

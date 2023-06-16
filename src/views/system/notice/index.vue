@@ -331,7 +331,7 @@ import {
   delNotice,
   editNotice,
 } from '@/api/system/notice'
-import Editor from '@/components/Editor'
+import Editor from '@/components/Editor/index.vue'
 
 export default {
   data() {

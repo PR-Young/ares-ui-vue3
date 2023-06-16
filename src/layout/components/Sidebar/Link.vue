@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable vue/require-component-is -->
-  <component v-bind="linkProps(to)">
+  <component :is="type" v-bind="linkProps()">
     <slot />
   </component>
 </template>
@@ -11,23 +11,32 @@ import { isExternal } from '@/utils/validate'
 export default {
   props: {
     to: {
-      type: String,
+      type: [String,Object],
       required: true,
     },
   },
+  computed:{
+    isExt(){
+      return isExternal(this.to)
+    },
+    type(){
+      if (this.isExt.value) {
+        return 'a'
+      }
+      return 'router-link'
+    }
+  },
   methods: {
-    linkProps(url) {
-      if (isExternal(url)) {
+    linkProps() {
+      if (this.isExt.value) {
         return {
-          is: 'a',
-          href: url,
+          href: this.to,
           target: '_blank',
           rel: 'noopener',
         }
       }
       return {
-        is: 'router-link',
-        to: url,
+        to: this.to,
       }
     },
   },

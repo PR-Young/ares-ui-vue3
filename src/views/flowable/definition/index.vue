@@ -278,7 +278,7 @@
             流程分类：<el-input v-model:value="upload.category" />
           </div>
         </template>
-        <template v-slot:tip>
+        <template>
           <div class="el-upload__tip" style="color: red">
             提示：仅允许导入“bpmn20.xml”格式文件！
           </div>
@@ -396,8 +396,8 @@ import {
 } from '@/api/flowable/definition'
 import { getToken } from '@/utils/auth'
 import { getForm, addDeployForm, listForm } from '@/api/flowable/form'
-import Parser from '@/components/parser/Parser'
-import flow from '@/views/flowable/task/record/flow'
+import Parser from '@/components/parser/Parser.vue'
+import flow from '@/views/flowable/task/record/flow.vue'
 
 export default {
   data() {

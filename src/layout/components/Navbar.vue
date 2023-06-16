@@ -71,7 +71,6 @@ import Hamburger from '@/components/Hamburger/index.vue'
 import Screenfull from '@/components/Screenfull/index.vue'
 import SizeSelect from '@/components/SizeSelect/index.vue'
 import Search from '@/components/HeaderSearch/index.vue'
-import store from '@/store'
 
 export default {
   components: {
@@ -137,7 +136,7 @@ export default {
           protocol = 'wss'
         }
 
-        url = `${protocol}://localhost:8080/ares/ws/` + userAccount
+        url = `${protocol}://10.211.55.4:8080/ares/ws/` + userAccount
 
         // 打开一个websocket
         websocket = new WebSocket(url)

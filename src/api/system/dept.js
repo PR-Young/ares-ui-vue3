@@ -50,3 +50,10 @@ export function delDept(deptId) {
     method: 'delete',
   })
 }
+
+export function roleDeptTreeselect(roleId) {
+  return request({
+    url: '/ares/sysDept/roleMenuTreeselect/' + roleId,
+    method: 'get',
+  })
+}

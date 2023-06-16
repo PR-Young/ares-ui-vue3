@@ -14,9 +14,9 @@ export default defineConfig(({ command, mode }) => {
   let env = loadEnv(mode, process.cwd())
   return {
     resolve: {
-      fallback: {
-        "path": require.resolve("path-browserify")
-      },
+      // fallback: {
+      //   "path": require.resolve("path-browserify")
+      // },
       alias: [
         {
           find: /^~/,
@@ -59,9 +59,12 @@ export default defineConfig(({ command, mode }) => {
       strictPort: false,
       port: env.VITE_VUE_APP_PORT,
       host: '0.0.0.0',
+      // hmr: {
+      //   overlay: false
+      // },
       proxy: {
         '/api': {
-          target: 'http://localhost:8080',
+          target: 'http://10.211.55.4:8080',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')
         }
@@ -71,17 +74,17 @@ export default defineConfig(({ command, mode }) => {
         ignored: ["!**/node_modules/ares-ui-vue3/**"]
       },
     },
-    preprocessOptions: {
-      scss: {
-        additionalData: `@import "./src/assets/styles/index.scss";`   // 全局公共样式
-      }
-    },
-    json: {
-      //是否支持从 .json 文件中进行按名导入
-      namedExports: true,
-      //若设置为 true 导入的json会被转为 export default JSON.parse("..") 会比转译成对象字面量性能更好
-      stringify: false
-    },
+    // preprocessOptions: {
+    //   scss: {
+    //     additionalData: `@import "./src/assets/styles/index.scss";`   // 全局公共样式
+    //   }
+    // },
+    // json: {
+    //   //是否支持从 .json 文件中进行按名导入
+    //   namedExports: true,
+    //   //若设置为 true 导入的json会被转为 export default JSON.parse("..") 会比转译成对象字面量性能更好
+    //   stringify: false
+    // },
     //继承自 esbuild 转换选项，最常见的用例是自定义 JSX
     // esbuild: {
     //   jsxFactory: "h",

@@ -106,7 +106,7 @@
           <el-col :span="1.5">
             <el-button
               type="info"
-              :icon="ElIconUpload2"
+              :icon="ElIconUpload"
               size="mini"
               @click="handleImport"
               v-hasPermi="['user:import']"
@@ -363,16 +363,17 @@
             <el-checkbox
               v-model:value="upload.updateSupport"
             />是否更新已经存在的用户数据
+            <span style="color: red">提示：仅允许导入“xls”或“xlsx”格式文件！</span>
             <el-link type="info" style="font-size: 12px" @click="importTemplate"
               >下载模板</el-link
             >
           </div>
         </template>
-        <template v-slot:tip>
+        <!-- <template v-slot:tip>
           <div class="el-upload__tip" style="color: red">
             提示：仅允许导入“xls”或“xlsx”格式文件！
           </div>
-        </template>
+        </template> -->
       </el-upload>
       <template v-slot:footer>
         <div class="dialog-footer">
@@ -445,7 +446,6 @@ import {
   Plus as ElIconPlus,
   Edit as ElIconEdit,
   Delete as ElIconDelete,
-  Upload2 as ElIconUpload2,
   Download as ElIconDownload,
   Key as ElIconKey,
   Bottom as ElIconBottom,
@@ -470,8 +470,8 @@ import {
   updateDept,
   getDept,
 } from '@/api/system/dept'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import Treeselect from 'vue3-treeselect'
+import 'vue3-treeselect/dist/vue3-treeselect.css'
 
 export default {
   data() {
@@ -584,7 +584,7 @@ export default {
       ElIconPlus,
       ElIconEdit,
       ElIconDelete,
-      ElIconUpload2,
+      ElIconUpload,
       ElIconDownload,
       ElIconKey,
       ElIconBottom,

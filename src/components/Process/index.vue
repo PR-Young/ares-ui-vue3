@@ -121,7 +121,7 @@ import { $on, $off, $once, $emit } from '../../utils/gogocodeTransfer'
 // 汉化
 import customTranslate from './common/customTranslate'
 import Modeler from 'bpmn-js/lib/Modeler'
-import panel from './PropertyPanel'
+import panel from './PropertyPanel.vue'
 import BpmData from './BpmData'
 import getInitStr from './flowable/init'
 // 引入flowable的节点文件

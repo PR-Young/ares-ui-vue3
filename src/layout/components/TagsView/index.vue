@@ -7,7 +7,6 @@
         :key="tag.path"
         :class="isActive(tag) ? 'active' : ''"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
-        tag="span"
         class="tags-view-item"
         @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
         @contextmenu.prevent="openMenu(tag, $event)"
@@ -16,9 +15,10 @@
 
         <span
           v-if="!isAffix(tag)"
-          class="el-icon-close"
           @click.prevent.stop="closeSelectedTag(tag)"
-        />
+        >
+        <el-icon class="el-icon-close" style="width: 1em; height: 1em;vertical-align: middle;"><Close /></el-icon>
+      </span>
       </router-link>
     </scroll-pane>
     <ul
@@ -39,9 +39,10 @@
 <script>
 import ScrollPane from './ScrollPane.vue'
 import path from 'path-browserify'
+import { Close } from '@element-plus/icons'
 
 export default {
-  components: { ScrollPane },
+  components: { ScrollPane,Close },
 
   data() {
     return {
@@ -313,6 +314,8 @@ export default {
       &:hover {
         background-color: #b4bccc;
         color: #fff;
+        width: 12px !important;
+        height: 12px !important;
       }
     }
   }

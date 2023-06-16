@@ -1,11 +1,18 @@
 <template>
-  <section class="app-main">
+  <!-- <section class="app-main">
     <transition name="fade-transform" mode="out-in">
       <keep-alive :include="cachedViews">
         <router-view :key="key" />
       </keep-alive>
     </transition>
-  </section>
+  </section> -->
+  <router-view class="app-main" v-slot="{ Component }">
+    <transition name="fade-transform" mode="out-in">
+      <keep-alive :include="cachedViews">
+        <component :is="Component" />
+      </keep-alive>
+    </transition>
+  </router-view>
 </template>
 
 <script>
@@ -42,9 +49,6 @@ export default {
     padding-top: 84px;
   }
 }
-</style>
-
-<style lang="scss">
 // fix css style bug in open el-dialog
 .el-popup-parent--hidden {
   .fixed-header {
