@@ -49,7 +49,7 @@
 import {
   Link as ElIconLink,
   Delete as ElIconDelete,
-  CirclePlusoutline as ElIconCirclePlusoutline,
+  CirclePlus as ElIconCirclePlusoutline,
 } from '@element-plus/icons'
 import { deepClone } from '@/utils/index'
 

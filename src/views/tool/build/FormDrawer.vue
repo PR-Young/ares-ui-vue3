@@ -119,7 +119,7 @@ import {
 import { makeUpJs } from '@/utils/generator/js'
 import { makeUpCss } from '@/utils/generator/css'
 import { exportDefault, beautifierConf, titleCase } from '@/utils/index'
-import ResourceDialog from './ResourceDialog'
+import ResourceDialog from './ResourceDialog.vue'
 import loadMonaco from '@/utils/loadMonaco'
 import loadBeautifier from '@/utils/loadBeautifier'
 

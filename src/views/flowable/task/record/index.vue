@@ -290,7 +290,7 @@
 
 <script>
 import {
-  EditOutline as ElIconEditOutline,
+  Edit as ElIconEditOutline,
   RefreshLeft as ElIconRefreshLeft,
   CircleClose as ElIconCircleClose,
 } from '@element-plus/icons'

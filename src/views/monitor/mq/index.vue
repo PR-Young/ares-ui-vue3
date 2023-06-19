@@ -137,7 +137,7 @@
               <el-select
                 v-model:value="form.exchangeType"
                 clearable
-                size="medium"
+                size="default"
                 style="width: 250px"
               >
                 <el-option key="DIRECT" label="DIRECT" value="DIRECT" />

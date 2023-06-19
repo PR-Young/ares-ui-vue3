@@ -23,7 +23,7 @@
       </x-form>
       <template v-slot:footer>
         <span class="dialog-footer">
-          <el-button type="primary" size="medium" @click="closeDialog"
+          <el-button type="primary" size="default" @click="closeDialog"
             >确 定</el-button
           >
         </span>
@@ -39,7 +39,7 @@
 
 <script>
 import mixinPanel from '../../../common/mixinPanel'
-import listenerParam from './listenerParam'
+import listenerParam from './listenerParam.vue'
 export default {
   components: { listenerParam },
   mixins: [mixinPanel],

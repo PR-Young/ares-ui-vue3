@@ -173,9 +173,9 @@ import { debounce } from 'throttle-debounce'
 import { saveAs } from 'file-saver'
 import ClipboardJS from 'clipboard'
 import render from '@/components/render/render'
-import FormDrawer from './FormDrawer'
-import JsonDrawer from './JsonDrawer'
-import RightPanel from './RightPanel'
+import FormDrawer from './FormDrawer.vue'
+import JsonDrawer from './JsonDrawer.vue'
+import RightPanel from './RightPanel.vue'
 import {
   inputComponents,
   selectComponents,
@@ -200,8 +200,8 @@ import { makeUpJs } from '@/utils/generator/js'
 import { makeUpCss } from '@/utils/generator/css'
 import drawingDefalut from '@/utils/generator/drawingDefalut'
 import logo from '@/assets/logo/logo.png'
-import CodeTypeDialog from './CodeTypeDialog'
-import DraggableItem from './DraggableItem'
+import CodeTypeDialog from './CodeTypeDialog.vue'
+import DraggableItem from './DraggableItem.vue'
 import {
   getDrawingList,
   saveDrawingList,

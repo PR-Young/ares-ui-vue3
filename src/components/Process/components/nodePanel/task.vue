@@ -49,9 +49,9 @@
 <script>
 import { $on, $off, $once, $emit } from '../../../../utils/gogocodeTransfer'
 import mixinPanel from '../../common/mixinPanel'
-import executionListenerDialog from './property/executionListener'
-import taskListenerDialog from './property/taskListener'
-import multiInstanceDialog from './property/multiInstance'
+import executionListenerDialog from './property/executionListener.vue'
+import taskListenerDialog from './property/taskListener.vue'
+import multiInstanceDialog from './property/multiInstance.vue'
 import { commonParse, userTaskParse } from '../../common/parseElement'
 export default {
   components: {

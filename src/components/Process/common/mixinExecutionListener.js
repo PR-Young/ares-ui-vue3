@@ -1,4 +1,4 @@
-import executionListenerDialog from '../components/nodePanel/property/executionListener'
+import executionListenerDialog from '../components/nodePanel/property/executionListener.vue'
 export default {
   components: {
     executionListenerDialog,

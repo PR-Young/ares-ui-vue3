@@ -1,4 +1,3 @@
-import { isArray } from 'util'
 import { exportDefault, titleCase, deepClone } from '@/utils/index'
 import ruleTrigger from './ruleTrigger'
 
@@ -130,16 +129,16 @@ function mixinMethod(type) {
   const minxins = {
     file: confGlobal.formBtns
       ? {
-          submitForm: `submitForm() {
+        submitForm: `submitForm() {
         this.$refs['${confGlobal.formRef}'].validate(valid => {
           if(!valid) return
           // TODO 提交表单
         })
       },`,
-          resetForm: `resetForm() {
+        resetForm: `resetForm() {
         this.$refs['${confGlobal.formRef}'].resetFields()
       },`,
-        }
+      }
       : null,
     dialog: {
       onOpen: 'onOpen() {},',
@@ -183,23 +182,21 @@ function buildRules(scheme, ruleList) {
   const rules = []
   if (ruleTrigger[config.tag]) {
     if (config.required) {
-      const type = isArray(config.defaultValue) ? "type: 'array'," : ''
-      let message = isArray(config.defaultValue)
+      const type = Array.isArray(config.defaultValue) ? "type: 'array'," : ''
+      let message = Array.isArray(config.defaultValue)
         ? `请至少选择一个${config.label}`
         : scheme.placeholder
       if (message === undefined) message = `${config.label}不能为空`
       rules.push(
-        `{ required: true, ${type} message: '${message}', trigger: '${
-          ruleTrigger[config.tag]
+        `{ required: true, ${type} message: '${message}', trigger: '${ruleTrigger[config.tag]
         }' }`
       )
     }
-    if (config.regList && isArray(config.regList)) {
+    if (config.regList && Array.isArray(config.regList)) {
       config.regList.forEach((item) => {
         if (item.pattern) {
           rules.push(
-            `{ pattern: ${eval(item.pattern)}, message: '${
-              item.message
+            `{ pattern: ${eval(item.pattern)}, message: '${item.message
             }', trigger: '${ruleTrigger[config.tag]}' }`
           )
         }

@@ -1059,13 +1059,12 @@
 
 <script lang="jsx">
 import {
-  Thumb as ElIconThumb,
-  CirclePlusOutline as ElIconCirclePlusOutline,
+  Pointer as ElIconThumb,
+  CirclePlus as ElIconCirclePlusOutline,
 } from '@element-plus/icons'
-import { isArray } from 'util'
-import TreeNodeDialog from './TreeNodeDialog'
+import TreeNodeDialog from './TreeNodeDialog.vue'
 import { isNumberStr } from '@/utils/index'
-import IconsDialog from './IconsDialog'
+import IconsDialog from './IconsDialog.vue'
 import {
   inputComponents,
   selectComponents,
@@ -1314,7 +1313,7 @@ export default {
       return val
     },
     onDefaultValueInput(str) {
-      if (isArray(this.activeData.__config__.defaultValue)) {
+      if (Array.isArray(this.activeData.__config__.defaultValue)) {
         // 数组
         this.activeData.__config__['defaultValue'] = str
           .split(',')

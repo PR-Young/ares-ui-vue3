@@ -23,7 +23,7 @@
               <div class="card-panel-description">
                 <div class="card-panel-text">
                   {{ flow.name }}
-                  <el-tag size="medium">v{{ flow.version }}</el-tag>
+                  <el-tag size="default">v{{ flow.version }}</el-tag>
                 </div>
               </div>
             </div>

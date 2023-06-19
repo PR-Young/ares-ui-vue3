@@ -113,7 +113,7 @@
       />
       <el-table-column label="流程版本" align="center" width="80px">
         <template v-slot="scope">
-          <el-tag size="medium">v{{ scope.row.procDefVersion }}</el-tag>
+          <el-tag size="default">v{{ scope.row.procDefVersion }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -205,7 +205,7 @@
         <el-table-column label="流程名称" align="center" prop="name" />
         <el-table-column label="流程版本" align="center">
           <template v-slot="scope">
-            <el-tag size="medium">v{{ scope.row.version }}</el-tag>
+            <el-tag size="default">v{{ scope.row.version }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column
@@ -252,7 +252,7 @@ import {
   Download as ElIconDownload,
   Tickets as ElIconTickets,
   CircleClose as ElIconCircleClose,
-  EditOutline as ElIconEditOutline,
+  Edit as ElIconEditOutline,
 } from '@element-plus/icons'
 import {
   getDeployment,

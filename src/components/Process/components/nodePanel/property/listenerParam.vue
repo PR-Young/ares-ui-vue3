@@ -12,7 +12,7 @@
       <x-form ref="xForm" v-model:value="formData" :config="formConfig" />
       <template v-slot:footer>
         <span class="dialog-footer">
-          <el-button type="primary" size="medium" @click="closeDialog"
+          <el-button type="primary" size="default" @click="closeDialog"
             >确 定</el-button
           >
         </span>

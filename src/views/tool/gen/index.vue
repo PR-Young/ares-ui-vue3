@@ -160,7 +160,7 @@ import {
   Download as ElIconDownload,
 } from '@element-plus/icons'
 import { listDbTable, previewTable, delTable } from '@/api/tool/gen'
-import importTable from './importTable'
+import importTable from './importTable.vue'
 import { downLoadZip } from '@/utils/zipdownload'
 export default {
   data() {

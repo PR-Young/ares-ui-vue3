@@ -77,7 +77,7 @@
       <el-table-column label="任务节点" align="center" prop="taskName" />
       <el-table-column label="流程版本" align="center">
         <template v-slot="scope">
-          <el-tag size="medium">v{{ scope.row.procDefVersion }}</el-tag>
+          <el-tag size="default">v{{ scope.row.procDefVersion }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="流程发起人" align="center">
@@ -128,7 +128,7 @@ import {
   Search as ElIconSearch,
   Refresh as ElIconRefresh,
   Delete as ElIconDelete,
-  EditOutline as ElIconEditOutline,
+  Edit as ElIconEditOutline,
 } from '@element-plus/icons'
 import {
   todoList,

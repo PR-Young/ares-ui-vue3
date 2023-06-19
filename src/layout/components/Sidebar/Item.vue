@@ -14,7 +14,7 @@ export default function render(_props, _context) {
   }
 
   if (title) {
-    vnodes.push(<span slot="title">{title}</span>)
+    vnodes.push(<span title={title}>{title}</span>)
   }
   return vnodes
 }
