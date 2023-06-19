@@ -8,30 +8,30 @@
     >
       <el-form-item label="登录地址" prop="ipaddr">
         <el-input
-          v-model:value="queryParams.ipaddr"
+          v-model="queryParams.ipaddr"
           placeholder="请输入登录地址"
           clearable
           style="width: 240px"
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="用户名称" prop="userName">
         <el-input
-          v-model:value="queryParams.userName"
+          v-model="queryParams.userName"
           placeholder="请输入用户名称"
           clearable
           style="width: 240px"
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select
-          v-model:value="queryParams.status"
+          v-model="queryParams.status"
           placeholder="登录状态"
           clearable
-          size="small"
+          size="default"
           style="width: 240px"
         >
           <el-option
@@ -44,8 +44,8 @@
       </el-form-item>
       <el-form-item label="登录时间">
         <el-date-picker
-          v-model:value="dateRange"
-          size="small"
+          v-model="dateRange"
+          size="default"
           style="width: 240px"
           value-format="yyyy-MM-dd"
           type="daterange"

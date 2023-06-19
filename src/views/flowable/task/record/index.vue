@@ -164,7 +164,7 @@
     <!--审批正常流程-->
     <el-dialog
       :title="completeTitle"
-      v-model:value="completeOpen"
+      v-model="completeOpen"
       width="60%"
       append-to-body
     >
@@ -172,7 +172,7 @@
         ><el-col>
           <el-input
             type="textarea"
-            v-model:value="taskForm.comment"
+            v-model="taskForm.comment"
             placeholder="请输入处理意见"
           />
         </el-col>
@@ -192,13 +192,13 @@
     <!--退回流程-->
     <el-dialog
       :title="returnTitle"
-      v-model:value="returnOpen"
+      v-model="returnOpen"
       width="40%"
       append-to-body
     >
       <el-form ref="taskForm" :model="taskForm" label-width="80px">
         <el-form-item label="退回节点" prop="targetKey">
-          <el-radio-group v-model:value="taskForm.targetKey">
+          <el-radio-group v-model="taskForm.targetKey">
             <el-radio-button
               v-for="item in returnTaskList"
               :key="item.id"
@@ -215,7 +215,7 @@
           <el-input
             style="width: 100%"
             type="textarea"
-            v-model:value="taskForm.comment"
+            v-model="taskForm.comment"
             placeholder="请输入意见"
           />
         </el-form-item>
@@ -231,7 +231,7 @@
     <!--驳回流程-->
     <el-dialog
       :title="rejectTitle"
-      v-model:value="rejectOpen"
+      v-model="rejectOpen"
       width="40%"
       append-to-body
     >
@@ -244,7 +244,7 @@
           <el-input
             style="width: 100%"
             type="textarea"
-            v-model:value="taskForm.comment"
+            v-model="taskForm.comment"
             placeholder="请输入意见"
           />
         </el-form-item>
@@ -260,7 +260,7 @@
     <!--驳回流程new-->
     <el-dialog
       :title="rejectTitle"
-      v-model:value="rejectOpenNew"
+      v-model="rejectOpenNew"
       width="40%"
       append-to-body
     >
@@ -273,7 +273,7 @@
           <el-input
             style="width: 100%"
             type="textarea"
-            v-model:value="taskForm.comment"
+            v-model="taskForm.comment"
             placeholder="请输入意见"
           />
         </el-form-item>

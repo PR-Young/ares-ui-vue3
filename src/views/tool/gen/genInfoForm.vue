@@ -6,7 +6,7 @@
           <template v-slot:label>
             <span>生成模板</span>
           </template>
-          <el-select v-model:value="info.tplCategory">
+          <el-select v-model="info.tplCategory">
             <el-option label="单表（增删改查）" value="crud" />
             <el-option label="树表（增删改查）" value="tree" />
           </el-select>
@@ -26,7 +26,7 @@
               </el-tooltip>
             </span>
           </template>
-          <el-input v-model:value="info.packageName" />
+          <el-input v-model="info.packageName" />
         </el-form-item>
       </el-col>
 
@@ -43,7 +43,7 @@
               </el-tooltip>
             </span>
           </template>
-          <el-input v-model:value="info.moduleName" />
+          <el-input v-model="info.moduleName" />
         </el-form-item>
       </el-col>
 
@@ -60,7 +60,7 @@
               </el-tooltip>
             </span>
           </template>
-          <el-input v-model:value="info.businessName" />
+          <el-input v-model="info.businessName" />
         </el-form-item>
       </el-col>
 
@@ -74,7 +74,7 @@
               </el-tooltip>
             </span>
           </template>
-          <el-input v-model:value="info.functionName" />
+          <el-input v-model="info.functionName" />
         </el-form-item>
       </el-col>
     </el-row>
@@ -94,7 +94,7 @@
               </el-tooltip>
             </span>
           </template>
-          <el-select v-model:value="info.treeCode" placeholder="请选择">
+          <el-select v-model="info.treeCode" placeholder="请选择">
             <el-option
               v-for="column in info.columns"
               :key="column.columnName"
@@ -117,7 +117,7 @@
               </el-tooltip>
             </span>
           </template>
-          <el-select v-model:value="info.treeParentCode" placeholder="请选择">
+          <el-select v-model="info.treeParentCode" placeholder="请选择">
             <el-option
               v-for="column in info.columns"
               :key="column.columnName"
@@ -140,7 +140,7 @@
               </el-tooltip>
             </span>
           </template>
-          <el-select v-model:value="info.treeName" placeholder="请选择">
+          <el-select v-model="info.treeName" placeholder="请选择">
             <el-option
               v-for="column in info.columns"
               :key="column.columnName"

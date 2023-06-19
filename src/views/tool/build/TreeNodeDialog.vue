@@ -12,13 +12,13 @@
           ref="elForm"
           :model="formData"
           :rules="rules"
-          size="small"
+          size="default"
           label-width="100px"
         >
           <el-col :span="24">
             <el-form-item label="选项名" prop="label">
               <el-input
-                v-model:value="formData.label"
+                v-model="formData.label"
                 placeholder="请输入选项名"
                 clearable
               />
@@ -27,13 +27,13 @@
           <el-col :span="24">
             <el-form-item label="选项值" prop="value">
               <el-input
-                v-model:value="formData.value"
+                v-model="formData.value"
                 placeholder="请输入选项值"
                 clearable
               >
                 <template v-slot:append>
                   <el-select
-                    v-model:value="dataType"
+                    v-model="dataType"
                     :style="{ width: '100px' }"
                   >
                     <el-option

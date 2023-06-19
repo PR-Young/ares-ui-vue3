@@ -9,18 +9,18 @@
     >
       <el-form-item label="名称" prop="name">
         <el-input
-          v-model:value="queryParams.name"
+          v-model="queryParams.name"
           placeholder="请输入名称"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="开始时间" prop="deployTime">
         <el-date-picker
           clearable
-          size="small"
-          v-model:value="queryParams.deployTime"
+          size="default"
+          v-model="queryParams.deployTime"
           type="date"
           value-format="yyyy-MM-dd"
           placeholder="选择时间"
@@ -200,7 +200,7 @@
     />
 
     <!-- 发起流程 -->
-    <el-dialog :title="title" v-model:value="open" width="60%" append-to-body>
+    <el-dialog :title="title" v-model="open" width="60%" append-to-body>
       <el-table v-loading="processLoading" fit :data="definitionList" border>
         <el-table-column label="流程名称" align="center" prop="name" />
         <el-table-column label="流程版本" align="center">

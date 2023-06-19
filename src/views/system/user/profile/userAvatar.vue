@@ -6,7 +6,7 @@
       title="点击上传头像"
       class="img-circle img-lg"
     />
-    <el-dialog :title="title" v-model:value="open" width="800px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="800px" append-to-body>
       <el-row>
         <el-col :xs="24" :md="12" :style="{ height: '350px' }">
           <vue-cropper
@@ -35,7 +35,7 @@
             :show-file-list="false"
             :before-upload="beforeUpload"
           >
-            <el-button size="small">
+            <el-button size="default">
               上传
               <el-icon class="el-icon--right"><el-icon-upload /></el-icon>
             </el-button>
@@ -44,33 +44,33 @@
         <el-col :lg="{ span: 1, offset: 2 }" :md="2">
           <el-button
             :icon="ElIconPlus"
-            size="small"
+            size="default"
             @click="changeScale(1)"
           ></el-button>
         </el-col>
         <el-col :lg="{ span: 1, offset: 1 }" :md="2">
           <el-button
             :icon="ElIconMinus"
-            size="small"
+            size="default"
             @click="changeScale(-1)"
           ></el-button>
         </el-col>
         <el-col :lg="{ span: 1, offset: 1 }" :md="2">
           <el-button
             :icon="ElIconRefreshLeft"
-            size="small"
+            size="default"
             @click="rotateLeft()"
           ></el-button>
         </el-col>
         <el-col :lg="{ span: 1, offset: 1 }" :md="2">
           <el-button
             :icon="ElIconRefreshRight"
-            size="small"
+            size="default"
             @click="rotateRight()"
           ></el-button>
         </el-col>
         <el-col :lg="{ span: 2, offset: 6 }" :md="2">
-          <el-button type="primary" size="small" @click="uploadImg()"
+          <el-button type="primary" size="default" @click="uploadImg()"
             >提 交</el-button
           >
         </el-col>

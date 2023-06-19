@@ -8,28 +8,28 @@
     >
       <el-form-item label="IP" prop="hostIp">
         <el-input
-          v-model:value="queryParams.hostIp"
+          v-model="queryParams.hostIp"
           placeholder="请输入IP"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="用户名" prop="userName">
         <el-input
-          v-model:value="queryParams.userName"
+          v-model="queryParams.userName"
           placeholder="请输入用户名"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="请求方式" prop="requestMethod">
         <el-select
-          v-model:value="queryParams.requestMethod"
+          v-model="queryParams.requestMethod"
           placeholder="请求方式"
           clearable
-          size="small"
+          size="default"
         >
           <el-option
             v-for="dict in methodOptions"
@@ -144,7 +144,7 @@
     <!-- 添加或修改公告对话框 -->
     <el-dialog
       :title="title"
-      v-model:value="showDetail"
+      v-model="showDetail"
       width="880px"
       append-to-body
     >
@@ -152,27 +152,27 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="IP" prop="hostIp">
-              <el-input v-model:value="form.hostIp" readonly />
+              <el-input v-model="form.hostIp" readonly />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="用户名" prop="userName">
-              <el-input v-model:value="form.userName" readonly />
+              <el-input v-model="form.userName" readonly />
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="URL" prop="url">
-              <el-input v-model:value="form.url" readonly />
+              <el-input v-model="form.url" readonly />
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="操作参数" prop="operParams">
-              <el-input v-model:value="form.operParams" readonly />
+              <el-input v-model="form.operParams" readonly />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="请求方式" prop="requestMethod">
-              <el-select v-model:value="form.requestMethod">
+              <el-select v-model="form.requestMethod">
                 <el-option
                   v-for="dict in methodOptions"
                   :key="dict.dictValue"
@@ -187,7 +187,7 @@
               <el-input
                 type="textarea"
                 :rows="3"
-                v-model:value="form.notes"
+                v-model="form.notes"
                 readonly
               />
             </el-form-item>

@@ -3,19 +3,19 @@
     <el-form :model="queryParams" ref="queryForm" :inline="true">
       <el-form-item label="登录地址" prop="ipaddr">
         <el-input
-          v-model:value="queryParams.ipaddr"
+          v-model="queryParams.ipaddr"
           placeholder="请输入登录地址"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="用户名称" prop="userName">
         <el-input
-          v-model:value="queryParams.userName"
+          v-model="queryParams.userName"
           placeholder="请输入用户名称"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>

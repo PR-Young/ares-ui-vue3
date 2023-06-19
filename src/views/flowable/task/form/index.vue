@@ -9,10 +9,10 @@
     >
       <el-form-item label="表单名称" prop="formName">
         <el-input
-          v-model:value="queryParams.formName"
+          v-model="queryParams.formName"
           placeholder="请输入表单名称"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -134,19 +134,19 @@
     />
 
     <!-- 添加或修改流程表单对话框 -->
-    <el-dialog :title="title" v-model:value="open" width="500px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="表单名称" prop="formName">
           <el-input
-            v-model:value="form.formName"
+            v-model="form.formName"
             placeholder="请输入表单名称"
           />
         </el-form-item>
         <el-form-item label="表单内容">
-          <editor v-model:value="form.formContent" :min-height="192" />
+          <editor v-model="form.formContent" :min-height="192" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model:value="form.remark" placeholder="请输入备注" />
+          <el-input v-model="form.remark" placeholder="请输入备注" />
         </el-form-item>
       </el-form>
       <template v-slot:footer>
@@ -160,7 +160,7 @@
     <!--表单配置详情-->
     <el-dialog
       :title="formTitle"
-      v-model:value="formConfOpen"
+      v-model="formConfOpen"
       width="60%"
       append-to-body
     >

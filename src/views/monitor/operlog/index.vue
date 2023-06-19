@@ -8,30 +8,30 @@
     >
       <el-form-item label="系统模块" prop="title">
         <el-input
-          v-model:value="queryParams.title"
+          v-model="queryParams.title"
           placeholder="请输入系统模块"
           clearable
           style="width: 240px"
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="操作人员" prop="operName">
         <el-input
-          v-model:value="queryParams.operName"
+          v-model="queryParams.operName"
           placeholder="请输入操作人员"
           clearable
           style="width: 240px"
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="类型" prop="businessType">
         <el-select
-          v-model:value="queryParams.businessType"
+          v-model="queryParams.businessType"
           placeholder="操作类型"
           clearable
-          size="small"
+          size="default"
           style="width: 240px"
         >
           <el-option
@@ -44,10 +44,10 @@
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select
-          v-model:value="queryParams.status"
+          v-model="queryParams.status"
           placeholder="操作状态"
           clearable
-          size="small"
+          size="default"
           style="width: 240px"
         >
           <el-option
@@ -60,8 +60,8 @@
       </el-form-item>
       <el-form-item label="操作时间">
         <el-date-picker
-          v-model:value="dateRange"
-          size="small"
+          v-model="dateRange"
+          size="default"
           style="width: 240px"
           value-format="yyyy-MM-dd"
           type="daterange"
@@ -187,7 +187,7 @@
     <!-- 操作日志详细 -->
     <el-dialog
       title="操作日志详细"
-      v-model:value="open"
+      v-model="open"
       width="700px"
       append-to-body
     >

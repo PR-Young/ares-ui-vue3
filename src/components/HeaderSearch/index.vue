@@ -7,7 +7,7 @@
     />
     <el-select
       ref="headerSearchSelect"
-      v-model:value="search"
+      v-model="search"
       :remote-method="querySearch"
       filterable
       default-first-option
@@ -176,7 +176,7 @@ export default {
     display: inline-block;
     vertical-align: middle;
 
-    :deep(.el-input__inner) {
+    ::deep .el-input__inner {
       border-radius: 0;
       border: 0;
       padding-left: 0;

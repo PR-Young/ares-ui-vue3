@@ -1,13 +1,13 @@
 <template>
   <el-form ref="form" :model="user" :rules="rules" label-width="80px">
     <el-form-item label="用户昵称" prop="userName">
-      <el-input v-model:value="user.userName" />
+      <el-input v-model="user.userName" />
     </el-form-item>
     <el-form-item label="手机号码" prop="phoneNumber">
-      <el-input v-model:value="user.phoneNumber" maxlength="11" />
+      <el-input v-model="user.phoneNumber" maxlength="11" />
     </el-form-item>
     <el-form-item label="邮箱" prop="email">
-      <el-input v-model:value="user.email" maxlength="50" />
+      <el-input v-model="user.email" maxlength="50" />
     </el-form-item>
     <!-- <el-form-item label="性别">
             <el-radio-group v-model="user.sex">

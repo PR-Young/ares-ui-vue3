@@ -9,18 +9,18 @@
     >
       <el-form-item label="名称" prop="name">
         <el-input
-          v-model:value="queryParams.name"
+          v-model="queryParams.name"
           placeholder="请输入名称"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="开始时间" prop="deployTime">
         <el-date-picker
           clearable
-          size="small"
-          v-model:value="queryParams.deployTime"
+          size="default"
+          v-model="queryParams.deployTime"
           type="date"
           value-format="yyyy-MM-dd"
           placeholder="选择时间"
@@ -232,10 +232,10 @@
     />
 
     <!-- 添加或修改流程定义对话框 -->
-    <el-dialog :title="title" v-model:value="open" width="500px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="看看" prop="name">
-          <el-input v-model:value="form.name" placeholder="请输入看看" />
+          <el-input v-model="form.name" placeholder="请输入看看" />
         </el-form-item>
       </el-form>
       <template v-slot:footer>
@@ -249,7 +249,7 @@
     <!-- bpmn20.xml导入对话框 -->
     <el-dialog
       :title="upload.title"
-      v-model:value="upload.open"
+      v-model="upload.open"
       width="400px"
       append-to-body
     >
@@ -274,8 +274,8 @@
         </div>
         <template v-slot:tip>
           <div class="el-upload__tip">
-            流程名称：<el-input v-model:value="upload.name" />
-            流程分类：<el-input v-model:value="upload.category" />
+            流程名称：<el-input v-model="upload.name" />
+            流程分类：<el-input v-model="upload.category" />
           </div>
         </template>
         <template>
@@ -295,7 +295,7 @@
     <!-- 流程图 -->
     <el-dialog
       :title="readImage.title"
-      v-model:value="readImage.open"
+      v-model="readImage.open"
       width="70%"
       append-to-body
     >
@@ -306,7 +306,7 @@
     <!--表单配置详情-->
     <el-dialog
       :title="formTitle"
-      v-model:value="formConfOpen"
+      v-model="formConfOpen"
       width="50%"
       append-to-body
     >
@@ -318,7 +318,7 @@
     <!--挂载表单-->
     <el-dialog
       :title="formDeployTitle"
-      v-model:value="formDeployOpen"
+      v-model="formDeployOpen"
       width="60%"
       append-to-body
     >

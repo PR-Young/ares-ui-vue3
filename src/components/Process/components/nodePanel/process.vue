@@ -1,10 +1,10 @@
 <template>
   <div>
-    <x-form ref="xForm" v-model:value="formData" :config="formConfig">
+    <x-form ref="xForm" v-model="formData" :config="formConfig">
       <template #executionListener>
         <el-badge :model-value="executionListenerLength">
           <el-button
-            size="small"
+            size="default"
             @click="dialogName = 'executionListenerDialog'"
             >编辑</el-button
           >
@@ -12,7 +12,7 @@
       </template>
       <template #signal>
         <el-badge :model-value="signalLength">
-          <el-button size="small" @click="dialogName = 'signalDialog'"
+          <el-button size="default" @click="dialogName = 'signalDialog'"
             >编辑</el-button
           >
         </el-badge>

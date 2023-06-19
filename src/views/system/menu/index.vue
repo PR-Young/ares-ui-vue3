@@ -3,15 +3,15 @@
     <el-form :inline="true">
       <el-form-item label="菜单名称">
         <el-input
-          v-model:value="queryParams.name"
+          v-model="queryParams.name"
           placeholder="请输入菜单名称"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <!-- <el-form-item label="状态">
-              <el-select v-model="queryParams.status" placeholder="菜单状态" clearable size="small">
+              <el-select v-model="queryParams.status" placeholder="菜单状态" clearable size="default">
                 <el-option
                   v-for="dict in statusOptions"
                   :key="dict.dictValue"
@@ -129,13 +129,13 @@
     </el-table>
 
     <!-- 添加或修改菜单对话框 -->
-    <el-dialog :title="title" v-model:value="open" width="600px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="24">
             <el-form-item label="上级菜单">
               <treeselect
-                v-model:value="form.pid"
+                v-model="form.pid"
                 :options="menuOptions"
                 :normalizer="normalizer"
                 :show-count="true"
@@ -145,7 +145,7 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="菜单类型" prop="type">
-              <el-radio-group v-model:value="form.type">
+              <el-radio-group v-model="form.type">
                 <el-radio
                   v-for="item in typeOptions"
                   :label="item.id"
@@ -166,7 +166,7 @@
                 <IconSelect ref="iconSelect" @selected="selected" />
                 <template v-slot:reference>
                   <el-input
-                    v-model:value="form.icon"
+                    v-model="form.icon"
                     placeholder="点击选择图标"
                     readonly
                   >
@@ -191,7 +191,7 @@
           <el-col :span="12">
             <el-form-item label="菜单名称" prop="name">
               <el-input
-                v-model:value="form.name"
+                v-model="form.name"
                 placeholder="请输入菜单名称"
               />
             </el-form-item>
@@ -199,7 +199,7 @@
           <el-col :span="12">
             <el-form-item label="显示排序" prop="order">
               <el-input-number
-                v-model:value="form.order"
+                v-model="form.order"
                 controls-position="right"
                 :min="0"
               />
@@ -208,20 +208,20 @@
           <el-col :span="12">
             <el-form-item v-if="form.type != 2" label="路由地址" prop="path">
               <el-input
-                v-model:value="form.path"
+                v-model="form.path"
                 placeholder="请输入路由地址"
               />
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="form.type == 1">
             <el-form-item label="组件路径" prop="url">
-              <el-input v-model:value="form.url" placeholder="请输入组件路径" />
+              <el-input v-model="form.url" placeholder="请输入组件路径" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item v-if="form.type != 0" label="权限标识">
               <el-input
-                v-model:value="form.perms"
+                v-model="form.perms"
                 placeholder="请权限标识"
                 maxlength="50"
               />
@@ -229,7 +229,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item v-if="form.type != 2" label="是否可见">
-              <el-select v-model:value="form.visible" placeholder="请选择">
+              <el-select v-model="form.visible" placeholder="请选择">
                 <el-option
                   v-for="item in visibleOptions"
                   :key="item.dictValue"
@@ -268,6 +268,7 @@ import {
 import Treeselect from 'vue3-treeselect'
 import 'vue3-treeselect/dist/vue3-treeselect.css'
 import IconSelect from '@/components/IconSelect/index.vue'
+import { markRaw } from 'vue'
 
 export default {
   data() {
@@ -320,9 +321,12 @@ export default {
     }
   },
   components: {
-    Treeselect,
-    IconSelect,
-    ElIconSearch,
+    Treeselect:markRaw(Treeselect),
+    IconSelect:markRaw(IconSelect),
+    ElIconSearch:markRaw(ElIconSearch),
+    ElIconPlus:markRaw(ElIconPlus),
+    ElIconEdit:markRaw(ElIconEdit),
+    ElIconDelete:markRaw(ElIconDelete),
   },
   name: 'Menu',
   created() {

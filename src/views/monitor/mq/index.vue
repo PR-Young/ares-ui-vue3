@@ -129,13 +129,13 @@
       </el-tab-pane>
     </el-tabs>
 
-    <el-dialog :title="title" v-model:value="open" width="800px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="800px" append-to-body>
       <el-form ref="form" :model="form" label-width="100px">
         <el-row>
           <el-col :span="12" v-if="showExchangeType">
             <el-form-item label="交换器类别" prop="exchangeType">
               <el-select
-                v-model:value="form.exchangeType"
+                v-model="form.exchangeType"
                 clearable
                 size="default"
                 style="width: 250px"
@@ -149,17 +149,17 @@
           </el-col>
           <el-col :span="12" v-if="showExchangeName">
             <el-form-item label="交换器名称" prop="exchangeName">
-              <el-input v-model:value="form.exchangeName" />
+              <el-input v-model="form.exchangeName" />
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="showQueueName">
             <el-form-item label="队列名称" prop="queueName">
-              <el-input v-model:value="form.queueName" />
+              <el-input v-model="form.queueName" />
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="showRoutingKey">
             <el-form-item label="路由KEY" prop="routingKey">
-              <el-input v-model:value="form.routingKey" />
+              <el-input v-model="form.routingKey" />
             </el-form-item>
           </el-col>
         </el-row>

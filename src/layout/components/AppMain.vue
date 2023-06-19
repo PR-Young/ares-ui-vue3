@@ -6,13 +6,15 @@
       </keep-alive>
     </transition>
   </section> -->
-  <router-view class="app-main" v-slot="{ Component }">
-    <transition name="fade-transform" mode="out-in">
-      <keep-alive :include="cachedViews">
-        <component :is="Component" />
-      </keep-alive>
-    </transition>
-  </router-view>
+  <section class="app-main" >
+    <router-view v-slot="{ Component }">
+      <transition name="fade-transform" mode="out-in">
+        <keep-alive :include="cachedViews">
+          <component :is="Component" />
+        </keep-alive>
+      </transition>
+    </router-view>
+  </section>
 </template>
 
 <script>

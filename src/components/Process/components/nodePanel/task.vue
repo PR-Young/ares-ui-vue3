@@ -1,10 +1,10 @@
 <template>
   <div>
-    <x-form ref="xForm" v-model:value="formData" :config="formConfig">
+    <x-form ref="xForm" v-model="formData" :config="formConfig">
       <template #executionListener>
         <el-badge :model-value="executionListenerLength">
           <el-button
-            size="small"
+            size="default"
             @click="dialogName = 'executionListenerDialog'"
             >编辑</el-button
           >
@@ -12,14 +12,14 @@
       </template>
       <template #taskListener>
         <el-badge :model-value="taskListenerLength">
-          <el-button size="small" @click="dialogName = 'taskListenerDialog'"
+          <el-button size="default" @click="dialogName = 'taskListenerDialog'"
             >编辑</el-button
           >
         </el-badge>
       </template>
       <template #multiInstance>
         <el-badge :is-dot="hasMultiInstance">
-          <el-button size="small" @click="dialogName = 'multiInstanceDialog'"
+          <el-button size="default" @click="dialogName = 'multiInstanceDialog'"
             >编辑</el-button
           >
         </el-badge>

@@ -1,7 +1,7 @@
 <template>
   <mavon-editor
     class="md"
-    v-model:value="detail.mdContent"
+    v-model="detail.mdContent"
     :subfield="true"
     :defaultOpen="'preview'"
     :toolbarsFlag="true"

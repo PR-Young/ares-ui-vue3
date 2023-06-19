@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true">
       <el-form-item label="字典名称" prop="dictType">
-        <el-select v-model:value="queryParams.dictType" size="small">
+        <el-select v-model="queryParams.dictType" size="default">
           <el-option
             v-for="item in typeOptions"
             :key="item.dictId"
@@ -13,19 +13,19 @@
       </el-form-item>
       <el-form-item label="字典标签" prop="dictLabel">
         <el-input
-          v-model:value="queryParams.dictLabel"
+          v-model="queryParams.dictLabel"
           placeholder="请输入字典标签"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select
-          v-model:value="queryParams.status"
+          v-model="queryParams.status"
           placeholder="数据状态"
           clearable
-          size="small"
+          size="default"
         >
           <el-option
             v-for="dict in statusOptions"
@@ -161,32 +161,32 @@
     />
 
     <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" v-model:value="open" width="500px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="字典类型">
-          <el-input v-model:value="form.dictType" :disabled="true" />
+          <el-input v-model="form.dictType" :disabled="true" />
         </el-form-item>
         <el-form-item label="数据标签" prop="dictLabel">
           <el-input
-            v-model:value="form.dictLabel"
+            v-model="form.dictLabel"
             placeholder="请输入数据标签"
           />
         </el-form-item>
         <el-form-item label="数据键值" prop="dictValue">
           <el-input
-            v-model:value="form.dictValue"
+            v-model="form.dictValue"
             placeholder="请输入数据键值"
           />
         </el-form-item>
         <el-form-item label="显示排序" prop="dictSort">
           <el-input-number
-            v-model:value="form.dictSort"
+            v-model="form.dictSort"
             controls-position="right"
             :min="0"
           />
         </el-form-item>
         <el-form-item label="状态" prop="status">
-          <el-radio-group v-model:value="form.status">
+          <el-radio-group v-model="form.status">
             <el-radio
               v-for="dict in statusOptions"
               :key="dict.dictValue"
@@ -197,7 +197,7 @@
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input
-            v-model:value="form.remark"
+            v-model="form.remark"
             type="textarea"
             placeholder="请输入内容"
           ></el-input>

@@ -8,18 +8,18 @@
     >
       <el-form-item label="模版名称" prop="subject">
         <el-input
-          v-model:value="queryParams.subject"
+          v-model="queryParams.subject"
           placeholder="请输入模版名称"
           clearable
-          size="small"
+          size="default"
           style="width: 240px"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker
-          v-model:value="dateRange"
-          size="small"
+          v-model="dateRange"
+          size="default"
           style="width: 240px"
           value-format="yyyy-MM-dd"
           type="daterange"
@@ -169,31 +169,31 @@
     />
 
     <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" v-model:value="open" width="500px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="模版名称" prop="name">
-          <el-input v-model:value="form.name" placeholder="请输入模版名称" />
+          <el-input v-model="form.name" placeholder="请输入模版名称" />
         </el-form-item>
         <el-form-item label="模版标题" prop="subject">
-          <el-input v-model:value="form.subject" placeholder="请输入模版标题" />
+          <el-input v-model="form.subject" placeholder="请输入模版标题" />
         </el-form-item>
         <el-form-item label="模版内容" prop="text">
           <el-input
-            v-model:value="form.text"
+            v-model="form.text"
             type="textarea"
             placeholder="请输入模版内容"
           />
         </el-form-item>
         <el-form-item label="模版html" prop="html">
           <el-input
-            v-model:value="form.html"
+            v-model="form.html"
             type="textarea"
             placeholder="请输入模版内容"
           />
         </el-form-item>
         <el-form-item label="模版参数" prop="param">
           <el-input
-            v-model:value="form.param"
+            v-model="form.param"
             type="textarea"
             placeholder="请输入模版参数"
           />

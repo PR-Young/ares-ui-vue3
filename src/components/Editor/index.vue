@@ -16,7 +16,7 @@
     <!-- 富文本组件 -->
     <quill-editor
       class="editor"
-      v-model:value="content"
+      v-model="content"
       ref="quillEditor"
       :options="editorOption"
       @blur="onEditorBlur($event)"

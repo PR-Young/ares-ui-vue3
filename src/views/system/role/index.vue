@@ -3,10 +3,10 @@
     <el-form :model="queryParams" ref="queryForm" :inline="true">
       <el-form-item label="角色名称" prop="roleName">
         <el-input
-          v-model:value="queryParams.roleName"
+          v-model="queryParams.roleName"
           placeholder="请输入角色名称"
           clearable
-          size="small"
+          size="default"
           style="width: 240px"
           @keyup.enter="handleQuery"
         />
@@ -16,7 +16,7 @@
                 v-model="queryParams.roleKey"
                 placeholder="请输入权限字符"
                 clearable
-                size="small"
+                size="default"
                 style="width: 240px"
                 @keyup.enter.native="handleQuery"
               />
@@ -26,7 +26,7 @@
                 v-model="queryParams.status"
                 placeholder="角色状态"
                 clearable
-                size="small"
+                size="default"
                 style="width: 240px"
               >
                 <el-option
@@ -39,8 +39,8 @@
             </el-form-item>-->
       <el-form-item label="创建时间">
         <el-date-picker
-          v-model:value="dateRange"
-          size="small"
+          v-model="dateRange"
+          size="default"
           style="width: 240px"
           value-format="yyyy-MM-dd"
           type="daterange"
@@ -182,16 +182,16 @@
     />
 
     <!-- 添加或修改角色配置对话框 -->
-    <el-dialog :title="title" v-model:value="open" width="500px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="角色名称" prop="roleName">
           <el-input
-            v-model:value="form.roleName"
+            v-model="form.roleName"
             placeholder="请输入角色名称"
           />
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input v-model:value="form.description" placeholder="请输入描述" />
+          <el-input v-model="form.description" placeholder="请输入描述" />
         </el-form-item>
         <el-form-item label="菜单权限">
           <el-tree
@@ -215,16 +215,16 @@
     <!-- 分配角色数据权限对话框 -->
     <el-dialog
       :title="title"
-      v-model:value="openDataScope"
+      v-model="openDataScope"
       width="800px"
       append-to-body
     >
       <el-form :model="form" label-width="80px">
         <el-form-item label="角色名称">
-          <el-input v-model:value="form.roleName" :disabled="true" />
+          <el-input v-model="form.roleName" :disabled="true" />
         </el-form-item>
         <el-form-item label="描述">
-          <el-input v-model:value="form.description" :disabled="true" />
+          <el-input v-model="form.description" :disabled="true" />
         </el-form-item>
         <el-form-item label="用户">
           <el-transfer
@@ -232,7 +232,7 @@
             :titles="titleOptions"
             filter-placeholder
             :data="userOptions"
-            v-model:value="selectedUsers"
+            v-model="selectedUsers"
             @right-check-change="change"
           ></el-transfer>
         </el-form-item>

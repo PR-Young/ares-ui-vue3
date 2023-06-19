@@ -8,19 +8,19 @@
     >
       <el-form-item label="岗位编码" prop="postCode">
         <el-input
-          v-model:value="queryParams.postCode"
+          v-model="queryParams.postCode"
           placeholder="请输入岗位编码"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="岗位名称" prop="postName">
         <el-input
-          v-model:value="queryParams.postName"
+          v-model="queryParams.postName"
           placeholder="请输入岗位名称"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -137,17 +137,17 @@
     />
 
     <!-- 添加或修改岗位对话框 -->
-    <el-dialog :title="title" v-model:value="open" width="500px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="岗位名称" prop="postName">
           <el-input
-            v-model:value="form.postName"
+            v-model="form.postName"
             placeholder="请输入岗位名称"
           />
         </el-form-item>
         <el-form-item label="岗位编码" prop="postCode">
           <el-input
-            v-model:value="form.postCode"
+            v-model="form.postCode"
             placeholder="请输入编码名称"
           />
         </el-form-item>

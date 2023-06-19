@@ -2,7 +2,7 @@
   <div>
     <el-dialog
       title="多实例配置"
-      v-model:value="dialogVisible"
+      v-model="dialogVisible"
       width="500px"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
@@ -24,7 +24,7 @@
           loopCounter：给定实例在for-each循环中的index。<br />
         </template>
       </el-alert>
-      <x-form ref="xForm" v-model:value="formData" :config="formConfig" />
+      <x-form ref="xForm" v-model="formData" :config="formConfig" />
     </el-dialog>
   </div>
 </template>

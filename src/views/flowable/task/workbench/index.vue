@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-collapse v-model:value="activeNames" @change="handleChange">
+    <el-collapse v-model="activeNames" @change="handleChange">
       <el-collapse-item
         v-for="item in categorys"
         :title="item.dictLabel"

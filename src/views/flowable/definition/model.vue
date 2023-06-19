@@ -14,7 +14,7 @@
     <!--在线查看xml-->
     <el-dialog
       :title="xmlTitle"
-      v-model:value="xmlOpen"
+      v-model="xmlOpen"
       width="60%"
       append-to-body
     >

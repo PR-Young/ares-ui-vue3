@@ -10,10 +10,10 @@
         >
           <el-form-item label="模型名称" prop="name">
             <el-input
-              v-model:value="queryParams.name"
+              v-model="queryParams.name"
               placeholder="请输入模型名称"
               clearable
-              size="small"
+              size="default"
               style="width: 240px"
               @keyup.enter="handleQuery"
             />
@@ -150,13 +150,13 @@
     </el-row>
 
     <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" v-model:value="open" width="600px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="模型名称" prop="name">
               <el-input
-                v-model:value="form.name"
+                v-model="form.name"
                 placeholder="请输入模型名称"
               />
             </el-form-item>
@@ -164,7 +164,7 @@
           <el-col :span="12">
             <el-form-item label="KEY" prop="key">
               <el-input
-                v-model:value="form.key"
+                v-model="form.key"
                 placeholder="请输入KEY"
                 maxlength="11"
               />
@@ -173,7 +173,7 @@
           <el-col :span="12">
             <el-form-item label="描述" prop="desc">
               <el-input
-                v-model:value="form.desc"
+                v-model="form.desc"
                 placeholder="请输入描述"
                 maxlength="50"
               />
@@ -182,7 +182,7 @@
           <el-col :span="12">
             <el-form-item label="分类" prop="category">
               <el-input
-                v-model:value="form.category"
+                v-model="form.category"
                 placeholder="请输入分类"
               />
             </el-form-item>
@@ -200,7 +200,7 @@
     <el-dialog
       id="flowEditor"
       title="流程定义"
-      v-model:value="show"
+      v-model="show"
       fullscreen
       top="2"
     >

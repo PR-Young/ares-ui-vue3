@@ -8,30 +8,30 @@
     >
       <el-form-item label="参数名称" prop="configName">
         <el-input
-          v-model:value="queryParams.configName"
+          v-model="queryParams.configName"
           placeholder="请输入参数名称"
           clearable
-          size="small"
+          size="default"
           style="width: 240px"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="参数键名" prop="configKey">
         <el-input
-          v-model:value="queryParams.configKey"
+          v-model="queryParams.configKey"
           placeholder="请输入参数键名"
           clearable
-          size="small"
+          size="default"
           style="width: 240px"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="系统内置" prop="configType">
         <el-select
-          v-model:value="queryParams.configType"
+          v-model="queryParams.configType"
           placeholder="系统内置"
           clearable
-          size="small"
+          size="default"
         >
           <el-option
             v-for="dict in typeOptions"
@@ -43,8 +43,8 @@
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker
-          v-model:value="dateRange"
-          size="small"
+          v-model="dateRange"
+          size="default"
           style="width: 240px"
           value-format="yyyy-MM-dd"
           type="daterange"
@@ -189,28 +189,28 @@
     />
 
     <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" v-model:value="open" width="500px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="参数名称" prop="configName">
           <el-input
-            v-model:value="form.configName"
+            v-model="form.configName"
             placeholder="请输入参数名称"
           />
         </el-form-item>
         <el-form-item label="参数键名" prop="configKey">
           <el-input
-            v-model:value="form.configKey"
+            v-model="form.configKey"
             placeholder="请输入参数键名"
           />
         </el-form-item>
         <el-form-item label="参数键值" prop="configValue">
           <el-input
-            v-model:value="form.configValue"
+            v-model="form.configValue"
             placeholder="请输入参数键值"
           />
         </el-form-item>
         <el-form-item label="系统内置" prop="configType">
-          <el-radio-group v-model:value="form.configType">
+          <el-radio-group v-model="form.configType">
             <el-radio
               v-for="dict in typeOptions"
               :key="dict.dictValue"
@@ -221,7 +221,7 @@
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input
-            v-model:value="form.remark"
+            v-model="form.remark"
             type="textarea"
             placeholder="请输入内容"
           />

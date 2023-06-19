@@ -2,20 +2,20 @@
   <div>
     <el-dialog
       title="执行监听器"
-      v-model:value="dialogVisible"
+      v-model="dialogVisible"
       width="900px"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
       @closed="$emit('close')"
     >
-      <x-form ref="xForm" v-model:value="formData" :config="formConfig">
+      <x-form ref="xForm" v-model="formData" :config="formConfig">
         <template #params="scope">
           <el-badge
             :model-value="scope.row.params ? scope.row.params.length : 0"
             type="primary"
           >
-            <el-button size="small" @click="configParam(scope.$index)"
+            <el-button size="default" @click="configParam(scope.$index)"
               >配置</el-button
             >
           </el-badge>

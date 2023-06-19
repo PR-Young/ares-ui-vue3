@@ -1,14 +1,15 @@
 <template>
   <div class="dashboard-editor-container">
     <el-row>
+      <el-col>
       <el-form :inline="true" style="text-align: center">
         <el-form-item>
           <el-input
             style="width: 500px"
-            v-model:value="queryParams.searchValue"
+            v-model="queryParams.searchValue"
             placeholder="请输入"
             clearable
-            size="small"
+            size="default"
             @keyup.enter="handleQuery"
           />
         </el-form-item>
@@ -21,6 +22,7 @@
           ></el-button>
         </el-form-item>
       </el-form>
+    </el-col>
     </el-row>
 
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
@@ -52,7 +54,7 @@
     </el-row>
 
     <el-row>
-      <el-calendar v-model:value="today"> </el-calendar>
+      <el-calendar v-model="today"> </el-calendar>
     </el-row>
   </div>
 </template>
@@ -66,6 +68,7 @@ import PieChart from './dashboard/PieChart.vue'
 import BarChart from './dashboard/BarChart.vue'
 import TimeLineChart from './dashboard/TimeLineChart.vue'
 import { getLineChartData, getLineChart, queryByKey } from '@/api/home'
+import {markRaw} from "vue"
 
 export default {
   data() {
@@ -84,12 +87,13 @@ export default {
   },
   name: 'Index',
   components: {
-    PanelGroup,
-    LineChart,
-    RaddarChart,
-    PieChart,
-    BarChart,
-    TimeLineChart,
+    PanelGroup:markRaw(PanelGroup),
+    LineChart:markRaw(LineChart),
+    RaddarChart:markRaw(RaddarChart),
+    PieChart:markRaw(PieChart),
+    BarChart:markRaw(BarChart),
+    TimeLineChart:markRaw(TimeLineChart),
+    ElIconSearch:markRaw(ElIconSearch)
   },
   created() {
     getLineChartData().then((res) => {

@@ -8,20 +8,20 @@
     >
       <el-form-item label="任务名称" prop="jobName">
         <el-input
-          v-model:value="queryParams.jobName"
+          v-model="queryParams.jobName"
           placeholder="请输入任务名称"
           clearable
-          size="small"
+          size="default"
           style="width: 240px"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="任务组名" prop="jobGroup">
         <el-select
-          v-model:value="queryParams.jobGroup"
+          v-model="queryParams.jobGroup"
           placeholder="请任务组名"
           clearable
-          size="small"
+          size="default"
           style="width: 240px"
         >
           <el-option
@@ -34,10 +34,10 @@
       </el-form-item>
       <el-form-item label="执行状态" prop="status">
         <el-select
-          v-model:value="queryParams.status"
+          v-model="queryParams.status"
           placeholder="请选择执行状态"
           clearable
-          size="small"
+          size="default"
           style="width: 240px"
         >
           <el-option
@@ -50,8 +50,8 @@
       </el-form-item>
       <el-form-item label="执行时间">
         <el-date-picker
-          v-model:value="dateRange"
-          size="small"
+          v-model="dateRange"
+          size="default"
           style="width: 240px"
           value-format="yyyy-MM-dd"
           type="daterange"
@@ -187,7 +187,7 @@
     <!-- 调度日志详细 -->
     <el-dialog
       title="调度日志详细"
-      v-model:value="open"
+      v-model="open"
       width="700px"
       append-to-body
     >

@@ -11,7 +11,7 @@
         <div>
           选择图标
           <el-input
-            v-model:value="key"
+            v-model="key"
             size="mini"
             :style="{ width: '260px' }"
             placeholder="请输入图标名称"

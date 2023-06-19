@@ -5,10 +5,10 @@
       <el-col :span="4" :xs="24">
         <div class="head-container">
           <el-input
-            v-model:value="deptName"
+            v-model="deptName"
             placeholder="请输入部门名称"
             clearable
-            size="small"
+            size="default"
             :prefix-icon="ElIconSearch"
             style="margin-bottom: 20px"
           />
@@ -36,18 +36,18 @@
         >
           <el-form-item label="用户名称" prop="userName">
             <el-input
-              v-model:value="queryParams.userName"
+              v-model="queryParams.userName"
               placeholder="请输入用户名称"
               clearable
-              size="small"
+              size="default"
               style="width: 240px"
               @keyup.enter="handleQuery"
             />
           </el-form-item>
           <el-form-item label="创建时间">
             <el-date-picker
-              v-model:value="dateRange"
-              size="small"
+              v-model="dateRange"
+              size="default"
               style="width: 240px"
               value-format="yyyy-MM-dd"
               type="daterange"
@@ -174,7 +174,7 @@
           <el-table-column label="状态" align="center">
             <template v-slot="scope">
               <el-switch
-                v-model:value="scope.row.status"
+                v-model="scope.row.status"
                 :active-value="1"
                 :inactive-value="0"
                 @change="handleStatusChange(scope.row)"
@@ -235,13 +235,13 @@
     </el-row>
 
     <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" v-model:value="open" width="600px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="用户帐号" prop="account">
               <el-input
-                v-model:value="form.account"
+                v-model="form.account"
                 placeholder="请输入用户帐号"
               />
             </el-form-item>
@@ -249,7 +249,7 @@
           <el-col :span="12">
             <el-form-item label="归属部门" prop="deptId">
               <treeselect
-                v-model:value="form.deptId"
+                v-model="form.deptId"
                 :options="deptOptions"
                 placeholder="请选择归属部门"
               />
@@ -258,7 +258,7 @@
           <el-col :span="12">
             <el-form-item label="手机号码" prop="phoneNumber">
               <el-input
-                v-model:value="form.phoneNumber"
+                v-model="form.phoneNumber"
                 placeholder="请输入手机号码"
                 maxlength="11"
               />
@@ -267,7 +267,7 @@
           <el-col :span="12">
             <el-form-item label="邮箱" prop="email">
               <el-input
-                v-model:value="form.email"
+                v-model="form.email"
                 placeholder="请输入邮箱"
                 maxlength="50"
               />
@@ -276,7 +276,7 @@
           <el-col :span="12">
             <el-form-item label="用户名称" prop="userName">
               <el-input
-                v-model:value="form.userName"
+                v-model="form.userName"
                 placeholder="请输入用户名称"
               />
             </el-form-item>
@@ -284,7 +284,7 @@
           <el-col :span="12">
             <el-form-item label="用户密码" prop="password">
               <el-input
-                v-model:value="form.password"
+                v-model="form.password"
                 placeholder="请输入用户密码"
                 type="password"
               />
@@ -292,7 +292,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="岗位">
-              <el-select v-model:value="form.postId" placeholder="请选择">
+              <el-select v-model="form.postId" placeholder="请选择">
                 <el-option
                   v-for="item in postOptions"
                   :key="item.id"
@@ -305,7 +305,7 @@
           <el-col :span="12">
             <el-form-item label="角色">
               <el-select
-                v-model:value="form.roleIds"
+                v-model="form.roleIds"
                 multiple
                 placeholder="请选择"
               >
@@ -331,7 +331,7 @@
     <!-- 用户导入对话框 -->
     <el-dialog
       :title="upload.title"
-      v-model:value="upload.open"
+      v-model="upload.open"
       width="400px"
       append-to-body
     >
@@ -361,7 +361,7 @@
         <template v-slot:tip>
           <div class="el-upload__tip">
             <el-checkbox
-              v-model:value="upload.updateSupport"
+              v-model="upload.updateSupport"
             />是否更新已经存在的用户数据
             <span style="color: red">提示：仅允许导入“xls”或“xlsx”格式文件！</span>
             <el-link type="info" style="font-size: 12px" @click="importTemplate"
@@ -397,23 +397,23 @@
     <!-- 添加或修改部门对话框 -->
     <el-dialog
       :title="deptTitle"
-      v-model:value="deptOpen"
+      v-model="deptOpen"
       width="600px"
       append-to-body
     >
       <el-form ref="form" :model="deptForm" label-width="80px">
         <el-row>
-          <el-input v-model:value="deptForm.id" type="hidden" />
-          <el-input v-model:value="deptForm.parentDeptId" type="hidden" />
+          <el-input v-model="deptForm.id" type="hidden" />
+          <el-input v-model="deptForm.parentDeptId" type="hidden" />
           <el-col :span="24">
             <el-form-item label="上级部门" prop="parentDeptName">
-              <el-input v-model:value="deptForm.parentDeptName" disabled />
+              <el-input v-model="deptForm.parentDeptName" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="部门编号" prop="code">
               <el-input
-                v-model:value="deptForm.code"
+                v-model="deptForm.code"
                 placeholder="请输入部门编号"
               />
             </el-form-item>
@@ -421,7 +421,7 @@
           <el-col :span="24">
             <el-form-item label="部门名称" prop="deptName">
               <el-input
-                v-model:value="deptForm.deptName"
+                v-model="deptForm.deptName"
                 placeholder="请输入部门名称"
               />
             </el-form-item>

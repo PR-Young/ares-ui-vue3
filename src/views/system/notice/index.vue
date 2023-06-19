@@ -8,19 +8,19 @@
     >
       <el-form-item label="公告标题" prop="noticeTitle">
         <el-input
-          v-model:value="queryParams.noticeTitle"
+          v-model="queryParams.noticeTitle"
           placeholder="请输入公告标题"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="类型" prop="noticeType">
         <el-select
-          v-model:value="queryParams.noticeType"
+          v-model="queryParams.noticeType"
           placeholder="公告类型"
           clearable
-          size="small"
+          size="default"
         >
           <el-option
             v-for="dict in typeOptions"
@@ -185,20 +185,20 @@
     />
 
     <!-- 添加或修改公告对话框 -->
-    <el-dialog :title="title" v-model:value="open" width="880px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="880px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="公告标题" prop="noticeTitle">
               <el-input
-                v-model:value="form.noticeTitle"
+                v-model="form.noticeTitle"
                 placeholder="请输入公告标题"
               />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="公告类型" prop="noticeType">
-              <el-select v-model:value="form.noticeType" placeholder="请选择">
+              <el-select v-model="form.noticeType" placeholder="请选择">
                 <el-option
                   v-for="dict in typeOptions"
                   :key="dict.dictValue"
@@ -210,7 +210,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="状态">
-              <el-radio-group v-model:value="form.noticeStatus">
+              <el-radio-group v-model="form.noticeStatus">
                 <el-radio
                   v-for="dict in statusOptions"
                   :key="dict.dictValue"
@@ -223,7 +223,7 @@
           <el-col :span="12">
             <el-form-item label="到期时间">
               <el-date-picker
-                v-model:value="form.deadline"
+                v-model="form.deadline"
                 type="datetime"
                 value-format="yyyy-MM-dd HH:mm:ss"
                 placeholder="选择到期时间"
@@ -232,7 +232,7 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="内容">
-              <Editor v-model:value="form.noticeContent" />
+              <Editor v-model="form.noticeContent" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -247,7 +247,7 @@
 
     <el-dialog
       :title="title"
-      v-model:value="showDetail"
+      v-model="showDetail"
       width="880px"
       append-to-body
     >
@@ -257,7 +257,7 @@
             <el-form-item label="公告标题" prop="noticeTitle">
               <el-input
                 disabled
-                v-model:value="form.noticeTitle"
+                v-model="form.noticeTitle"
                 placeholder="请输入公告标题"
               />
             </el-form-item>
@@ -266,7 +266,7 @@
             <el-form-item label="公告类型" prop="noticeType">
               <el-select
                 disabled
-                v-model:value="form.noticeType"
+                v-model="form.noticeType"
                 placeholder="请选择"
               >
                 <el-option
@@ -280,7 +280,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="状态">
-              <el-radio-group v-model:value="form.noticeStatus">
+              <el-radio-group v-model="form.noticeStatus">
                 <el-radio
                   disabled
                   v-for="dict in statusOptions"
@@ -295,7 +295,7 @@
             <el-form-item label="到期时间">
               <el-date-picker
                 disabled
-                v-model:value="form.deadline"
+                v-model="form.deadline"
                 type="datetime"
                 value-format="yyyy-MM-dd HH:mm:ss"
                 placeholder="选择到期时间"
@@ -304,7 +304,7 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="内容">
-              <Editor v-model:value="form.noticeContent" />
+              <Editor v-model="form.noticeContent" />
             </el-form-item>
           </el-col>
         </el-row>

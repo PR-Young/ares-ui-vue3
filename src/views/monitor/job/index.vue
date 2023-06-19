@@ -8,19 +8,19 @@
     >
       <el-form-item label="任务名称" prop="jobName">
         <el-input
-          v-model:value="queryParams.jobName"
+          v-model="queryParams.jobName"
           placeholder="请输入任务名称"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="任务组名" prop="jobGroup">
         <el-select
-          v-model:value="queryParams.jobGroup"
+          v-model="queryParams.jobGroup"
           placeholder="请选择任务组名"
           clearable
-          size="small"
+          size="default"
         >
           <el-option
             v-for="dict in jobGroupOptions"
@@ -32,10 +32,10 @@
       </el-form-item>
       <el-form-item label="任务状态" prop="status">
         <el-select
-          v-model:value="queryParams.status"
+          v-model="queryParams.status"
           placeholder="请选择任务状态"
           clearable
-          size="small"
+          size="default"
         >
           <el-option
             v-for="dict in statusOptions"
@@ -148,7 +148,7 @@
       <el-table-column label="状态" align="center">
         <template v-slot="scope">
           <el-switch
-            v-model:value="scope.row.status"
+            v-model="scope.row.status"
             :active-value="0"
             :inactive-value="1"
             @change="handleStatusChange(scope.row)"
@@ -196,20 +196,20 @@
     />
 
     <!-- 添加或修改定时任务对话框 -->
-    <el-dialog :title="title" v-model:value="open" width="700px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="700px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="任务名称" prop="jobName">
               <el-input
-                v-model:value="form.jobName"
+                v-model="form.jobName"
                 placeholder="请输入任务名称"
               />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="任务分组" prop="jobGroup">
-              <el-select v-model:value="form.jobGroup" placeholder="请选择">
+              <el-select v-model="form.jobGroup" placeholder="请选择">
                 <el-option
                   v-for="dict in jobGroupOptions"
                   :key="dict.dictValue"
@@ -221,7 +221,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="描述" prop="description">
-              <el-input v-model:value="form.description" placeholder />
+              <el-input v-model="form.description" placeholder />
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -241,7 +241,7 @@
                 </span>
               </template>
               <el-input
-                v-model:value="form.invokeTarget"
+                v-model="form.invokeTarget"
                 placeholder="请输入调用目标字符串"
               />
             </el-form-item>
@@ -249,14 +249,14 @@
           <el-col :span="12">
             <el-form-item label="cron表达式" prop="cronExpression">
               <el-input
-                v-model:value="form.cronExpression"
+                v-model="form.cronExpression"
                 placeholder="请输入cron执行表达式"
               />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="是否并发" prop="conCurrent">
-              <el-radio-group v-model:value="form.conCurrent" size="small">
+              <el-radio-group v-model="form.conCurrent" size="default">
                 <el-radio-button label="0">允许</el-radio-button>
                 <el-radio-button label="1">禁止</el-radio-button>
               </el-radio-group>
@@ -264,7 +264,7 @@
           </el-col>
           <!-- <el-col :span="24">
                   <el-form-item label="错误策略" prop="misfirePolicy">
-                    <el-radio-group v-model="form.misfirePolicy" size="small">
+                    <el-radio-group v-model="form.misfirePolicy" size="default">
                       <el-radio-button label="1">立即执行</el-radio-button>
                       <el-radio-button label="2">执行一次</el-radio-button>
                       <el-radio-button label="3">放弃执行</el-radio-button>
@@ -273,7 +273,7 @@
                 </el-col>-->
           <el-col :span="24">
             <el-form-item label="状态">
-              <el-radio-group v-model:value="form.status">
+              <el-radio-group v-model="form.status">
                 <el-radio
                   v-for="dict in statusOptions"
                   :key="dict.dictValue"
@@ -296,7 +296,7 @@
     <!-- 任务日志详细 -->
     <el-dialog
       title="任务详细"
-      v-model:value="openView"
+      v-model="openView"
       width="700px"
       append-to-body
     >

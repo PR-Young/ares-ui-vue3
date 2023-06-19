@@ -9,7 +9,7 @@
                 <el-icon><el-icon-setting /></el-icon>
               </el-badge>
             </div>
-            <el-tabs v-model:value="activeTab" type="card" class="editor-tabs">
+            <el-tabs v-model="activeTab" type="card" class="editor-tabs">
               <el-tab-pane name="html">
                 <template v-slot:label>
                   <span>

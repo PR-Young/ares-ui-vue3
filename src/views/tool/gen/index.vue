@@ -8,26 +8,26 @@
     >
       <el-form-item label="表名称" prop="tableName">
         <el-input
-          v-model:value="queryParams.tableName"
+          v-model="queryParams.tableName"
           placeholder="请输入表名称"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="表描述" prop="tableComment">
         <el-input
-          v-model:value="queryParams.tableComment"
+          v-model="queryParams.tableComment"
           placeholder="请输入表描述"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker
-          v-model:value="dateRange"
-          size="small"
+          v-model="dateRange"
+          size="default"
           style="width: 240px"
           value-format="yyyy-MM-dd"
           type="daterange"
@@ -106,7 +106,7 @@
         <template v-slot="scope">
           <el-button
             type="text"
-            size="small"
+            size="default"
             :icon="ElIconView"
             @click="handlePreview(scope.row)"
             v-hasPermi="['tool:gen:preview']"
@@ -114,7 +114,7 @@
           >
           <el-button
             type="text"
-            size="small"
+            size="default"
             :icon="ElIconDownload"
             @click="handleGenTable(scope.row)"
             >生成代码</el-button
@@ -132,12 +132,12 @@
     <!-- 预览界面 -->
     <el-dialog
       :title="preview.title"
-      v-model:value="preview.open"
+      v-model="preview.open"
       width="80%"
       top="5vh"
       append-to-body
     >
-      <el-tabs v-model:value="preview.activeName">
+      <el-tabs v-model="preview.activeName">
         <el-tab-pane
           v-for="(value, key) in preview.data"
           :label="key.substring(key.lastIndexOf('/') + 1, key.indexOf('.vm'))"

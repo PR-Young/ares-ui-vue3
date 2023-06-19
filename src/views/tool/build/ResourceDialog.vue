@@ -11,7 +11,7 @@
       <el-input
         v-for="(item, index) in resources"
         :key="index"
-        v-model:value="resources[index]"
+        v-model="resources[index]"
         class="url-item"
         placeholder="请输入 css 或 js 资源路径"
         :prefix-icon="ElIconLink"

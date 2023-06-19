@@ -1,7 +1,7 @@
 <template>
   <div>
     <Tinymce
-      v-model:value="defaultValue"
+      v-model="defaultValue"
       :height="300"
       placeholder="在这里输入文字"
     />

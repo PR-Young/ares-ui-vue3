@@ -8,24 +8,24 @@
     >
       <el-form-item label="文章标题" prop="title">
         <el-input
-          v-model:value="queryParams.title"
+          v-model="queryParams.title"
           placeholder="请输入文章标题"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="文章作者" prop="name">
         <el-input
-          v-model:value="queryParams.name"
+          v-model="queryParams.name"
           placeholder="请输入文章标题"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="文章类别" prop="type">
-        <el-select v-model:value="queryParams.type" placeholder="请选择">
+        <el-select v-model="queryParams.type" placeholder="请选择">
           <el-option
             v-for="item in typeOptions"
             :key="item.dictValue"
@@ -191,16 +191,16 @@
     />
 
     <!-- 添加或修改岗位对话框 -->
-    <el-dialog :title="title" v-model:value="open" width="800px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="800px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="文章标题" prop="title">
-          <el-input v-model:value="form.title" placeholder="请输入文章标题" />
+          <el-input v-model="form.title" placeholder="请输入文章标题" />
         </el-form-item>
         <el-form-item label="文章作者" prop="name">
-          <el-input v-model:value="form.name" placeholder="请输入文章作者" />
+          <el-input v-model="form.name" placeholder="请输入文章作者" />
         </el-form-item>
         <el-form-item label="文章类别" prop="type">
-          <el-select v-model:value="form.type" placeholder="请选择">
+          <el-select v-model="form.type" placeholder="请选择">
             <el-option
               v-for="item in typeOptions"
               :key="item.dictValue"
@@ -210,7 +210,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="状态" prop="status">
-          <el-radio-group v-model:value="form.status">
+          <el-radio-group v-model="form.status">
             <el-radio
               v-for="dict in statusOptions"
               :key="dict.dictValue"
@@ -220,7 +220,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="文章内容" prop="content">
-          <Editor v-model:value="form.content" />
+          <Editor v-model="form.content" />
         </el-form-item>
       </el-form>
       <template v-slot:footer>

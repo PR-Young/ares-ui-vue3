@@ -40,11 +40,9 @@ function buildFormTemplate(scheme, child, type) {
     labelPosition = `label-position="${scheme.labelPosition}"`
   }
   const disabled = scheme.disabled ? `:disabled="${scheme.disabled}"` : ''
-  let str = `<el-form ref="${scheme.formRef}" :model="${
-    scheme.formModel
-  }" :rules="${scheme.formRules}" size="${
-    scheme.size
-  }" ${disabled} label-width="${scheme.labelWidth}px" ${labelPosition}>
+  let str = `<el-form ref="${scheme.formRef}" :model="${scheme.formModel
+    }" :rules="${scheme.formRules}" size="${scheme.size
+    }" ${disabled} label-width="${scheme.labelWidth}px" ${labelPosition}>
       ${child}
       ${buildFromBtns(scheme, type)}
     </el-form>`
@@ -423,7 +421,7 @@ function buildElUploadChild(scheme) {
     list.push('<i class="el-icon-plus"></i>')
   else
     list.push(
-      `<el-button size="small" type="primary" icon="el-icon-upload">${config.buttonText}</el-button>`
+      `<el-button size="default" type="primary" icon="el-icon-upload">${config.buttonText}</el-button>`
     )
   if (config.showTip)
     list.push(

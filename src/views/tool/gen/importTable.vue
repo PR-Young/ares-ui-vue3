@@ -2,7 +2,7 @@
   <!-- 导入表 -->
   <el-dialog
     title="导入表"
-    v-model:value="visible"
+    v-model="visible"
     width="800px"
     top="5vh"
     append-to-body
@@ -10,19 +10,19 @@
     <el-form :model="queryParams" ref="queryForm" :inline="true">
       <el-form-item label="表名称" prop="tableName">
         <el-input
-          v-model:value="queryParams.tableName"
+          v-model="queryParams.tableName"
           placeholder="请输入表名称"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="表描述" prop="tableComment">
         <el-input
-          v-model:value="queryParams.tableComment"
+          v-model="queryParams.tableComment"
           placeholder="请输入表描述"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>

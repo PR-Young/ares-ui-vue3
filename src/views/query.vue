@@ -5,10 +5,10 @@
         <el-form-item>
           <el-input
             style="width: 500px"
-            v-model:value="queryParams.searchValue"
+            v-model="queryParams.searchValue"
             placeholder="请输入"
             clearable
-            size="small"
+            size="default"
             @keyup.enter="handleQuery"
           />
         </el-form-item>
