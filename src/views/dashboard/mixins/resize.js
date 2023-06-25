@@ -17,7 +17,7 @@ export default {
     }
 
     // when keep-alive chart activated, auto resize
-    this.resize()
+    //this.resize()
   },
   beforeUnmount() {
     this.destroyListener()
@@ -34,6 +34,7 @@ export default {
       }
     },
     initListener() {
+      debugger
       this.$_resizeHandler = debounce(() => {
         this.resize()
       }, 100)

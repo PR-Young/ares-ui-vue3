@@ -62,7 +62,6 @@ export default {
       return this.$store.state.permission.routes
     },
   },
-
   watch: {
     $route() {
       this.addTags()

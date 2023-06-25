@@ -20,7 +20,7 @@ const permission = {
         // 向后端请求路由数据
         getRouters().then((res) => {
           const accessedRoutes = filterAsyncRouter(res.data)
-          //accessedRoutes.push({ path: '*', redirect: '/404', hidden: true })
+          accessedRoutes.push({ path: '/:pathMatch(.*)', redirect: '/404', hidden: true })
           commit('SET_ROUTES', accessedRoutes)
           resolve(accessedRoutes)
         })

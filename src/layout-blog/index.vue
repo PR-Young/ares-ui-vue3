@@ -294,7 +294,7 @@ html {
 } /*// .nav-wrapper i:nth-child(3)
  {
 }*/
-header {
+/*header {
   padding: 80px 15px 48px 50px;
   height: 200px;
   color: #fff;
@@ -311,7 +311,7 @@ header h5 {
   font-size: 16px;
   margin-top: 5px;
   font-weight: 300;
-}
+}*/
 .footer {
   padding: 15px;
   background: #303f9f;

@@ -59,9 +59,6 @@ export default defineConfig(({ command, mode }) => {
       strictPort: false,
       port: env.VITE_VUE_APP_PORT,
       host: '0.0.0.0',
-      // hmr: {
-      //   overlay: false
-      // },
       proxy: {
         '/api': {
           target: 'http://10.211.55.4:8080',
