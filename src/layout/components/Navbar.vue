@@ -44,7 +44,7 @@
         </div>
         <template v-slot:dropdown>
           <el-dropdown-menu>
-            <router-link to="/user/profile">
+            <router-link to="/userfile/profile">
               <el-dropdown-item>个人中心</el-dropdown-item>
             </router-link>
             <el-dropdown-item @click="setting = true">

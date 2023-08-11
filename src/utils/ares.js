@@ -127,7 +127,7 @@ export function praseStrEmpty(str) {
  */
 export function handleTree(data, id, parentId, children, rootId) {
   id = id || 'id'
-  parentId = parentId || 'pid'
+  parentId = parentId || 'pId'
   children = children || 'children'
   rootId = rootId || '0'
   //对源数据深度克隆

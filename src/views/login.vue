@@ -54,7 +54,7 @@
       <el-checkbox
         v-model="loginForm.rememberMe"
         style="margin: 0px 0px 25px 0px"
-        >记住密码(一个月免登陆)</el-checkbox
+        >记住密码(一个周免登陆)</el-checkbox
       >
       <el-form-item style="width: 100%">
         <el-button

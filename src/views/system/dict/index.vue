@@ -133,7 +133,7 @@
       >
         <template v-slot="scope">
           <router-link
-            :to="'/dict/type/data/' + scope.row.id"
+            :to="'/dictdata/type/data/' + scope.row.id"
             class="link-type"
           >
             <span>{{ scope.row.dictType }}</span>

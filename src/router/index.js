@@ -103,7 +103,7 @@ export const constantRoutes = [
     ],
   },
   {
-    path: '/user',
+    path: '/userfile',
     component: Layout,
     hidden: true,
     redirect: 'noredirect',
@@ -117,7 +117,7 @@ export const constantRoutes = [
     ],
   },
   {
-    path: '/dict',
+    path: '/dictdata',
     component: Layout,
     hidden: true,
     children: [
@@ -130,7 +130,7 @@ export const constantRoutes = [
     ],
   },
   {
-    path: '/job',
+    path: '/joblog',
     component: Layout,
     hidden: true,
     children: [

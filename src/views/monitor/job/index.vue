@@ -552,7 +552,7 @@ export default {
     },
     /** 任务日志列表查询 */
     handleJobLog() {
-      this.$router.push('/job/log')
+      this.$router.push('/joblog/log')
     },
     /** 新增按钮操作 */
     handleAdd() {
