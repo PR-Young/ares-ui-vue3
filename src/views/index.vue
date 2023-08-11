@@ -87,7 +87,7 @@ export default {
   },
   name: 'Index',
   components: {
-    PanelGroup:markRaw(PanelGroup),
+    PanelGroup:PanelGroup,
     LineChart:markRaw(LineChart),
     RaddarChart:markRaw(RaddarChart),
     PieChart:markRaw(PieChart),

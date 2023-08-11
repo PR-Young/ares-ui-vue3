@@ -34,7 +34,6 @@ export default {
       }
     },
     initListener() {
-      debugger
       this.$_resizeHandler = debounce(() => {
         this.resize()
       }, 100)

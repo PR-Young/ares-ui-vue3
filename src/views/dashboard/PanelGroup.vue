@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import { $on, $off, $once, $emit } from '../../utils/gogocodeTransfer'
 import CountTo from 'vue-count-to'
 import { getPanelGroups } from '@/api/home'
 
