@@ -295,7 +295,7 @@ import {
   CircleClose as ElIconCircleClose,
 } from '@element-plus/icons'
 import { flowRecord } from '@/api/flowable/finished'
-import Parser from '@/components/parser/Parser'
+import Parser from '@/components/parser/Parser.vue'
 import {
   definitionStart,
   getProcessVariables,
@@ -312,7 +312,7 @@ import {
   getFormData,
   rejectTaskNew,
 } from '@/api/flowable/todo'
-import flow from '@/views/flowable/task/record/flow'
+import flow from '@/views/flowable/task/record/flow.vue'
 import { treeselect } from '@/api/system/dept'
 import 'vue3-treeselect/dist/vue3-treeselect.css'
 import Treeselect from 'vue3-treeselect'

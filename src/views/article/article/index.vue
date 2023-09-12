@@ -250,7 +250,7 @@ import {
   updateArticles,
   exportArticles,
 } from '@/api/articles'
-import Editor from '@/components/Editor'
+import Editor from '@/components/Editor/index.vue'
 
 export default {
   data() {

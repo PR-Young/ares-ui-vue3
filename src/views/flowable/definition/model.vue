@@ -31,8 +31,8 @@
 
 <script>
 import { readXml, roleList, saveXml, userList } from '@/api/flowable/definition'
-import bpmnModeler from '@/components/Process/index'
-import vkbeautify from 'vkbeautify'
+import bpmnModeler from '@/components/Process/index.vue'
+import vkbeautify from 'vkbeautify/index.js'
 import Hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css'
 

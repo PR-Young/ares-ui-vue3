@@ -189,8 +189,8 @@ import {
   updateForm,
   exportForm,
 } from '@/api/flowable/form'
-import Editor from '@/components/Editor'
-import Parser from '@/components/parser/Parser'
+import Editor from '@/components/Editor/index.vue'
+import Parser from '@/components/parser/Parser.vue'
 export default {
   data() {
     return {
