@@ -1,6 +1,8 @@
 import xcrud from 'xcrud-vue3'
 import golbalConfig from 'xcrud-vue3/package/common/config'
 import showConfig from '../flowable/showConfig'
+import { toRaw } from "vue"
+
 golbalConfig.set({
   input: {
     // size: 'mini'
@@ -55,7 +57,7 @@ export default {
   methods: {
     updateProperties(properties) {
       const modeling = this.modeler.get('modeling')
-      modeling.updateProperties(this.element, properties)
+      modeling.updateProperties(toRaw(this.element), toRaw(properties))
     },
   },
   computed: {
