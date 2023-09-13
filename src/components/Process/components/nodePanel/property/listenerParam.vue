@@ -9,7 +9,7 @@
       :show-close="false"
       @closed="$emit('close', formData.paramList)"
     >
-      <x-form ref="xForm" v-model="formData" :config="formConfig" />
+      <x-form ref="xForm" v-model:propData="formData" :config="formConfig" />
       <template v-slot:footer>
         <span class="dialog-footer">
           <el-button type="primary" size="default" @click="closeDialog"

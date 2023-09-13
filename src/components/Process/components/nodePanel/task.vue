@@ -1,6 +1,6 @@
 <template>
   <div>
-    <x-form ref="xForm" v-model="formData" :config="formConfig">
+    <x-form ref="xForm" v-model:propData="formData" :config="formConfig">
       <template #executionListener>
         <el-badge :model-value="executionListenerLength">
           <el-button

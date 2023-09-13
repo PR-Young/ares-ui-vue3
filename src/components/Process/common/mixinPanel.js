@@ -1,5 +1,5 @@
-import xcrud from 'xcrud'
-import golbalConfig from 'xcrud/package/common/config'
+import xcrud from 'xcrud-vue3'
+import golbalConfig from 'xcrud-vue3/package/common/config'
 import showConfig from '../flowable/showConfig'
 golbalConfig.set({
   input: {

@@ -9,7 +9,7 @@
       :show-close="false"
       @closed="$emit('close')"
     >
-      <x-form ref="xForm" v-model="formData" :config="formConfig">
+      <x-form ref="xForm" v-model:propData="formData" :config="formConfig">
         <template #params="scope">
           <el-badge
             :model-value="scope.row.params ? scope.row.params.length : 0"

@@ -24,7 +24,7 @@
           loopCounter：给定实例在for-each循环中的index。<br />
         </template>
       </el-alert>
-      <x-form ref="xForm" v-model="formData" :config="formConfig" />
+      <x-form ref="xForm" v-model:propData="formData" :config="formConfig" />
     </el-dialog>
   </div>
 </template>

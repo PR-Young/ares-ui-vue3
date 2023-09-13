@@ -86,7 +86,8 @@
     "vue3-treeselect": "^0.1.10",
     "vuedraggable": "^2.24.3",
     "vuex": "^4.1.0",
-    "workflow-bpmn-modeler": "^0.2.8"
+    "workflow-bpmn-modeler": "^0.2.8",
+    "xcrud-vue3": "^0.0.12"
   },
   "devDependencies": {
     "@babel/core": "^7.22.1",
