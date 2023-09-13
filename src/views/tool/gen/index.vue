@@ -105,7 +105,7 @@
       >
         <template v-slot="scope">
           <el-button
-            type="text"
+            link
             size="default"
             :icon="ElIconView"
             @click="handlePreview(scope.row)"
@@ -113,7 +113,7 @@
             >预览</el-button
           >
           <el-button
-            type="text"
+            link
             size="default"
             :icon="ElIconDownload"
             @click="handleGenTable(scope.row)"
@@ -131,7 +131,7 @@
     />
     <!-- 预览界面 -->
     <el-dialog
-      :title="preview.title"
+      :header="preview.title"
       v-model="preview.open"
       width="80%"
       top="5vh"

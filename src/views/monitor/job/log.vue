@@ -167,7 +167,7 @@
         <template v-slot="scope">
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconView"
             @click="handleView(scope.row)"
             >详细</el-button

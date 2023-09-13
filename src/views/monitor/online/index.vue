@@ -83,7 +83,7 @@
         <template v-slot="scope">
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconDelete"
             @click="handleForceLogout(scope.row)"
             v-hasPermi="['monitor:online:forceLogout']"

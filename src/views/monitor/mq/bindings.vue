@@ -35,7 +35,7 @@
         <template v-slot="scope">
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconDelete"
             @click="romoveBinding(scope.row)"
             >删除</el-button

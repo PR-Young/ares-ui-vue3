@@ -109,10 +109,5 @@ export default {
     },
   },
   emits: ['update:visible', 'confirm'],
-  mounted() {
-    inheriltClassAndStyle.call(this)
-    inheriltClassAndStyle.call(this)
-    inheriltClassAndStyle.call(this)
-  },
 }
 </script>

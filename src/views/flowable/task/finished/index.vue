@@ -116,14 +116,14 @@
         <template v-slot="scope">
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconTickets"
             @click="handleFlowRecord(scope.row)"
             >流转记录</el-button
           >
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconTickets"
             @click="handleRevoke(scope.row)"
             >撤回

@@ -87,7 +87,7 @@
         <template v-slot="scope">
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:dept:edit']"
@@ -95,7 +95,7 @@
           >
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconPlus"
             @click="handleAdd(scope.row)"
             v-hasPermi="['system:dept:add']"
@@ -104,7 +104,7 @@
           <el-button
             v-if="scope.row.parentId != 0"
             size="mini"
-            type="text"
+            link
             :icon="ElIconDelete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:dept:remove']"

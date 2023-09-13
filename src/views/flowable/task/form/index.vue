@@ -100,14 +100,14 @@
         <template v-slot="scope">
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconView"
             @click="handleDetail(scope.row)"
             >详情</el-button
           >
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['sysForm:edit']"
@@ -115,7 +115,7 @@
           >
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconDelete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['sysForm:delete']"

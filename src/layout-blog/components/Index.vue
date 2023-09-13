@@ -26,7 +26,7 @@
                     <!-- <span>{{ item.title }} {{item.name}} {{ item.createTime }}</span> -->
                     <el-button
                       style="float: right; padding: 3px -1px"
-                      type="text"
+                      link
                       @click="$parent.location('/details/' + item.id)"
                       >阅读原文</el-button
                     >

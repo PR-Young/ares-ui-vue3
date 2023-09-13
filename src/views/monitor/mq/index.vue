@@ -50,7 +50,7 @@
             <template v-slot="scope">
               <el-button
                 size="mini"
-                type="text"
+                link
                 :icon="ElIconDelete"
                 @click="handleExchangeDelete(scope.row)"
                 >删除</el-button
@@ -104,21 +104,21 @@
             <template v-slot="scope">
               <el-button
                 size="mini"
-                type="text"
+                link
                 :icon="ElIconView"
                 @click="handleDetail(scope.row)"
                 >详情</el-button
               >
               <el-button
                 size="mini"
-                type="text"
+                link
                 :icon="ElIconDelete"
                 @click="handleQueueDelete(scope.row)"
                 >删除</el-button
               >
               <el-button
                 size="mini"
-                type="text"
+                link
                 :icon="ElIconKey"
                 @click="purgeQueue(scope.row)"
                 >清空队列</el-button

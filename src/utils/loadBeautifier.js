@@ -1,5 +1,5 @@
+import { ElLoading } from 'element-plus'
 import loadScript from './loadScript'
-import ELEMENT from 'element-plus'
 import pluginsConfig from './pluginsConfig'
 
 let beautifierObj
@@ -11,7 +11,7 @@ export default function loadBeautifier(cb) {
     return
   }
 
-  const loading = ELEMENT.Loading.service({
+  const loading = ElLoading.service({
     fullscreen: true,
     lock: true,
     text: '格式化资源加载中...',

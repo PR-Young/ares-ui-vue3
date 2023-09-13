@@ -40,15 +40,6 @@ import { Search as ElIconSearch } from '@element-plus/icons'
 import iconList from '@/utils/generator/icon.json'
 
 
-function inheriltClassAndStyle() {
-  const attrs = this.$attrs
-  attrs.class && this.$el.classList.add(attrs.class)
-  attrs.style &&
-    Object.entries(attrs.style).forEach(([k, v]) => {
-      this.$el.style[k] = v
-    })
-}
-
 const originList = iconList.map((name) => `el-icon-${name}`)
 
 export default {
@@ -84,11 +75,6 @@ export default {
     },
   },
   emits: ['select', 'update:visible'],
-  mounted() {
-    inheriltClassAndStyle.call(this)
-    inheriltClassAndStyle.call(this)
-    inheriltClassAndStyle.call(this)
-  },
 }
 </script>
 

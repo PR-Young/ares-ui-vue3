@@ -201,7 +201,7 @@ export const constantRoutes = [
     hidden: true,
     children: [
       {
-        path: 'definition/model/',
+        path: 'definition/model',
         component: () => import('@/views/flowable/definition/model.vue'),
         name: 'Model',
         meta: { title: '流程设计', icon: '' },

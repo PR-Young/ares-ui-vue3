@@ -163,7 +163,7 @@
         <template v-slot="scope">
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['quartz:edit']"
@@ -171,14 +171,14 @@
           >
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconCaretRight"
             @click="handleRun(scope.row)"
             >执行一次</el-button
           >
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconView"
             @click="handleView(scope.row)"
             >详细</el-button

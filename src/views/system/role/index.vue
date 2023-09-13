@@ -148,7 +148,7 @@
         <template v-slot="scope">
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['role:edit']"
@@ -156,14 +156,14 @@
           >
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconCircleCheck"
             @click="handleDataScope(scope.row)"
             >数据权限</el-button
           >
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconDelete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['role:delete']"

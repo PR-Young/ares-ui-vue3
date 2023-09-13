@@ -39,22 +39,22 @@
 
     <div class="center-board">
       <div class="action-bar">
-        <el-button :icon="ElIconPlus" type="text" @click="handleForm">
+        <el-button :icon="ElIconPlus" link @click="handleForm">
           保存
         </el-button>
-        <el-button :icon="ElIconVideoPlay" type="text" @click="run">
+        <el-button :icon="ElIconVideoPlay" link @click="run">
           运行
         </el-button>
-        <el-button :icon="ElIconView" type="text" @click="showJson">
+        <el-button :icon="ElIconView" link @click="showJson">
           查看json
         </el-button>
-        <el-button :icon="ElIconDownload" type="text" @click="download">
+        <el-button :icon="ElIconDownload" link @click="download">
           导出vue文件
         </el-button>
         <el-button
           class="copy-btn-main"
           :icon="ElIconDocumentCopy"
-          type="text"
+          link
           @click="copy"
         >
           复制代码
@@ -62,7 +62,7 @@
         <el-button
           class="delete-btn"
           :icon="ElIconDelete"
-          type="text"
+          link
           @click="empty"
         >
           清空
@@ -132,7 +132,7 @@
     <input id="copyNode" type="hidden" />
     <!--表单配置详情-->
     <el-dialog
-      :title="formTitle"
+      :header="formTitle"
       v-model="formOpen"
       width="500px"
       append-to-body
@@ -168,7 +168,7 @@ import {
   DocumentCopy as ElIconDocumentCopy,
   Delete as ElIconDelete,
 } from '@element-plus/icons'
-import draggable from 'vuedraggable'
+import {VueDraggableNext as draggable} from 'vue-draggable-next'
 import { debounce } from 'throttle-debounce'
 import { saveAs } from 'file-saver'
 import ClipboardJS from 'clipboard'

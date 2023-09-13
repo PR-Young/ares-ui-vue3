@@ -579,7 +579,7 @@
                 class="select-item"
               >
                 <div class="select-line-icon option-drag">
-                  <el-icon><el-icon-s-operation /></el-icon>
+                  <el-icon><Operation /></el-icon>
                 </div>
                 <el-input
                   v-model="item.label"
@@ -596,7 +596,7 @@
                   class="close-btn select-line-icon"
                   @click="activeData.__slot__.options.splice(index, 1)"
                 >
-                  <el-icon><el-icon-remove-outline /></el-icon>
+                  <el-icon><Remove /></el-icon>
                 </div>
               </div>
             </draggable>
@@ -604,7 +604,7 @@
               <el-button
                 style="padding-bottom: 0"
                 :icon="ElIconCirclePlusOutline"
-                type="text"
+                link
                 @click="addSelectItem"
               >
                 添加选项
@@ -701,7 +701,7 @@
               <el-button
                 style="padding-bottom: 0"
                 :icon="ElIconCirclePlusOutline"
-                type="text"
+                link
                 @click="addTreeItem"
               >
                 添加父级
@@ -957,7 +957,7 @@
                 class="close-btn"
                 @click="activeData.__config__.regList.splice(index, 1)"
               >
-                <el-icon><Close /></el-icon>
+                <el-icon ><Close /></el-icon>
               </span>
               <el-form-item label="表达式">
                 <el-input
@@ -975,7 +975,7 @@
             <div style="margin-left: 20px">
               <el-button
                 :icon="ElIconCirclePlusOutline"
-                type="text"
+                link
                 @click="addReg"
               >
                 添加规则
@@ -1061,6 +1061,7 @@
 import {
   Pointer as ElIconThumb,
   CirclePlus as ElIconCirclePlusOutline,
+  Close,
 } from '@element-plus/icons'
 import TreeNodeDialog from './TreeNodeDialog.vue'
 import { isNumberStr } from '@/utils/index'
@@ -1071,6 +1072,7 @@ import {
   layoutComponents,
 } from '@/utils/generator/config'
 import { saveFormConf } from '@/utils/db'
+import {VueDraggableNext, VueDraggableNext as draggable} from 'vue-draggable-next'
 
 const dateTimeFormat = {
   date: 'yyyy-MM-dd',
@@ -1187,7 +1189,9 @@ export default {
   components: {
     TreeNodeDialog,
     IconsDialog,
-  },
+    Close,
+    draggable: VueDraggableNext
+},
   props: ['showField', 'activeData', 'formConf'],
   computed: {
     documentLink() {

@@ -17,7 +17,7 @@ const ruleTrigger = {
 }
 
 const layouts = {
-  colFormItem(h, scheme) {
+  colFormItem(h, scheme) {debugger
     const config = scheme.__config__
     const listeners = buildListeners.call(this, scheme)
 

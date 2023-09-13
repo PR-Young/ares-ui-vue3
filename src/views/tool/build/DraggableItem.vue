@@ -1,11 +1,12 @@
 <script lang="jsx">
 import * as Vue from 'vue'
-import draggable from 'vuedraggable'
+import {VueDraggableNext as draggable} from 'vue-draggable-next'
 import render from '@/components/render/render'
 
 const components = {
   itemBtns(h, currentItem, index, list) {
-    const { copyItem, deleteItem } = this.$listeners
+    const copyItem = this.$attrs.onCopyItem
+    const deleteItem = this.$attrs.onDeleteItem
     return [
       <span
         class="drawing-item-copy"
@@ -15,7 +16,7 @@ const components = {
           event.stopPropagation()
         }}
       >
-        <i class="el-icon-copy-document" />
+        <el-icon><CopyDocument /></el-icon>
       </span>,
       <span
         class="drawing-item-delete"
@@ -25,14 +26,14 @@ const components = {
           event.stopPropagation()
         }}
       >
-        <i class="el-icon-delete" />
+        <el-icon><Delete /></el-icon>
       </span>,
     ]
   },
 }
 const layouts = {
-  colFormItem(h, currentItem, index, list) {
-    const { activeItem } = this.$listeners
+  colFormItem(h, currentItem, index, list) {debugger
+    const activeItem = this.$attrs.onActiveItem
     const config = currentItem.__config__
     const child = renderChildren.apply(this, arguments)
     let className =
@@ -71,7 +72,7 @@ const layouts = {
     )
   },
   rowFormItem(h, currentItem, index, list) {
-    const { activeItem } = this.$listeners
+    const activeItem = this.$attrs.onActiveItem
     const config = currentItem.__config__
     const className =
       this.activeId === config.formId
@@ -136,7 +137,7 @@ function renderChildren(h, currentItem, index, list) {
   return config.children.map((el, i) => {
     const layout = layouts[el.__config__.layout]
     if (layout) {
-      return layout.call(this, h, el, i, config.children)
+      return layout.call(this, Vue.h, el, i, config.children)
     }
     return layoutIsNotFound.call(this)
   })

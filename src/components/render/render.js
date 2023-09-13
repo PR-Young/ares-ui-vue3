@@ -1,4 +1,5 @@
 import { deepClone } from '@/utils/index'
+import { h } from 'vue'
 
 const componentChild = {}
 /**
@@ -6,13 +7,12 @@ const componentChild = {}
  * 文件名为key，对应JSON配置中的__config__.tag
  * 文件内容为value，解析JSON配置中的__slot__
  */
-const slotsFiles = require.context('./slots', false, /\.js$/)
-const keys = slotsFiles.keys() || []
-keys.forEach(key => {
-  const tag = key.replace(/^\.\/(.*)\.\w+$/, '$1')
-  const value = slotsFiles(key).default
-  componentChild[tag] = value
-})
+const slotsFiles = import.meta.globEager('./slots/*.jsx')
+for (const file in slotsFiles) {
+  const tag = file.replace(/^\.\/slots\/(.*)\.\w+$/, '$1')
+  componentChild[tag] = slotsFiles[file].default
+}
+
 
 function vModel(dataObject, defaultValue) {
   dataObject.props.value = defaultValue
@@ -36,6 +36,7 @@ function mountSlotFiles(h, confClone, children) {
 
 function emitEvents(confClone) {
   ['on', 'nativeOn'].forEach(attr => {
+    debugger
     const eventKeyList = Object.keys(confClone[attr] || {})
     eventKeyList.forEach(key => {
       const val = confClone[attr][key]
@@ -103,7 +104,7 @@ export default {
       required: true
     }
   },
-  render(h) {
+  render() {
     const dataObject = makeDataObject()
     const confClone = deepClone(this.conf)
     const children = this.$slots.default || []

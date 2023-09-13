@@ -27,7 +27,7 @@ export const inputComponents = [
       required: true,
       layout: 'colFormItem',
       span: 24,
-      document: 'https://element.eleme.cn/#/zh-CN/component/input',
+      document: 'https://element-plus.org/zh-CN/component/input.html',
       // 正则校验规则
       regList: [],
     },

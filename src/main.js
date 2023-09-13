@@ -30,6 +30,7 @@ import VueParticles from 'particles.vue3'
 // markdown 注册
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 window.$vueApp = Vue.createApp(App)
 
@@ -62,6 +63,11 @@ window.$vueApp.component('svg-icon', SvgIcon)
 window.$vueApp.use(permission)
 window.$vueApp.use(VueParticles)
 window.$vueApp.use(mavonEditor)
+
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  window.$vueApp.component(key, component)
+}
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

@@ -164,7 +164,7 @@
         <template v-slot="scope">
           <el-button
             size="mini"
-            type="text"
+            tlink
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['articles:edit']"
@@ -172,7 +172,7 @@
           >
           <el-button
             size="mini"
-            type="text"
+            link
             :icon="ElIconDelete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['articles:delete']"

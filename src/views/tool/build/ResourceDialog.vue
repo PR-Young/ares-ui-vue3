@@ -2,7 +2,7 @@
   <div>
     <el-dialog
       v-bind="$attrs"
-      title="外部资源引用"
+      header="外部资源引用"
       width="600px"
       :close-on-click-modal="false"
       @open="onOpen"
@@ -98,11 +98,6 @@ export default {
     },
   },
   emits: ['update:visible', 'save'],
-  mounted() {
-    inheriltClassAndStyle.call(this)
-    inheriltClassAndStyle.call(this)
-    inheriltClassAndStyle.call(this)
-  },
 }
 </script>
 

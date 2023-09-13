@@ -109,28 +109,28 @@
             <template v-slot="scope">
               <el-button
                 size="mini"
-                type="text"
+                link
                 :icon="ElIconSOperation"
                 @click="handleDraw(scope.row)"
                 >流程定义</el-button
               >
               <el-button
                 size="mini"
-                type="text"
+                link
                 :icon="ElIconUpload"
                 @click="handleDeploy(scope.row)"
                 >部署</el-button
               >
               <el-button
                 size="mini"
-                type="text"
+                link
                 :icon="ElIconEdit"
                 @click="handleUpdate(scope.row)"
                 >修改</el-button
               >
               <el-button
                 size="mini"
-                type="text"
+                link
                 :icon="ElIconDelete"
                 @click="handleDelete(scope.row)"
                 >删除</el-button
@@ -150,7 +150,7 @@
     </el-row>
 
     <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" v-model="open" width="600px" append-to-body>
+    <el-dialog :header="title" v-model="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
@@ -199,7 +199,7 @@
 
     <el-dialog
       id="flowEditor"
-      title="流程定义"
+      header="流程定义"
       v-model="show"
       fullscreen
       top="2"

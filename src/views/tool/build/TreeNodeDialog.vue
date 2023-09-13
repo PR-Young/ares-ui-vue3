@@ -141,10 +141,5 @@ export default {
     },
   },
   emits: ['update:visible', 'commit'],
-  mounted() {
-    inheriltClassAndStyle.call(this)
-    inheriltClassAndStyle.call(this)
-    inheriltClassAndStyle.call(this)
-  },
 }
 </script>
