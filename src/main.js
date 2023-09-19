@@ -31,6 +31,8 @@ import VueParticles from 'particles.vue3'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import formCreate from '@form-create/element-ui'
+import FcDesigner from '@form-create/designer'
 
 window.$vueApp = Vue.createApp(App)
 
@@ -63,6 +65,8 @@ window.$vueApp.component('svg-icon', SvgIcon)
 window.$vueApp.use(permission)
 window.$vueApp.use(VueParticles)
 window.$vueApp.use(mavonEditor)
+window.$vueApp.use(formCreate)
+window.$vueApp.use(FcDesigner)
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   window.$vueApp.component(key, component)

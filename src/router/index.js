@@ -232,6 +232,12 @@ export const constantRoutes = [
         name: 'FormBuild',
         meta: { title: '表单配置', icon: '' },
       },
+      {
+        path: 'formcreate/index',
+        component: () => import('@/views/tool/formcreate/index.vue'),
+        name: 'FormCreate',
+        meta: { title: '表单配置', icon: '' },
+      },
     ],
   },
 ]
