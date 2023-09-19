@@ -1058,6 +1058,7 @@
 </template>
 
 <script lang="jsx">
+import { $on, $off, $once, $emit } from '@/utils/gogocodeTransfer'
 import {
   Pointer as ElIconThumb,
   CirclePlus as ElIconCirclePlusOutline,

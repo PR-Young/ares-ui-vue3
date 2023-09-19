@@ -134,6 +134,7 @@ const tags = {
     return `<${tag} ${type} ${icon} ${round} ${size} ${plain} ${disabled} ${circle}>${child}</${tag}>`
   },
   'el-input': (el) => {
+    debugger
     const { tag, disabled, vModel, clearable, placeholder, width } =
       attrBuilder(el)
     const maxlength = el.maxlength ? `:maxlength="${el.maxlength}"` : ''

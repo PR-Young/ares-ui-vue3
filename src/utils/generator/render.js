@@ -122,6 +122,7 @@ const componentChild = {
 
 export default {
   render() {
+    debugger
     const dataObject = {
       attrs: {},
       props: {},
@@ -142,6 +143,7 @@ export default {
     }
 
     Object.keys(confClone).forEach((key) => {
+      debugger
       const val = confClone[key]
       if (key === 'vModel') {
         vModel(this, dataObject, confClone.defaultValue)

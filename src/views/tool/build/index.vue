@@ -532,7 +532,7 @@ export default {
       this.showFileName = false
       this.operationType = 'copy'
     },
-    tagChange(newTag) {
+    tagChange(newTag) {debugger
       newTag = this.cloneComponent(newTag)
       const config = newTag.__config__
       newTag.__vModel__ = this.activeData.__vModel__

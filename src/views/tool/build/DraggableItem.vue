@@ -32,7 +32,7 @@ const components = {
   },
 }
 const layouts = {
-  colFormItem(h, currentItem, index, list) {debugger
+  colFormItem(h, currentItem, index, list) {
     const activeItem = this.$attrs.onActiveItem
     const config = currentItem.__config__
     const child = renderChildren.apply(this, arguments)

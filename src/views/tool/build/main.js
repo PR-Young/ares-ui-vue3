@@ -10,5 +10,5 @@ createApp(App).component('tinymce', Tinymce)
 
 createApp(App).config.globalProperties.$axios = axios({
   router,
-  render: (h) => h(App),
+  render: (h) => Vue.h(App),
 }).$mount('#app')
