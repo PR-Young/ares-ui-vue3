@@ -13,7 +13,9 @@
       <!--流程处理表单模块-->
       <el-col :span="16" :offset="4" v-if="variableOpen">
         <div>
-          <parser :key="new Date().getTime()" :form-conf="variablesData" />
+          <form-create
+            :rule="variablesData"
+          ></form-create>
         </div>
         <div
           style="margin-left: 20%; margin-bottom: 20px; font-size: 14px"
@@ -74,13 +76,10 @@
       <!--初始化流程加载表单信息-->
       <el-col :span="16" :offset="4" v-if="formConfOpen">
         <div class="test-form">
-          <parser
-            :key="new Date().getTime()"
-            :form-conf="formConf"
+          <form-create
+            :rule="formConf"
             @submit="submitForm"
-            ref="parser"
-            @getData="getData"
-          />
+          ></form-create>
         </div>
       </el-col>
     </el-card>
@@ -317,6 +316,7 @@ import { treeselect } from '@/api/system/dept'
 import 'vue3-treeselect/dist/vue3-treeselect.css'
 import Treeselect from 'vue3-treeselect'
 import { listUser } from '@/api/system/user'
+import formCreate from '@form-create/element-ui'
 
 export default {
   data() {
@@ -387,6 +387,8 @@ export default {
       rejectTitle: null,
       userData: [],
       rejectOpenNew: false,
+      fields:[],
+      formCreateData:null,
       ElIconEditOutline,
       ElIconRefreshLeft,
       ElIconCircleClose,
@@ -397,9 +399,10 @@ export default {
     Parser,
     flow,
     Treeselect,
+    formCreate:formCreate.$form(),
   },
   props: {},
-  created() {
+  created() {debugger
     this.taskForm.deployId = this.$route.query && this.$route.query.deployId
     this.taskForm.taskId = this.$route.query && this.$route.query.taskId
     this.taskForm.procInsId = this.$route.query && this.$route.query.procInsId
@@ -517,12 +520,14 @@ export default {
     getFlowRecordList(procInsId, deployId) {
       const params = { procInsId: procInsId, deployId: deployId }
       flowRecord(params)
-        .then((res) => {
+        .then((res) => {debugger
           this.flowRecordList = res.data.flowList
           // 流程过程中不存在初始化表单 直接读取的流程变量中存储的表单值
           if (res.data.formData) {
-            this.formConf = res.data.formData
+            this.formConf = res.data.formData.config
             this.formConfOpen = true
+            this.fields = res.data.formData.fields
+            this.formCreateData.formData = res.data.formData.data
           }
         })
         .catch((res) => {
@@ -541,7 +546,7 @@ export default {
     processVariables(taskId) {
       if (taskId) {
         // 提交流程申请时填写的表单存入了流程变量中后续任务处理时需要展示
-        getProcessVariables(taskId).then((res) => {
+        getProcessVariables(taskId).then((res) => {debugger
           // this.variables = res.data.variables;
           this.variablesData = res.data.variables
           this.variableOpen = true
@@ -631,8 +636,8 @@ export default {
     submitForm(data) {
       debugger
       if (data) {
-        const variables = data.valData
-        const formData = data.formData
+        const variables = {fields:this.fields,"INITIATOR":"",data:data,...data}
+        const formData = this.formConf
         formData.disabled = true
         formData.formBtns = false
         if (this.taskForm.procDefId) {

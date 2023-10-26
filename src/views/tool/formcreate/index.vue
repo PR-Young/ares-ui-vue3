@@ -13,7 +13,7 @@
       <el-button :icon="ElIconPlus" link @click="showTemplate">生成组件</el-button>
     </el-row>
     <el-row class="empty-info">
-      <fc-designer ref="designer" style="height:780px"/>
+      <fc-designer ref="designer" style="height:780px" />
     </el-row>
 
     <el-dialog :title="title[type]" v-model="state" class="_fc-t-dialog">
@@ -81,6 +81,7 @@ import {
   Upload,
 } from '@element-plus/icons'
 import formCreate from '@form-create/element-ui';
+import { getForm, addForm, updateForm } from '@/api/flowable/form'
 
 export default {
   data() {
@@ -126,10 +127,21 @@ export default {
       this.load();
     }
   },
-  mounted() {
+  mounted() {debugger
+    const that = this
+    const formId = that.$route.query && that.$route.query.formId
+    if (formId) {
+      getForm(formId).then((res) => {
+        that.form = res.data
+        that.value= JSON.parse(res.data.formContent).config
+        this.$refs.designer.setRule(that.value)
+      })
+    } else {
+    
+    }
   },
   methods: {
-    load() {debugger
+    load() {
       let val;
       if(this.type === 2){
         val = this.value;
@@ -228,12 +240,17 @@ export default {
               <\/script>`; 
     },
     /** 表单基本信息 */
-    handleForm() {
-      // this.formData = {
-      //   fields: deepClone(this.drawingList),
-      //   ...this.formConf,
-      // }
-      // this.form.formContent = JSON.stringify(this.formData)
+    handleForm() {debugger
+      let fields = []
+      let rules = this.$refs.designer.getRule()
+      for(let i=0 ;i<rules.length;i++){
+        fields[i] = {__config__:rules[i],__vModel__:rules[i].field}
+      }
+      this.formData = {
+        fields:fields,
+        config:this.$refs.designer.getRule()
+      }
+      this.form.formContent = JSON.stringify(this.formData)
       this.formOpen = true
       this.formTitle = '添加表单'
     },
@@ -254,25 +271,24 @@ export default {
     },
     /** 保存表单信息 */
     submitForm() {
-      // this.$refs['form'].validate((valid) => {
-      //   if (valid) {
-      //     if (this.form.id != null) {
-      //       updateForm(this.form).then((response) => {
-      //         this.msgSuccess('修改成功')
-      //       })
-      //     } else {
-      //       addForm(this.form).then((response) => {
-      //         this.msgSuccess('新增成功')
-      //       })
-      //     }
-      //     this.drawingList = []
-      //     this.idGlobal = 100
-      //     this.open = false
-      //     // 关闭当前标签页并返回上个页面
-      //     this.$store.dispatch('tagsView/delView', this.$route)
-      //     this.$router.go(-1)
-      //   }
-      }
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          if (this.form.id != null) {
+            updateForm(this.form).then((response) => {
+              this.msgSuccess('修改成功')
+            })
+          } else {
+            addForm(this.form).then((response) => {
+              this.msgSuccess('新增成功')
+            })
+          }
+          this.formOpen = false
+          // 关闭当前标签页并返回上个页面
+          this.$store.dispatch('tagsView/delView', this.$route)
+          this.$router.go(-1)
+        }
+      })
+    },
   },
 }
 </script>

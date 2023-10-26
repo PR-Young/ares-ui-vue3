@@ -165,7 +165,9 @@
       append-to-body
     >
       <div class="test-form">
-        <parser :key="new Date().getTime()" :form-conf="formConf" />
+        <form-create
+        :rule="formConf"
+        ></form-create>
       </div>
     </el-dialog>
   </div>
@@ -191,6 +193,7 @@ import {
 } from '@/api/flowable/form'
 import Editor from '@/components/Editor/index.vue'
 import Parser from '@/components/parser/Parser.vue'
+import formCreate from '@form-create/element-ui'
 export default {
   data() {
     return {
@@ -240,6 +243,7 @@ export default {
   components: {
     Editor,
     Parser,
+    formCreate:formCreate.$form()
   },
   created() {
     this.getList()
@@ -293,14 +297,14 @@ export default {
     handleDetail(row) {
       this.formConfOpen = true
       this.formTitle = '流程表单配置详细'
-      this.formConf = JSON.parse(row.formContent)
+      this.formConf = JSON.parse(row.formContent).fields
     },
     /** 新增按钮操作 */
     handleAdd() {
       // this.reset();
       // this.open = true;
       // this.title = "添加流程表单";
-      this.$router.push({ path: '/tool/build/index', query: { formId: null } })
+      this.$router.push({ path: '/tool/formcreate/index', query: { formId: null } })
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -312,7 +316,7 @@ export default {
       //   this.title = "修改流程表单";
       // });
       this.$router.push({
-        path: '/tool/build/index',
+        path: '/tool/formcreate/index',
         query: { formId: row.id },
       })
     },
