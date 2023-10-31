@@ -164,7 +164,7 @@
         <template v-slot="scope">
           <el-button
             size="default"
-            tlink
+            link
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['articles:edit']"

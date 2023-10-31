@@ -15,11 +15,11 @@
 </template>
 
 <script>
-import { $on, $off, $once, $emit } from '../../utils/gogocodeTransfer'
-import { scrollTo } from '@/utils/scroll-to'
+import { $on, $off, $once, $emit } from "../../utils/gogocodeTransfer";
+import { scrollTo } from "@/utils/scroll-to";
 
 export default {
-  name: 'Pagination',
+  name: "Pagination",
   props: {
     total: {
       required: true,
@@ -36,12 +36,12 @@ export default {
     pageSizes: {
       type: Array,
       default() {
-        return [10, 20, 30, 50]
+        return [10, 20, 30, 50];
       },
     },
     layout: {
       type: String,
-      default: 'total, sizes, prev, pager, next, jumper',
+      default: "total, sizes, prev, pager, next, jumper",
     },
     background: {
       type: Boolean,
@@ -59,37 +59,37 @@ export default {
   computed: {
     currentPage: {
       get() {
-        return this.page
+        return this.page;
       },
       set(val) {
-        $emit(this, 'update:page', val)
+        $emit(this, "update:page", val);
       },
     },
     pageSize: {
       get() {
-        return this.limit
+        return this.limit;
       },
       set(val) {
-        $emit(this, 'update:limit', val)
+        $emit(this, "update:limit", val);
       },
     },
   },
   methods: {
     handleSizeChange(val) {
-      $emit(this, 'pagination', { page: this.currentPage, limit: val })
+      $emit(this, "pagination", { page: this.currentPage, limit: val });
       if (this.autoScroll) {
-        scrollTo(0, 800)
+        scrollTo(0, 800);
       }
     },
     handleCurrentChange(val) {
-      $emit(this, 'pagination', { page: val, limit: this.pageSize })
+      $emit(this, "pagination", { page: val, limit: this.pageSize });
       if (this.autoScroll) {
-        scrollTo(0, 800)
+        scrollTo(0, 800);
       }
     },
   },
-  emits: ['update:page', 'update:limit', 'pagination'],
-}
+  emits: ["update:page", "update:limit", "pagination"],
+};
 </script>
 
 <style scoped>

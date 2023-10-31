@@ -34,6 +34,14 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import formCreate from '@form-create/element-ui'
 import FcDesigner from '@form-create/designer'
 
+import zhCn from "element-plus/lib/locale/lang/zh-cn";
+// 修改分页器默认文字
+zhCn.el.pagination.total = '共 {total} 条';
+zhCn.el.pagination.goto = '跳至';
+zhCn.el.pagination.pagesize = '条/页';
+zhCn.el.pagination.pageClassifier = '页';
+
+
 window.$vueApp = Vue.createApp(App)
 
 // 全局方法挂载
@@ -83,6 +91,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 window.$vueApp.use(Element, {
   size: Cookies.get('size') || 'default', // set element-ui default size
+  locale: zhCn
 })
 
 window.$vueApp.config.globalProperties.routerAppend = (path, pathToAppend) => {
