@@ -45,9 +45,9 @@ const toolbarOptions = [
 ];
 
 import { QuillEditor, Quill } from "@vueup/vue-quill";
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
+import "@vueup/vue-quill/dist/vue-quill.core.css";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 
 export default {
   props: {
