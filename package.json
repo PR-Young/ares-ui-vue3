@@ -76,7 +76,7 @@
     "vite-plugin-svg-icons": "^2.0.1",
     "vkbeautify": "^0.99.3",
     "vue": "3.3.4",
-    "vue-codemirror": "^6.1.1",
+    "vue-codemirror6": "^1.1.27",
     "vue-cropper": "^1.1.1",
     "vue-draggable-next": "^2.2.1",
     "vue-loader": "^17.2.2",
