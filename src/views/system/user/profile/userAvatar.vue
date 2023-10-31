@@ -86,10 +86,11 @@ import {
   Minus as ElIconMinus,
   RefreshLeft as ElIconRefreshLeft,
   RefreshRight as ElIconRefreshRight,
-} from '@element-plus/icons'
-import store from '@/store'
-import { VueCropper } from 'vue-cropper'
-import { uploadAvatar } from '@/api/system/user'
+} from "@element-plus/icons";
+import store from "@/store";
+import "vue-cropper/dist/index.css";
+import { VueCropper } from "vue-cropper";
+import { uploadAvatar } from "@/api/system/user";
 
 export default {
   data() {
@@ -97,7 +98,7 @@ export default {
       // 是否显示弹出层
       open: false,
       // 弹出层标题
-      title: '修改头像',
+      title: "修改头像",
       options: {
         img: store.getters.avatar.url, //裁剪图片的地址
         autoCrop: true, // 是否默认生成截图框
@@ -110,7 +111,7 @@ export default {
       ElIconMinus,
       ElIconRefreshLeft,
       ElIconRefreshRight,
-    }
+    };
   },
   components: {
     VueCropper,
@@ -124,59 +125,59 @@ export default {
   methods: {
     // 编辑头像
     editCropper() {
-      this.open = true
+      this.open = true;
     },
     // 覆盖默认的上传行为
     requestUpload() {},
     // 向左旋转
     rotateLeft() {
-      this.$refs.cropper.rotateLeft()
+      this.$refs.cropper.rotateLeft();
     },
     // 向右旋转
     rotateRight() {
-      this.$refs.cropper.rotateRight()
+      this.$refs.cropper.rotateRight();
     },
     // 图片缩放
     changeScale(num) {
-      num = num || 1
-      this.$refs.cropper.changeScale(num)
+      num = num || 1;
+      this.$refs.cropper.changeScale(num);
     },
     // 上传预处理
     beforeUpload(file) {
-      if (file.type.indexOf('image/') == -1) {
-        this.msgError('文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。')
+      if (file.type.indexOf("image/") == -1) {
+        this.msgError("文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。");
       } else {
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
         reader.onload = () => {
-          this.options.img = reader.result
-        }
+          this.options.img = reader.result;
+        };
       }
     },
     // 上传图片
     uploadImg() {
       this.$refs.cropper.getCropBlob((data) => {
-        let formData = new FormData()
-        formData.append('avatarfile', data)
+        let formData = new FormData();
+        formData.append("avatarfile", data);
         uploadAvatar(formData).then((response) => {
           if (response.code === 200) {
-            this.open = false
+            this.open = false;
             this.options.img =
               process.env.VUE_APP_BASE_API +
-              '/ares/system/user/profile/' +
-              response.imgUrl
-            this.msgSuccess('修改成功')
+              "/ares/system/user/profile/" +
+              response.imgUrl;
+            this.msgSuccess("修改成功");
           } else {
-            this.msgError(response.msg)
+            this.msgError(response.msg);
           }
-          this.$refs.cropper.clearCrop()
-        })
-      })
+          this.$refs.cropper.clearCrop();
+        });
+      });
     },
     // 实时预览
     realTime(data) {
-      this.previews = data
+      this.previews = data;
     },
   },
-}
+};
 </script>
