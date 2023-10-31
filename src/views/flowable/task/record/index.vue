@@ -13,9 +13,7 @@
       <!--流程处理表单模块-->
       <el-col :span="16" :offset="4" v-if="variableOpen">
         <div>
-          <form-create
-            :rule="variablesData"
-          ></form-create>
+          <form-create :rule="variablesData"></form-create>
         </div>
         <div
           style="margin-left: 20%; margin-bottom: 20px; font-size: 14px"
@@ -24,49 +22,49 @@
           <el-button
             :icon="ElIconEditOutline"
             type="success"
-            size="mini"
+            size="default"
             @click="handleComplete"
             >审批</el-button
           >
           <!-- <el-button
                   icon="el-icon-edit-outline"
                   type="primary"
-                  size="mini"
+                  size="default"
                   @click="handleDelegate"
                   >委派</el-button
                 >
                 <el-button
                   icon="el-icon-edit-outline"
                   type="primary"
-                  size="mini"
+                  size="default"
                   @click="handleAssign"
                   >转办</el-button
                 >
                 <el-button
                   icon="el-icon-edit-outline"
                   type="primary"
-                  size="mini"
+                  size="default"
                   @click="handleDelegate"
                   >签收</el-button
                 > -->
           <el-button
             :icon="ElIconRefreshLeft"
             type="warning"
-            size="mini"
+            size="default"
             @click="handleReturn"
             >退回</el-button
           >
           <el-button
             :icon="ElIconCircleClose"
             type="danger"
-            size="mini"
+            size="default"
             @click="handleReject"
             >驳回到上一节点</el-button
           >
           <el-button
             :icon="ElIconCircleClose"
             type="danger"
-            size="mini"
+            size="default"
             @click="handleRejectNew"
             >驳回</el-button
           >
@@ -76,10 +74,7 @@
       <!--初始化流程加载表单信息-->
       <el-col :span="16" :offset="4" v-if="formConfOpen">
         <div class="test-form">
-          <form-create
-            :rule="formConf"
-            @submit="submitForm"
-          ></form-create>
+          <form-create :rule="formConf" @submit="submitForm"></form-create>
         </div>
       </el-col>
     </el-card>
@@ -106,7 +101,7 @@
                   v-if="item.assigneeName"
                   style="font-weight: normal; margin-right: 30px"
                   >实际办理： {{ item.assigneeName }}
-                  <el-tag type="info" size="mini">{{
+                  <el-tag type="info" size="default">{{
                     item.deptName
                   }}</el-tag></label
                 >
@@ -292,15 +287,15 @@ import {
   Edit as ElIconEditOutline,
   RefreshLeft as ElIconRefreshLeft,
   CircleClose as ElIconCircleClose,
-} from '@element-plus/icons'
-import { flowRecord } from '@/api/flowable/finished'
-import Parser from '@/components/parser/Parser.vue'
+} from "@element-plus/icons";
+import { flowRecord } from "@/api/flowable/finished";
+import Parser from "@/components/parser/Parser.vue";
 import {
   definitionStart,
   getProcessVariables,
   readXml,
   getFlowViewer,
-} from '@/api/flowable/definition'
+} from "@/api/flowable/definition";
 import {
   complete,
   rejectTask,
@@ -310,19 +305,19 @@ import {
   delegate,
   getFormData,
   rejectTaskNew,
-} from '@/api/flowable/todo'
-import flow from '@/views/flowable/task/record/flow.vue'
-import { treeselect } from '@/api/system/dept'
-import 'vue3-treeselect/dist/vue3-treeselect.css'
-import Treeselect from 'vue3-treeselect'
-import { listUser } from '@/api/system/user'
-import formCreate from '@form-create/element-ui'
+} from "@/api/flowable/todo";
+import flow from "@/views/flowable/task/record/flow.vue";
+import { treeselect } from "@/api/system/dept";
+import "vue3-treeselect/dist/vue3-treeselect.css";
+import Treeselect from "vue3-treeselect";
+import { listUser } from "@/api/system/user";
+import formCreate from "@form-create/element-ui";
 
 export default {
   data() {
     return {
       // 模型xml数据
-      xmlData: '',
+      xmlData: "",
       taskList: [],
       // 部门名称
       deptName: undefined,
@@ -331,8 +326,8 @@ export default {
       // 用户表格数据
       userList: null,
       defaultProps: {
-        children: 'children',
-        label: 'label',
+        children: "children",
+        label: "label",
       },
       // 查询参数
       queryParams: {
@@ -354,14 +349,14 @@ export default {
         defaultTaskShow: true, // 默认处理
         sendUserShow: false, // 审批用户
         multiple: false,
-        comment: '', // 意见内容
-        procInsId: '', // 流程实例编号
-        instanceId: '', // 流程实例编号
-        deployId: '', // 流程定义编号
-        taskId: '', // 流程任务编号
-        procDefId: '', // 流程编号
-        vars: '',
-        targetKey: '',
+        comment: "", // 意见内容
+        procInsId: "", // 流程实例编号
+        instanceId: "", // 流程实例编号
+        deployId: "", // 流程定义编号
+        taskId: "", // 流程任务编号
+        procDefId: "", // 流程编号
+        vars: "",
+        targetKey: "",
       },
       // 流程候选人
       userDataList: [],
@@ -378,7 +373,7 @@ export default {
       variableOpen: false,
       // 回退列表数据
       returnTaskList: [],
-      finished: 'false',
+      finished: "false",
       completeTitle: null,
       completeOpen: false,
       returnTitle: null,
@@ -387,39 +382,40 @@ export default {
       rejectTitle: null,
       userData: [],
       rejectOpenNew: false,
-      fields:[],
-      formCreateData:null,
+      fields: [],
+      formCreateData: null,
       ElIconEditOutline,
       ElIconRefreshLeft,
       ElIconCircleClose,
-    }
+    };
   },
-  name: 'Record',
+  name: "Record",
   components: {
     Parser,
     flow,
     Treeselect,
-    formCreate:formCreate.$form(),
+    formCreate: formCreate.$form(),
   },
   props: {},
-  created() {debugger
-    this.taskForm.deployId = this.$route.query && this.$route.query.deployId
-    this.taskForm.taskId = this.$route.query && this.$route.query.taskId
-    this.taskForm.procInsId = this.$route.query && this.$route.query.procInsId
-    this.taskForm.instanceId = this.$route.query && this.$route.query.procInsId
+  created() {
+    debugger;
+    this.taskForm.deployId = this.$route.query && this.$route.query.deployId;
+    this.taskForm.taskId = this.$route.query && this.$route.query.taskId;
+    this.taskForm.procInsId = this.$route.query && this.$route.query.procInsId;
+    this.taskForm.instanceId = this.$route.query && this.$route.query.procInsId;
     // 初始化表单
-    this.taskForm.procDefId = this.$route.query && this.$route.query.procDefId
+    this.taskForm.procDefId = this.$route.query && this.$route.query.procDefId;
     // 回显流程记录
-    this.getFlowViewer(this.taskForm.procInsId)
-    this.getModelDetail(this.taskForm.deployId)
+    this.getFlowViewer(this.taskForm.procInsId);
+    this.getModelDetail(this.taskForm.deployId);
     // 流程任务重获取变量表单
     if (this.taskForm.taskId) {
-      this.processVariables(this.taskForm.taskId)
-      this.getNextFlowNode(this.taskForm.taskId)
-      this.taskForm.deployId = null
+      this.processVariables(this.taskForm.taskId);
+      this.getNextFlowNode(this.taskForm.taskId);
+      this.taskForm.deployId = null;
     }
-    this.getFlowRecordList(this.taskForm.procInsId, this.taskForm.deployId)
-    this.finished = this.$route.query && this.$route.query.finished
+    this.getFlowRecordList(this.taskForm.procInsId, this.taskForm.deployId);
+    this.finished = this.$route.query && this.$route.query.finished;
   },
   mounted() {
     //表单数据回填，模拟异步请求场景
@@ -438,153 +434,155 @@ export default {
     /** 查询部门下拉树结构 */
     getTreeselect() {
       treeselect().then((response) => {
-        this.deptOptions = response.data
-      })
+        this.deptOptions = response.data;
+      });
     },
     /** 查询用户列表 */
     getList() {
       listUser(this.addDateRange(this.queryParams, this.dateRange)).then(
         (response) => {
-          this.userList = response.rows
-          this.total = response.total
+          this.userList = response.rows;
+          this.total = response.total;
         }
-      )
+      );
     },
     // 筛选节点
     filterNode(value, data) {
-      if (!value) return true
-      return data.label.indexOf(value) !== -1
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
     },
     // 节点单击事件
     handleNodeClick(data) {
-      this.queryParams.deptId = data.id
-      this.getList()
+      this.queryParams.deptId = data.id;
+      this.getList();
     },
     /** xml 文件 */
     getModelDetail(deployId) {
       // 发送请求，获取xml
       readXml(deployId).then((res) => {
-        this.xmlData = res.data
-      })
+        this.xmlData = res.data;
+      });
     },
     getFlowViewer(procInsId) {
       getFlowViewer(procInsId).then((res) => {
-        this.taskList = res.data
-      })
+        this.taskList = res.data;
+      });
     },
     setIcon(val) {
       if (val) {
-        return 'el-icon-check'
+        return "el-icon-check";
       } else {
-        return 'el-icon-time'
+        return "el-icon-time";
       }
     },
     setColor(val) {
       if (val) {
-        return '#2bc418'
+        return "#2bc418";
       } else {
-        return '#b3bdbb'
+        return "#b3bdbb";
       }
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.userData = selection
-      const val = selection.map((item) => item.id)[0]
+      this.userData = selection;
+      const val = selection.map((item) => item.id)[0];
       if (val instanceof Array) {
         this.taskForm.values = {
-          approval: val.join(','),
-        }
+          approval: val.join(","),
+        };
       } else {
         this.taskForm.values = {
           approval: val,
-        }
+        };
       }
     },
     // 关闭标签
     handleClose(tag) {
-      this.userData.splice(this.userData.indexOf(tag), 1)
+      this.userData.splice(this.userData.indexOf(tag), 1);
     },
     /** 流程变量赋值 */
     handleCheckChange(val) {
       if (val instanceof Array) {
         this.taskForm.values = {
-          approval: val.join(','),
-        }
+          approval: val.join(","),
+        };
       } else {
         this.taskForm.values = {
           approval: val,
-        }
+        };
       }
     },
     /** 流程流转记录 */
     getFlowRecordList(procInsId, deployId) {
-      const params = { procInsId: procInsId, deployId: deployId }
+      const params = { procInsId: procInsId, deployId: deployId };
       flowRecord(params)
-        .then((res) => {debugger
-          this.flowRecordList = res.data.flowList
+        .then((res) => {
+          debugger;
+          this.flowRecordList = res.data.flowList;
           // 流程过程中不存在初始化表单 直接读取的流程变量中存储的表单值
           if (res.data.formData) {
-            this.formConf = res.data.formData.config
-            this.formConfOpen = true
-            this.fields = res.data.formData.fields
-            this.formCreateData.formData = res.data.formData.data
+            this.formConf = res.data.formData.config;
+            this.formConfOpen = true;
+            this.fields = res.data.formData.fields;
+            this.formCreateData.formData = res.data.formData.data;
           }
         })
         .catch((res) => {
-          this.goBack()
-        })
+          this.goBack();
+        });
     },
     fillFormData(form, data) {
       form.fields.forEach((item) => {
-        const val = data[item.__vModel__]
+        const val = data[item.__vModel__];
         if (val) {
-          item.__config__.defaultValue = val
+          item.__config__.defaultValue = val;
         }
-      })
+      });
     },
     /** 获取流程变量内容 */
     processVariables(taskId) {
       if (taskId) {
         // 提交流程申请时填写的表单存入了流程变量中后续任务处理时需要展示
-        getProcessVariables(taskId).then((res) => {debugger
+        getProcessVariables(taskId).then((res) => {
+          debugger;
           // this.variables = res.data.variables;
-          this.variablesData = res.data.variables
-          this.variableOpen = true
-        })
+          this.variablesData = res.data.variables;
+          this.variableOpen = true;
+        });
       }
     },
     /** 根据当前任务或者流程设计配置的下一步节点 */
     getNextFlowNode(taskId) {
       // 根据当前任务或者流程设计配置的下一步节点 todo 暂时未涉及到考虑网关、表达式和多节点情况
-      const params = { taskId: taskId }
+      const params = { taskId: taskId };
       getNextFlowNode(params).then((res) => {
-        const data = res.data
+        const data = res.data;
         if (data) {
-          if (data.type === 'assignee') {
-            this.userDataList = res.data.userList
-          } else if (data.type === 'candidateUsers') {
-            this.userDataList = res.data.userList
-            this.taskForm.multiple = true
-          } else if (data.type === 'candidateGroups') {
+          if (data.type === "assignee") {
+            this.userDataList = res.data.userList;
+          } else if (data.type === "candidateUsers") {
+            this.userDataList = res.data.userList;
+            this.taskForm.multiple = true;
+          } else if (data.type === "candidateGroups") {
             res.data.roleList.forEach((role) => {
-              role.userId = role.roleId
-              role.nickName = role.roleName
-            })
-            this.userDataList = res.data.roleList
-            this.taskForm.multiple = false
-          } else if (data.type === 'multiInstance') {
-            this.userDataList = res.data.userList
-            this.taskForm.multiple = true
+              role.userId = role.roleId;
+              role.nickName = role.roleName;
+            });
+            this.userDataList = res.data.roleList;
+            this.taskForm.multiple = false;
+          } else if (data.type === "multiInstance") {
+            this.userDataList = res.data.userList;
+            this.taskForm.multiple = true;
           }
-          this.taskForm.sendUserShow = true
+          this.taskForm.sendUserShow = true;
         }
-      })
+      });
     },
     /** 审批任务选择 */
     handleComplete() {
-      this.completeOpen = true
-      this.completeTitle = '审批流程'
-      this.getTreeselect()
+      this.completeOpen = true;
+      this.completeTitle = "审批流程";
+      this.getTreeselect();
     },
     /** 审批任务 */
     taskComplete() {
@@ -592,148 +590,153 @@ export default {
       //   this.msgError("请输入审批意见");
       //   return;
       // }
-      this.taskForm.values = { approve: '同意' }
+      this.taskForm.values = { approve: "同意" };
       complete(this.taskForm).then((response) => {
-        this.msgSuccess(response.msg)
-        this.goBack()
-      })
+        this.msgSuccess(response.msg);
+        this.goBack();
+      });
     },
     /** 委派任务 */
     handleDelegate() {
-      this.taskForm.delegateTaskShow = true
-      this.taskForm.defaultTaskShow = false
+      this.taskForm.delegateTaskShow = true;
+      this.taskForm.defaultTaskShow = false;
     },
     handleAssign() {},
     /** 返回页面 */
     goBack() {
       // 关闭当前标签页并返回上个页面
-      this.$store.dispatch('tagsView/delView', this.$route)
-      this.$router.go(-1)
+      this.$store.dispatch("tagsView/delView", this.$route);
+      this.$router.go(-1);
     },
     /** 接收子组件传的值 */
     getData(data) {
       if (data) {
-        const variables = []
+        const variables = [];
         data.fields.forEach((item) => {
-          let variableData = {}
-          variableData.label = item.__config__.label
+          let variableData = {};
+          variableData.label = item.__config__.label;
           // 表单值为多个选项时
           if (item.__config__.defaultValue instanceof Array) {
-            const array = []
+            const array = [];
             item.__config__.defaultValue.forEach((val) => {
-              array.push(val)
-            })
-            variableData.val = array
+              array.push(val);
+            });
+            variableData.val = array;
           } else {
-            variableData.val = item.__config__.defaultValue
+            variableData.val = item.__config__.defaultValue;
           }
-          variables.push(variableData)
-        })
-        this.variables = variables
+          variables.push(variableData);
+        });
+        this.variables = variables;
       }
     },
     /** 申请流程表单数据提交 */
     submitForm(data) {
-      debugger
+      debugger;
       if (data) {
-        const variables = {fields:this.fields,"INITIATOR":"",data:data,...data}
-        const formData = this.formConf
-        formData.disabled = true
-        formData.formBtns = false
+        const variables = {
+          fields: this.fields,
+          INITIATOR: "",
+          data: data,
+          ...data,
+        };
+        const formData = this.formConf;
+        formData.disabled = true;
+        formData.formBtns = false;
         if (this.taskForm.procDefId) {
-          variables.variables = formData
+          variables.variables = formData;
           // 启动流程并将表单数据加入流程变量
           definitionStart(
             this.taskForm.procDefId,
             JSON.stringify(variables)
           ).then((res) => {
-            this.msgSuccess(res.msg)
-            this.goBack()
-          })
+            this.msgSuccess(res.msg);
+            this.goBack();
+          });
         }
       }
     },
     /** 驳回任务 */
     handleReject() {
-      this.rejectOpen = true
-      this.rejectTitle = '驳回流程'
+      this.rejectOpen = true;
+      this.rejectTitle = "驳回流程";
     },
     /** 驳回任务 */
     taskReject() {
-      this.$refs['taskForm'].validate((valid) => {
+      this.$refs["taskForm"].validate((valid) => {
         if (valid) {
           rejectTask(this.taskForm).then((res) => {
-            this.msgSuccess(res.msg)
-            this.goBack()
-          })
+            this.msgSuccess(res.msg);
+            this.goBack();
+          });
         }
-      })
+      });
     },
     /** 驳回任务new */
     handleRejectNew() {
-      this.rejectOpenNew = true
-      this.rejectTitle = '驳回流程'
+      this.rejectOpenNew = true;
+      this.rejectTitle = "驳回流程";
     },
     /** 驳回任务 */
     taskRejectNew() {
-      this.$refs['taskForm'].validate((valid) => {
+      this.$refs["taskForm"].validate((valid) => {
         if (valid) {
-          debugger
-          this.taskForm.values = { approve: '拒绝' }
+          debugger;
+          this.taskForm.values = { approve: "拒绝" };
           rejectTaskNew(this.taskForm).then((res) => {
-            this.msgSuccess(res.msg)
-            this.goBack()
-          })
+            this.msgSuccess(res.msg);
+            this.goBack();
+          });
         }
-      })
+      });
     },
     /** 可退回任务列表 */
     handleReturn() {
-      this.returnOpen = true
-      this.returnTitle = '退回流程'
+      this.returnOpen = true;
+      this.returnTitle = "退回流程";
       returnList(this.taskForm).then((res) => {
-        this.returnTaskList = res.data
-        this.taskForm.values = null
-      })
+        this.returnTaskList = res.data;
+        this.taskForm.values = null;
+      });
     },
     /** 提交退回任务 */
     taskReturn() {
-      this.$refs['taskForm'].validate((valid) => {
+      this.$refs["taskForm"].validate((valid) => {
         if (valid) {
           returnTask(this.taskForm).then((res) => {
-            this.msgSuccess(res.msg)
-            this.goBack()
-          })
+            this.msgSuccess(res.msg);
+            this.goBack();
+          });
         }
-      })
+      });
     },
     /** 取消回退任务按钮 */
     cancelTask() {
-      this.taskForm.returnTaskShow = false
-      this.taskForm.defaultTaskShow = true
-      this.taskForm.sendUserShow = true
-      this.returnTaskList = []
+      this.taskForm.returnTaskShow = false;
+      this.taskForm.defaultTaskShow = true;
+      this.taskForm.sendUserShow = true;
+      this.returnTaskList = [];
     },
     /** 委派任务 */
     submitDeleteTask() {
-      this.$refs['taskForm'].validate((valid) => {
+      this.$refs["taskForm"].validate((valid) => {
         if (valid) {
           delegate(this.taskForm).then((response) => {
-            this.msgSuccess(response.msg)
-            this.goBack()
-          })
+            this.msgSuccess(response.msg);
+            this.goBack();
+          });
         }
-      })
+      });
     },
     /** 取消回退任务按钮 */
     cancelDelegateTask() {
-      this.taskForm.delegateTaskShow = false
-      this.taskForm.defaultTaskShow = true
-      this.taskForm.sendUserShow = true
-      this.returnTaskList = []
+      this.taskForm.delegateTaskShow = false;
+      this.taskForm.defaultTaskShow = true;
+      this.taskForm.sendUserShow = true;
+      this.returnTaskList = [];
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -745,7 +748,7 @@ export default {
 .clearfix:before,
 .clearfix:after {
   display: table;
-  content: '';
+  content: "";
 }
 .clearfix:after {
   clear: both;

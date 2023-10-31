@@ -12,7 +12,7 @@
           选择图标
           <el-input
             v-model="key"
-            size="mini"
+            size="default"
             :style="{ width: '260px' }"
             placeholder="请输入图标名称"
             :prefix-icon="ElIconSearch"
@@ -36,46 +36,45 @@
 </template>
 
 <script>
-import { Search as ElIconSearch } from '@element-plus/icons'
-import iconList from '@/utils/generator/icon.json'
+import { Search as ElIconSearch } from "@element-plus/icons";
+import iconList from "@/utils/generator/icon.json";
 
-
-const originList = iconList.map((name) => `el-icon-${name}`)
+const originList = iconList.map((name) => `el-icon-${name}`);
 
 export default {
   data() {
     return {
       iconList: originList,
       active: null,
-      key: '',
+      key: "",
       ElIconSearch,
-    }
+    };
   },
   inheritAttrs: false,
-  props: ['current'],
+  props: ["current"],
   watch: {
     key(val) {
       if (val) {
-        this.iconList = originList.filter((name) => name.indexOf(val) > -1)
+        this.iconList = originList.filter((name) => name.indexOf(val) > -1);
       } else {
-        this.iconList = originList
+        this.iconList = originList;
       }
     },
   },
   methods: {
     onOpen() {
-      this.active = this.current
-      this.key = ''
+      this.active = this.current;
+      this.key = "";
     },
     onClose() {},
     onSelect(icon) {
-      this.active = icon
-      $emit(this, 'select', icon)
-      $emit(this, 'update:visible', false)
+      this.active = icon;
+      $emit(this, "select", icon);
+      $emit(this, "update:visible", false);
     },
   },
-  emits: ['select', 'update:visible'],
-}
+  emits: ["select", "update:visible"],
+};
 </script>
 
 <style lang="scss" scoped>

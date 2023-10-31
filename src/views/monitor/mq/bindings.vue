@@ -5,7 +5,7 @@
         <el-button
           type="primary"
           :icon="ElIconPlus"
-          size="mini"
+          size="default"
           @click="addBinding"
           >新增</el-button
         >
@@ -34,7 +34,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconDelete"
             @click="romoveBinding(scope.row)"
@@ -106,16 +106,19 @@
 </template>
 
 <script>
-import { Plus as ElIconPlus, Delete as ElIconDelete } from '@element-plus/icons'
+import {
+  Plus as ElIconPlus,
+  Delete as ElIconDelete,
+} from "@element-plus/icons";
 import {
   getQueueBindings,
   getExchangeList,
   getQueueList,
   addBinding,
   removeBinding,
-} from '@/api/tool/rabbitMq'
-import path from 'path'
-import { forceLogout } from '@/api/monitor/online'
+} from "@/api/tool/rabbitMq";
+import path from "path";
+import { forceLogout } from "@/api/monitor/online";
 export default {
   data() {
     return {
@@ -130,63 +133,63 @@ export default {
       data: {},
       ElIconPlus,
       ElIconDelete,
-    }
+    };
   },
-  name: 'Bindings',
+  name: "Bindings",
   created() {
-    let params = this.$route.params
-    this.data = params
-    this.getBindings(params)
+    let params = this.$route.params;
+    this.data = params;
+    this.getBindings(params);
     this.form = {
       exchangeType: undefined,
       exchangeName: undefined,
       queueName: params.queueName,
       routingKey: undefined,
-    }
+    };
   },
   methods: {
     getBindings(params) {
       getQueueBindings(params).then((response) => {
         if (response.code === 200) {
-          this.bindlingList = response.data
-          this.loading = false
+          this.bindlingList = response.data;
+          this.loading = false;
         } else {
-          this.msgError(response.msg)
+          this.msgError(response.msg);
         }
-      })
+      });
     },
     getDatas() {
       getExchangeList().then((response) => {
         if (response.code === 200) {
-          this.exchangeData = response.data
+          this.exchangeData = response.data;
         }
-      })
+      });
     },
     addBinding() {
-      this.open = true
-      this.title = '新增绑定关系'
-      this.getDatas()
+      this.open = true;
+      this.title = "新增绑定关系";
+      this.getDatas();
     },
     romoveBinding(row) {
       let params = {
-        exchangeType: '',
+        exchangeType: "",
         exchangeName: row.source,
         queueName: row.destination,
         routingKey: row.routing_key,
-      }
+      };
       removeBinding(params).then((response) => {
         if (response.code === 200) {
-          this.getBindings(this.data)
-          this.loading = false
+          this.getBindings(this.data);
+          this.loading = false;
         } else {
-          this.msgError(response.msg)
+          this.msgError(response.msg);
         }
-      })
+      });
     },
     // 取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -195,23 +198,23 @@ export default {
         exchangeName: undefined,
         queueName: this.data.queueName,
         routingKey: undefined,
-      }
-      this.resetForm('form')
+      };
+      this.resetForm("form");
     },
     submitForm() {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           addBinding(this.form).then((response) => {
             if (response.code === 200) {
-              this.msgSuccess('操作成功')
-              this.open = false
+              this.msgSuccess("操作成功");
+              this.open = false;
             } else {
-              this.msgError(response.msg)
+              this.msgError(response.msg);
             }
-          })
+          });
         }
-      })
+      });
     },
   },
-}
+};
 </script>

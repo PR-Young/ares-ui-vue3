@@ -28,11 +28,11 @@
         <el-button
           type="primary"
           :icon="ElIconSearch"
-          size="mini"
+          size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="ElIconRefresh" size="mini" @click="resetQuery"
+        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -43,7 +43,7 @@
         <el-button
           type="primary"
           :icon="ElIconPlus"
-          size="mini"
+          size="default"
           @click="handleAdd"
           v-hasPermi="['sysPost:edit']"
           >新增</el-button
@@ -53,7 +53,7 @@
         <el-button
           type="success"
           :icon="ElIconEdit"
-          size="mini"
+          size="default"
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['sysPost:edit']"
@@ -64,7 +64,7 @@
         <el-button
           type="danger"
           :icon="ElIconDelete"
-          size="mini"
+          size="default"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['sysPost:delete']"
@@ -75,7 +75,7 @@
         <el-button
           type="warning"
           :icon="ElIconDownload"
-          size="mini"
+          size="default"
           @click="handleExport"
           v-hasPermi="['system:post:export']"
           >导出</el-button
@@ -109,7 +109,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
@@ -117,7 +117,7 @@
             >修改</el-button
           >
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconDelete"
             @click="handleDelete(scope.row)"
@@ -140,16 +140,10 @@
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="岗位名称" prop="postName">
-          <el-input
-            v-model="form.postName"
-            placeholder="请输入岗位名称"
-          />
+          <el-input v-model="form.postName" placeholder="请输入岗位名称" />
         </el-form-item>
         <el-form-item label="岗位编码" prop="postCode">
-          <el-input
-            v-model="form.postCode"
-            placeholder="请输入编码名称"
-          />
+          <el-input v-model="form.postCode" placeholder="请输入编码名称" />
         </el-form-item>
       </el-form>
       <template v-slot:footer>
@@ -170,7 +164,7 @@ import {
   Edit as ElIconEdit,
   Delete as ElIconDelete,
   Download as ElIconDownload,
-} from '@element-plus/icons'
+} from "@element-plus/icons";
 import {
   listPost,
   getPost,
@@ -178,7 +172,7 @@ import {
   addPost,
   updatePost,
   exportPost,
-} from '@/api/system/post'
+} from "@/api/system/post";
 
 export default {
   data() {
@@ -196,7 +190,7 @@ export default {
       // 岗位表格数据
       postList: [],
       // 弹出层标题
-      title: '',
+      title: "",
       // 是否显示弹出层
       open: false,
       // 状态数据字典
@@ -213,10 +207,10 @@ export default {
       // 表单校验
       rules: {
         postName: [
-          { required: true, message: '岗位名称不能为空', trigger: 'blur' },
+          { required: true, message: "岗位名称不能为空", trigger: "blur" },
         ],
         postCode: [
-          { required: true, message: '岗位编码不能为空', trigger: 'blur' },
+          { required: true, message: "岗位编码不能为空", trigger: "blur" },
         ],
       },
       ElIconSearch,
@@ -225,26 +219,26 @@ export default {
       ElIconEdit,
       ElIconDelete,
       ElIconDownload,
-    }
+    };
   },
-  name: 'Post',
+  name: "Post",
   created() {
-    this.getList()
+    this.getList();
   },
   methods: {
     /** 查询岗位列表 */
     getList() {
-      this.loading = true
+      this.loading = true;
       listPost(this.queryParams).then((response) => {
-        this.postList = response.rows
-        this.total = response.total
-        this.loading = false
-      })
+        this.postList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
     // 取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -252,106 +246,106 @@ export default {
         id: undefined,
         postCode: undefined,
         postName: undefined,
-      }
-      this.resetForm('form')
+      };
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
+      this.queryParams.pageNum = 1;
+      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm('queryForm')
-      this.handleQuery()
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id)
-      this.single = selection.length != 1
-      this.multiple = !selection.length
+      this.ids = selection.map((item) => item.id);
+      this.single = selection.length != 1;
+      this.multiple = !selection.length;
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset()
-      this.open = true
-      this.title = '添加岗位'
+      this.reset();
+      this.open = true;
+      this.title = "添加岗位";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset()
-      const postId = row.id || this.ids
+      this.reset();
+      const postId = row.id || this.ids;
       getPost(postId).then((response) => {
-        this.form = response.data
-        this.open = true
-        this.title = '修改岗位'
-      })
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改岗位";
+      });
     },
     /** 提交按钮 */
     submitForm: function () {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.id != undefined) {
             updatePost(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('修改成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("修改成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           } else {
             addPost(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('新增成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("新增成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           }
         }
-      })
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const postIds = row.id || this.ids
+      const postIds = row.id || this.ids;
       this.$confirm(
         '是否确认删除岗位编号为"' + postIds + '"的数据项?',
-        '警告',
+        "警告",
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
         }
       )
         .then(function () {
-          return delPost(postIds)
+          return delPost(postIds);
         })
         .then(() => {
-          this.getList()
-          this.msgSuccess('删除成功')
+          this.getList();
+          this.msgSuccess("删除成功");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
     /** 导出按钮操作 */
     handleExport() {
-      const queryParams = this.queryParams
-      this.$confirm('是否确认导出所有岗位数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      const queryParams = this.queryParams;
+      this.$confirm("是否确认导出所有岗位数据项?", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return exportPost(queryParams)
+          return exportPost(queryParams);
         })
         .then((response) => {
-          this.download(response.msg)
+          this.download(response.msg);
         })
-        .catch(function () {})
+        .catch(function () {});
     },
   },
-}
+};
 </script>

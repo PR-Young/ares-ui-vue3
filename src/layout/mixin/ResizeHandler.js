@@ -12,10 +12,10 @@ export default {
     },
   },
   beforeMount() {
-    window.addEventListener('resize', this.$_resizeHandler)
+    window.addEventListener('resize', this.resizeHandler)
   },
   beforeUnmount() {
-    window.removeEventListener('resize', this.$_resizeHandler)
+    window.removeEventListener('resize', this.resizeHandler)
   },
   mounted() {
     const isMobile = this.$_isMobile()
@@ -31,7 +31,7 @@ export default {
       const rect = body.getBoundingClientRect()
       return rect.width - 1 < WIDTH
     },
-    $_resizeHandler() {
+    resizeHandler() {
       if (!document.hidden) {
         const isMobile = this.$_isMobile()
         store.dispatch('app/toggleDevice', isMobile ? 'mobile' : 'desktop')

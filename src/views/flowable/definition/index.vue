@@ -31,11 +31,11 @@
         <el-button
           type="primary"
           :icon="ElIconSearch"
-          size="mini"
+          size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="ElIconRefresh" size="mini" @click="resetQuery"
+        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -47,7 +47,7 @@
           type="primary"
           plain
           :icon="ElIconUpload"
-          size="mini"
+          size="default"
           @click="handleImport"
           >导入</el-button
         >
@@ -57,7 +57,7 @@
           type="success"
           plain
           :icon="ElIconPlus"
-          size="mini"
+          size="default"
           @click="handleLoadXml"
           >新增</el-button
         >
@@ -67,7 +67,7 @@
           type="danger"
           plain
           :icon="ElIconDelete"
-          size="mini"
+          size="default"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:deployment:remove']"
@@ -79,7 +79,7 @@
           type="warning"
           plain
           :icon="ElIconDownload"
-          size="mini"
+          size="default"
           @click="handleExport"
           v-hasPermi="['system:deployment:export']"
           >导出</el-button
@@ -123,10 +123,7 @@
         :show-overflow-tooltip="true"
       >
         <template v-slot="scope">
-          <el-button
-          link
-            @click="handleReadImage(scope.row.deploymentId)"
-          >
+          <el-button link @click="handleReadImage(scope.row.deploymentId)">
             <span>{{ scope.row.name }}</span>
           </el-button>
         </template>
@@ -274,8 +271,9 @@
         </div>
         <template v-slot:tip>
           <div class="el-upload__tip">
-            流程名称：<el-input v-model="upload.name" />
-            流程分类：<el-input v-model="upload.category" />
+            流程名称：<el-input v-model="upload.name" /> 流程分类：<el-input
+              v-model="upload.category"
+            />
           </div>
         </template>
         <template>
@@ -341,7 +339,7 @@
             >
               <template v-slot="scope">
                 <el-button
-                  size="mini"
+                  size="default"
                   link
                   @click="submitFormDeploy(scope.row)"
                   >确定</el-button
@@ -383,7 +381,7 @@ import {
   Connection as ElIconConnection,
   VideoPause as ElIconVideoPause,
   VideoPlay as ElIconVideoPlay,
-} from '@element-plus/icons'
+} from "@element-plus/icons";
 import {
   listDefinition,
   updateState,
@@ -393,11 +391,11 @@ import {
   exportDeployment,
   definitionStart,
   readXml,
-} from '@/api/flowable/definition'
-import { getToken } from '@/utils/auth'
-import { getForm, addDeployForm, listForm } from '@/api/flowable/form'
-import Parser from '@/components/parser/Parser.vue'
-import flow from '@/views/flowable/task/record/flow.vue'
+} from "@/api/flowable/definition";
+import { getToken } from "@/utils/auth";
+import { getForm, addDeployForm, listForm } from "@/api/flowable/form";
+import Parser from "@/components/parser/Parser.vue";
+import flow from "@/views/flowable/task/record/flow.vue";
 
 export default {
   data() {
@@ -417,35 +415,35 @@ export default {
       // 流程定义表格数据
       definitionList: [],
       // 弹出层标题
-      title: '',
+      title: "",
       // 是否显示弹出层
       open: false,
       formConfOpen: false,
-      formTitle: '',
+      formTitle: "",
       formDeployOpen: false,
-      formDeployTitle: '',
+      formDeployTitle: "",
       formList: [],
       formTotal: 0,
       // 默认表单数据
       formConf: {},
       readImage: {
         open: false,
-        src: '',
+        src: "",
       },
       // bpmn.xml 导入
       upload: {
         // 是否显示弹出层（xml导入）
         open: false,
         // 弹出层标题（xml导入）
-        title: '',
+        title: "",
         // 是否禁用上传
         isUploading: false,
         name: null,
         category: null,
         // 设置上传的请求头部
-        headers: { Authorization: 'Bearer ' + getToken() },
+        headers: { Authorization: "Bearer " + getToken() },
         // 上传的地址
-        url: process.env.VUE_APP_BASE_API + '/flowable/definition/import',
+        url: process.env.VUE_APP_BASE_API + "/flowable/definition/import",
       },
       // 查询参数
       queryParams: {
@@ -472,7 +470,7 @@ export default {
       },
       currentRow: null,
       // xml
-      xmlData: '',
+      xmlData: "",
       // 表单参数
       form: {},
       // 表单校验
@@ -487,7 +485,7 @@ export default {
       ElIconConnection,
       ElIconVideoPause,
       ElIconVideoPlay,
-    }
+    };
   },
   components: {
     Parser,
@@ -495,30 +493,30 @@ export default {
     ElIconArrowDown,
     ElIconUpload,
   },
-  name: 'Definition',
+  name: "Definition",
   created() {
-    this.getList()
-    this.getDicts('sys_process_category').then((res) => {
-      this.categorys = res.data
-    })
+    this.getList();
+    this.getDicts("sys_process_category").then((res) => {
+      this.categorys = res.data;
+    });
   },
   methods: {
     categoryFormat(row, column) {
-      return this.selectDictLabel(this.categorys, row.category)
+      return this.selectDictLabel(this.categorys, row.category);
     },
     /** 查询流程定义列表 */
     getList() {
-      this.loading = true
+      this.loading = true;
       listDefinition(this.queryParams).then((response) => {
-        this.definitionList = response.rows
-        this.total = response.total
-        this.loading = false
-      })
+        this.definitionList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
     // 取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -533,75 +531,75 @@ export default {
         derivedFromRoot: null,
         parentDeploymentId: null,
         engineVersion: null,
-      }
-      this.resetForm('form')
+      };
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
+      this.queryParams.pageNum = 1;
+      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm('queryForm')
-      this.handleQuery()
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id)
-      this.single = selection.length !== 1
-      this.multiple = !selection.length
+      this.ids = selection.map((item) => item.id);
+      this.single = selection.length !== 1;
+      this.multiple = !selection.length;
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset()
-      this.open = true
-      this.title = '添加流程定义'
+      this.reset();
+      this.open = true;
+      this.title = "添加流程定义";
     },
     /** 跳转到流程设计页面 */
     handleLoadXml(row) {
       this.$router.push({
-        path: '/flowable/definition/model',
+        path: "/flowable/definition/model",
         query: { deployId: row.deploymentId },
-      })
+      });
     },
     /** 流程图查看 */
     handleReadImage(deploymentId) {
-      this.readImage.title = '流程图'
-      this.readImage.open = true
+      this.readImage.title = "流程图";
+      this.readImage.open = true;
       // this.readImage.src = process.env.VUE_APP_BASE_API + "/flowable/definition/readImage/" + deploymentId;
       // 发送请求，获取xml
       readXml(deploymentId).then((res) => {
-        this.xmlData = res.data
-      })
+        this.xmlData = res.data;
+      });
     },
     /** 表单查看 */
     handleForm(formId) {
       getForm(formId).then((res) => {
-        this.formTitle = '表单详情'
-        this.formConfOpen = true
-        this.formConf = JSON.parse(res.data.formContent)
-      })
+        this.formTitle = "表单详情";
+        this.formConfOpen = true;
+        this.formConf = JSON.parse(res.data.formContent);
+      });
     },
     /** 启动流程 */
     handleDefinitionStart(row) {
       definitionStart(row.id).then((res) => {
-        this.msgSuccess(res.msg)
-      })
+        this.msgSuccess(res.msg);
+      });
     },
     /** 挂载表单弹框 */
     handleAddForm(row) {
-      this.formDeployParam.deployId = row.deploymentId
-      this.ListFormDeploy()
+      this.formDeployParam.deployId = row.deploymentId;
+      this.ListFormDeploy();
     },
     /** 挂载表单列表 */
     ListFormDeploy() {
       listForm(this.formQueryParams).then((res) => {
-        this.formList = res.rows
-        this.formTotal = res.total
-        this.formDeployOpen = true
-        this.formDeployTitle = '挂载表单'
-      })
+        this.formList = res.rows;
+        this.formTotal = res.total;
+        this.formDeployOpen = true;
+        this.formDeployTitle = "挂载表单";
+      });
     },
     // /** 更改挂载表单弹框 */
     // handleEditForm(row){
@@ -618,124 +616,124 @@ export default {
     // },
     /** 挂载表单 */
     submitFormDeploy(row) {
-      this.formDeployParam.formId = row.id
+      this.formDeployParam.formId = row.id;
       addDeployForm(this.formDeployParam).then((res) => {
-        this.msgSuccess(res.msg)
-        this.formDeployOpen = false
-        this.getList()
-      })
+        this.msgSuccess(res.msg);
+        this.formDeployOpen = false;
+        this.getList();
+      });
     },
     handleCurrentChange(data) {
       if (data) {
-        this.currentRow = JSON.parse(data.formContent)
+        this.currentRow = JSON.parse(data.formContent);
       }
     },
     /** 挂起/激活流程 */
     handleUpdateSuspensionState(row) {
-      let state = 1
+      let state = 1;
       if (row.suspensionState === 1) {
-        state = 2
+        state = 2;
       }
       const params = {
         deployId: row.deploymentId,
         state: state,
-      }
+      };
       updateState(params).then((res) => {
-        this.msgSuccess(res.msg)
-        this.getList()
-      })
+        this.msgSuccess(res.msg);
+        this.getList();
+      });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset()
-      const id = row.id || this.ids
+      this.reset();
+      const id = row.id || this.ids;
       getDeployment(id).then((response) => {
-        this.form = response.data
-        this.open = true
-        this.title = '修改流程定义'
-      })
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改流程定义";
+      });
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.id != null) {
             updateDeployment(this.form).then((response) => {
-              this.msgSuccess('修改成功')
-              this.open = false
-              this.getList()
-            })
+              this.msgSuccess("修改成功");
+              this.open = false;
+              this.getList();
+            });
           } else {
             addDeployment(this.form).then((response) => {
-              this.msgSuccess('新增成功')
-              this.open = false
-              this.getList()
-            })
+              this.msgSuccess("新增成功");
+              this.open = false;
+              this.getList();
+            });
           }
         }
-      })
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {
       //const ids = row.deploymentId || this.ids;
       const params = {
         deployId: row.id || this.ids,
-      }
+      };
       this.$confirm(
         '是否确认删除流程定义编号为"' + params.deployId + '"的数据项?',
-        '警告',
+        "警告",
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
         }
       )
         .then(function () {
-          return delDeployment(params)
+          return delDeployment(params);
         })
         .then(() => {
-          this.getList()
-          this.msgSuccess('删除成功')
-        })
+          this.getList();
+          this.msgSuccess("删除成功");
+        });
     },
     /** 导出按钮操作 */
     handleExport() {
-      const queryParams = this.queryParams
-      this.$confirm('是否确认导出所有流程定义数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      const queryParams = this.queryParams;
+      this.$confirm("是否确认导出所有流程定义数据项?", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return exportDeployment(queryParams)
+          return exportDeployment(queryParams);
         })
         .then((response) => {
-          this.download(response.msg)
-        })
+          this.download(response.msg);
+        });
     },
     /** 导入bpmn.xml文件 */
     handleImport() {
-      this.upload.title = 'bpmn20.xml文件导入'
-      this.upload.open = true
+      this.upload.title = "bpmn20.xml文件导入";
+      this.upload.open = true;
     },
     // 文件上传中处理
     handleFileUploadProgress(event, file, fileList) {
-      this.upload.isUploading = true
+      this.upload.isUploading = true;
     },
     // 文件上传成功处理
     handleFileSuccess(response, file, fileList) {
-      this.upload.open = false
-      this.upload.isUploading = false
-      this.$refs.upload.clearFiles()
-      this.$message(response.msg)
-      this.getList()
+      this.upload.open = false;
+      this.upload.isUploading = false;
+      this.$refs.upload.clearFiles();
+      this.$message(response.msg);
+      this.getList();
     },
     // 提交上传文件
     submitFileForm() {
-      this.$refs.upload.submit()
+      this.$refs.upload.submit();
     },
   },
-}
+};
 </script>
 
 <style>

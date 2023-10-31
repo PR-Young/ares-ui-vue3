@@ -43,11 +43,11 @@
         <el-button
           type="primary"
           :icon="ElIconSearch"
-          size="mini"
+          size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="ElIconRefresh" size="mini" @click="resetQuery"
+        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -123,7 +123,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconView"
             @click="handleShowDetail(scope.row)"
@@ -142,12 +142,7 @@
     />
 
     <!-- 添加或修改公告对话框 -->
-    <el-dialog
-      :title="title"
-      v-model="showDetail"
-      width="880px"
-      append-to-body
-    >
+    <el-dialog :title="title" v-model="showDetail" width="880px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
@@ -208,8 +203,8 @@ import {
   Search as ElIconSearch,
   Refresh as ElIconRefresh,
   View as ElIconView,
-} from '@element-plus/icons'
-import { listLog } from '@/api/system/log'
+} from "@element-plus/icons";
+import { listLog } from "@/api/system/log";
 
 export default {
   data() {
@@ -227,7 +222,7 @@ export default {
       // 公告表格数据
       logList: [],
       // 弹出层标题
-      title: '',
+      title: "",
       // 是否显示弹出层
       open: false,
       showDetail: false,
@@ -250,38 +245,38 @@ export default {
       ElIconSearch,
       ElIconRefresh,
       ElIconView,
-    }
+    };
   },
-  name: 'SysLog',
+  name: "SysLog",
   created() {
-    this.getList()
-    this.getDicts('sys_log_method').then((response) => {
-      this.methodOptions = response.data
-    })
+    this.getList();
+    this.getDicts("sys_log_method").then((response) => {
+      this.methodOptions = response.data;
+    });
   },
   methods: {
     sortChange(data) {
-      const { prop, order } = data
-      this.queryParams.sortColumn = prop
-      this.queryParams.sortAsc = order === null ? 'descending' : order
-      this.getList()
+      const { prop, order } = data;
+      this.queryParams.sortColumn = prop;
+      this.queryParams.sortAsc = order === null ? "descending" : order;
+      this.getList();
     },
     /** 查询公告列表 */
     getList() {
-      this.loading = true
+      this.loading = true;
       listLog(this.queryParams).then((response) => {
-        this.logList = response.rows
-        this.total = response.total
-        this.loading = false
-      })
+        this.logList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
     // 公告状态字典翻译
     methodFormat(row, column) {
-      return this.selectDictLabel(this.methodOptions, row.requestMethod)
+      return this.selectDictLabel(this.methodOptions, row.requestMethod);
     },
     // 取消按钮
     cancel() {
-      this.showDetail = false
+      this.showDetail = false;
     },
     // 表单重置
     reset() {
@@ -291,51 +286,51 @@ export default {
         noticeType: undefined,
         noticeContent: undefined,
         deadline: undefined,
-        noticeStatus: '0',
-      }
-      this.resetForm('form')
+        noticeStatus: "0",
+      };
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
+      this.queryParams.pageNum = 1;
+      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm('queryForm')
-      this.handleQuery()
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id)
-      this.single = selection.length != 1
-      this.multiple = !selection.length
+      this.ids = selection.map((item) => item.id);
+      this.single = selection.length != 1;
+      this.multiple = !selection.length;
     },
     handleShowDetail(row) {
-      this.reset()
-      this.form = row
-      this.showDetail = true
-      this.title = '日志详情'
+      this.reset();
+      this.form = row;
+      this.showDetail = true;
+      this.title = "日志详情";
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const logIds = row.id || this.ids
-      this.$confirm('是否确认删除编号为"' + logIds + '"的数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      const logIds = row.id || this.ids;
+      this.$confirm('是否确认删除编号为"' + logIds + '"的数据项?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return delNotice(noticeIds)
+          return delNotice(noticeIds);
         })
         .then(() => {
-          this.getList()
-          this.msgSuccess('删除成功')
+          this.getList();
+          this.msgSuccess("删除成功");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
   },
-}
+};
 </script>
 
 <style>

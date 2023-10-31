@@ -30,7 +30,7 @@
           class="filter-item"
           type="primary"
           :icon="ElIconSearch"
-          size="mini"
+          size="default"
           @click="handleQuery"
           >搜索</el-button
         >
@@ -38,7 +38,7 @@
           class="filter-item"
           type="primary"
           :icon="ElIconPlus"
-          size="mini"
+          size="default"
           @click="handleAdd"
           v-hasPermi="['system:dept:add']"
           >新增</el-button
@@ -86,7 +86,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
@@ -94,7 +94,7 @@
             >修改</el-button
           >
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconPlus"
             @click="handleAdd(scope.row)"
@@ -103,7 +103,7 @@
           >
           <el-button
             v-if="scope.row.parentId != 0"
-            size="mini"
+            size="default"
             link
             :icon="ElIconDelete"
             @click="handleDelete(scope.row)"
@@ -130,10 +130,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="部门名称" prop="deptName">
-              <el-input
-                v-model="form.deptName"
-                placeholder="请输入部门名称"
-              />
+              <el-input v-model="form.deptName" placeholder="请输入部门名称" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -202,16 +199,16 @@ import {
   Plus as ElIconPlus,
   Edit as ElIconEdit,
   Delete as ElIconDelete,
-} from '@element-plus/icons'
+} from "@element-plus/icons";
 import {
   listDept,
   getDept,
   delDept,
   addDept,
   updateDept,
-} from '@/api/system/dept'
-import Treeselect from 'vue3-treeselect'
-import 'vue3-treeselect/dist/vue3-treeselect.css'
+} from "@/api/system/dept";
+import Treeselect from "vue3-treeselect";
+import "vue3-treeselect/dist/vue3-treeselect.css";
 
 export default {
   data() {
@@ -223,7 +220,7 @@ export default {
       // 部门树选项
       deptOptions: [],
       // 弹出层标题
-      title: '',
+      title: "",
       // 是否显示弹出层
       open: false,
       // 状态数据字典
@@ -238,26 +235,26 @@ export default {
       // 表单校验
       rules: {
         parentId: [
-          { required: true, message: '上级部门不能为空', trigger: 'blur' },
+          { required: true, message: "上级部门不能为空", trigger: "blur" },
         ],
         deptName: [
-          { required: true, message: '部门名称不能为空', trigger: 'blur' },
+          { required: true, message: "部门名称不能为空", trigger: "blur" },
         ],
         orderNum: [
-          { required: true, message: '菜单顺序不能为空', trigger: 'blur' },
+          { required: true, message: "菜单顺序不能为空", trigger: "blur" },
         ],
         email: [
           {
-            type: 'email',
+            type: "email",
             message: "'请输入正确的邮箱地址",
-            trigger: ['blur', 'change'],
+            trigger: ["blur", "change"],
           },
         ],
         phone: [
           {
             pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-            message: '请输入正确的手机号码',
-            trigger: 'blur',
+            message: "请输入正确的手机号码",
+            trigger: "blur",
           },
         ],
       },
@@ -265,50 +262,50 @@ export default {
       ElIconPlus,
       ElIconEdit,
       ElIconDelete,
-    }
+    };
   },
-  name: 'Dept',
+  name: "Dept",
   components: { Treeselect },
   created() {
-    this.getList()
-    this.getDicts('sys_normal_disable').then((response) => {
-      this.statusOptions = response.data
-    })
+    this.getList();
+    this.getDicts("sys_normal_disable").then((response) => {
+      this.statusOptions = response.data;
+    });
   },
   methods: {
     /** 查询部门列表 */
     getList() {
-      this.loading = true
+      this.loading = true;
       listDept(this.queryParams).then((response) => {
-        this.deptList = this.handleTree(response.data, 'deptId')
-        this.loading = false
-      })
+        this.deptList = this.handleTree(response.data, "deptId");
+        this.loading = false;
+      });
     },
     /** 转换部门数据结构 */
     normalizer(node) {
       if (node.children && !node.children.length) {
-        delete node.children
+        delete node.children;
       }
       return {
         id: node.deptId,
         label: node.deptName,
         children: node.children,
-      }
+      };
     },
     /** 查询部门下拉树结构 */
     getTreeselect() {
       listDept().then((response) => {
-        this.deptOptions = this.handleTree(response.data, 'deptId')
-      })
+        this.deptOptions = this.handleTree(response.data, "deptId");
+      });
     },
     // 字典状态字典翻译
     statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status)
+      return this.selectDictLabel(this.statusOptions, row.status);
     },
     // 取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -320,82 +317,82 @@ export default {
         leader: undefined,
         phone: undefined,
         email: undefined,
-        status: '0',
-      }
-      this.resetForm('form')
+        status: "0",
+      };
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.getList()
+      this.getList();
     },
     /** 新增按钮操作 */
     handleAdd(row) {
-      this.reset()
-      this.getTreeselect()
+      this.reset();
+      this.getTreeselect();
       if (row != undefined) {
-        this.form.parentId = row.deptId
+        this.form.parentId = row.deptId;
       }
-      this.open = true
-      this.title = '添加部门'
+      this.open = true;
+      this.title = "添加部门";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset()
-      this.getTreeselect()
+      this.reset();
+      this.getTreeselect();
       getDept(row.deptId).then((response) => {
-        this.form = response.data
-        this.open = true
-        this.title = '修改部门'
-      })
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改部门";
+      });
     },
     /** 提交按钮 */
     submitForm: function () {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.deptId != undefined) {
             updateDept(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('修改成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("修改成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           } else {
             addDept(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('新增成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("新增成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           }
         }
-      })
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {
       this.$confirm(
         '是否确认删除名称为"' + row.deptName + '"的数据项?',
-        '警告',
+        "警告",
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
         }
       )
         .then(function () {
-          return delDept(row.deptId)
+          return delDept(row.deptId);
         })
         .then(() => {
-          this.getList()
-          this.msgSuccess('删除成功')
+          this.getList();
+          this.msgSuccess("删除成功");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
   },
-}
+};
 </script>

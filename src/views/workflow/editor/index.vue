@@ -22,11 +22,11 @@
             <el-button
               type="primary"
               :icon="ElIconSearch"
-              size="mini"
+              size="default"
               @click="handleQuery"
               >搜索</el-button
             >
-            <el-button :icon="ElIconRefresh" size="mini" @click="resetQuery"
+            <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
               >重置</el-button
             >
           </el-form-item>
@@ -37,7 +37,7 @@
             <el-button
               type="primary"
               :icon="ElIconPlus"
-              size="mini"
+              size="default"
               @click="handleAdd"
               >新增</el-button
             >
@@ -46,7 +46,7 @@
             <el-button
               type="success"
               :icon="ElIconEdit"
-              size="mini"
+              size="default"
               :disabled="single"
               @click="handleUpdate"
               >修改</el-button
@@ -56,7 +56,7 @@
             <el-button
               type="danger"
               :icon="ElIconDelete"
-              size="mini"
+              size="default"
               :disabled="multiple"
               @click="handleDelete"
               >删除</el-button
@@ -108,28 +108,28 @@
           >
             <template v-slot="scope">
               <el-button
-                size="mini"
+                size="default"
                 link
                 :icon="ElIconSOperation"
                 @click="handleDraw(scope.row)"
                 >流程定义</el-button
               >
               <el-button
-                size="mini"
+                size="default"
                 link
                 :icon="ElIconUpload"
                 @click="handleDeploy(scope.row)"
                 >部署</el-button
               >
               <el-button
-                size="mini"
+                size="default"
                 link
                 :icon="ElIconEdit"
                 @click="handleUpdate(scope.row)"
                 >修改</el-button
               >
               <el-button
-                size="mini"
+                size="default"
                 link
                 :icon="ElIconDelete"
                 @click="handleDelete(scope.row)"
@@ -155,10 +155,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="模型名称" prop="name">
-              <el-input
-                v-model="form.name"
-                placeholder="请输入模型名称"
-              />
+              <el-input v-model="form.name" placeholder="请输入模型名称" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -181,10 +178,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="分类" prop="category">
-              <el-input
-                v-model="form.category"
-                placeholder="请输入分类"
-              />
+              <el-input v-model="form.category" placeholder="请输入分类" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -222,7 +216,7 @@ import {
   Delete as ElIconDelete,
   SOperation as ElIconSOperation,
   Upload as ElIconUpload,
-} from '@element-plus/icons'
+} from "@element-plus/icons";
 import {
   list,
   getWorkflow,
@@ -230,7 +224,7 @@ import {
   updateWorkflow,
   delWorkflow,
   deployWorkflow,
-} from '@/api/workflow/workflow'
+} from "@/api/workflow/workflow";
 
 export default {
   data() {
@@ -248,7 +242,7 @@ export default {
       // 用户表格数据
       modelList: null,
       // 弹出层标题
-      title: '',
+      title: "",
       // 是否显示弹出层
       open: false,
       // 日期范围
@@ -256,10 +250,10 @@ export default {
       // 表单参数
       form: {},
       show: false,
-      actUrl: 'http://localhost/static/modeler.html?modelId=',
+      actUrl: "http://localhost/static/modeler.html?modelId=",
       defaultProps: {
-        children: 'children',
-        label: 'label',
+        children: "children",
+        label: "label",
       },
       // 查询参数
       queryParams: {
@@ -270,9 +264,9 @@ export default {
       // 表单校验
       rules: {
         name: [
-          { required: true, message: '模型名称不能为空', trigger: 'blur' },
+          { required: true, message: "模型名称不能为空", trigger: "blur" },
         ],
-        key: [{ required: true, message: 'KEY不能为空', trigger: 'blur' }],
+        key: [{ required: true, message: "KEY不能为空", trigger: "blur" }],
       },
       ElIconSearch,
       ElIconRefresh,
@@ -281,26 +275,26 @@ export default {
       ElIconDelete,
       ElIconSOperation,
       ElIconUpload,
-    }
+    };
   },
-  name: 'Workflow',
+  name: "Workflow",
   created() {
-    this.getList()
+    this.getList();
   },
   methods: {
     /** 查询用户列表 */
     getList() {
-      this.loading = true
+      this.loading = true;
       list(this.queryParams).then((response) => {
-        this.modelList = response.rows
-        this.total = response.total
-        this.loading = false
-      })
+        this.modelList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
     // 取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -310,106 +304,106 @@ export default {
         key: undefined,
         desc: undefined,
         category: undefined,
-      }
-      this.resetForm('form')
+      };
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.page = 1
-      this.getList()
+      this.queryParams.page = 1;
+      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.dateRange = []
-      this.resetForm('queryForm')
-      this.handleQuery()
+      this.dateRange = [];
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id)
-      this.single = selection.length != 1
-      this.multiple = !selection.length
+      this.ids = selection.map((item) => item.id);
+      this.single = selection.length != 1;
+      this.multiple = !selection.length;
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset()
-      this.open = true
-      this.title = '添加模型'
+      this.reset();
+      this.open = true;
+      this.title = "添加模型";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset()
-      const modelId = row.id || this.ids
+      this.reset();
+      const modelId = row.id || this.ids;
       getWorkflow(modelId).then((response) => {
-        this.form = response.data
-        this.open = true
-        this.title = '修改模型'
-      })
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改模型";
+      });
     },
     /** 提交按钮 */
     submitForm: function () {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.id != undefined) {
             updateWorkflow(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('修改成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("修改成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           } else {
             addWorkflow(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('新增成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("新增成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           }
         }
-      })
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const modelIds = row.id || this.ids
-      this.$confirm('是否确认删除模型为"' + modelIds + '"的数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      const modelIds = row.id || this.ids;
+      this.$confirm('是否确认删除模型为"' + modelIds + '"的数据项?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return delWorkflow(modelIds)
+          return delWorkflow(modelIds);
         })
         .then(() => {
-          this.getList()
-          this.msgSuccess('删除成功')
+          this.getList();
+          this.msgSuccess("删除成功");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
     handleDraw(row) {
-      this.show = true
-      this.actUrl = 'http://localhost/static/modeler.html?modelId=' + row.id
+      this.show = true;
+      this.actUrl = "http://localhost/static/modeler.html?modelId=" + row.id;
     },
     handleDeploy(row) {
-      this.$confirm('您确定要部署该模型吗？', '确认部署', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      this.$confirm("您确定要部署该模型吗？", "确认部署", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return deployWorkflow(row.id)
+          return deployWorkflow(row.id);
         })
         .then(() => {
-          this.getList()
-          this.msgSuccess('删除成功')
+          this.getList();
+          this.msgSuccess("删除成功");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
   },
-}
+};
 </script>

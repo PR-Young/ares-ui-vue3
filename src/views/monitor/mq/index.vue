@@ -7,7 +7,7 @@
             <el-button
               type="primary"
               :icon="ElIconPlus"
-              size="mini"
+              size="default"
               @click="addExchange"
               >新增</el-button
             >
@@ -49,7 +49,7 @@
           >
             <template v-slot="scope">
               <el-button
-                size="mini"
+                size="default"
                 link
                 :icon="ElIconDelete"
                 @click="handleExchangeDelete(scope.row)"
@@ -65,7 +65,7 @@
             <el-button
               type="primary"
               :icon="ElIconPlus"
-              size="mini"
+              size="default"
               @click="addQueue"
               >新增</el-button
             >
@@ -103,21 +103,21 @@
           >
             <template v-slot="scope">
               <el-button
-                size="mini"
+                size="default"
                 link
                 :icon="ElIconView"
                 @click="handleDetail(scope.row)"
                 >详情</el-button
               >
               <el-button
-                size="mini"
+                size="default"
                 link
                 :icon="ElIconDelete"
                 @click="handleQueueDelete(scope.row)"
                 >删除</el-button
               >
               <el-button
-                size="mini"
+                size="default"
                 link
                 :icon="ElIconKey"
                 @click="purgeQueue(scope.row)"
@@ -180,7 +180,7 @@ import {
   Delete as ElIconDelete,
   View as ElIconView,
   Key as ElIconKey,
-} from '@element-plus/icons'
+} from "@element-plus/icons";
 import {
   getExchangeList,
   getQueueList,
@@ -190,7 +190,7 @@ import {
   addQueue,
   deleteQueue,
   purgeQueue,
-} from '@/api/tool/rabbitMq'
+} from "@/api/tool/rabbitMq";
 export default {
   data() {
     return {
@@ -210,42 +210,42 @@ export default {
       ElIconDelete,
       ElIconView,
       ElIconKey,
-    }
+    };
   },
-  name: 'RabbitMQ',
+  name: "RabbitMQ",
   created() {
-    this.getExchanges()
-    this.getQueues()
+    this.getExchanges();
+    this.getQueues();
   },
   methods: {
     stringFormat(row, column) {
-      let value = row[column.property]
+      let value = row[column.property];
       if (value === null) {
-        return ''
+        return "";
       }
       if (value instanceof Object) {
-        return JSON.stringify(value)
+        return JSON.stringify(value);
       }
-      return String(value)
+      return String(value);
     },
     getExchanges() {
-      this.loading = true
+      this.loading = true;
       getExchangeList().then((response) => {
-        this.exchangeList = response.data
-        this.loading = false
-      })
+        this.exchangeList = response.data;
+        this.loading = false;
+      });
     },
     getQueues() {
-      this.loading = true
+      this.loading = true;
       getQueueList().then((response) => {
-        this.queueList = response.data
-        this.loading = false
-      })
+        this.queueList = response.data;
+        this.loading = false;
+      });
     },
     // 取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -254,115 +254,115 @@ export default {
         exchangeName: undefined,
         queueName: undefined,
         routingKey: undefined,
-      }
-      this.resetForm('form')
+      };
+      this.resetForm("form");
     },
     addExchange() {
-      this.reset()
-      this.open = true
-      this.title = '添加交换器'
-      this.operatorType = 1
-      this.showExchangeType = true
-      this.showExchangeName = true
-      this.showQueueName = false
-      this.showRoutingKey = false
+      this.reset();
+      this.open = true;
+      this.title = "添加交换器";
+      this.operatorType = 1;
+      this.showExchangeType = true;
+      this.showExchangeName = true;
+      this.showQueueName = false;
+      this.showRoutingKey = false;
     },
     addQueue() {
-      this.reset()
-      this.open = true
-      this.title = '添加队列'
-      this.operatorType = 2
-      this.showExchangeType = false
-      this.showExchangeName = false
-      this.showQueueName = true
-      this.showRoutingKey = false
+      this.reset();
+      this.open = true;
+      this.title = "添加队列";
+      this.operatorType = 2;
+      this.showExchangeType = false;
+      this.showExchangeName = false;
+      this.showQueueName = true;
+      this.showRoutingKey = false;
     },
     submitForm() {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.operatorType === 1) {
             addExchange(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('操作成功')
-                this.open = false
-                this.getExchanges()
+                this.msgSuccess("操作成功");
+                this.open = false;
+                this.getExchanges();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           } else if (this.operatorType === 2) {
             addQueue(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('操作成功')
-                this.open = false
-                this.getQueues()
+                this.msgSuccess("操作成功");
+                this.open = false;
+                this.getQueues();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           }
         }
-      })
+      });
     },
     handleExchangeDelete(row) {
       let params = {
         exchangeType: row.type,
         exchangeName: row.name,
-        queueName: '',
-        routingKey: '',
-      }
+        queueName: "",
+        routingKey: "",
+      };
       deleteExchange(params).then((response) => {
         if (response.code === 200) {
-          this.msgSuccess('删除成功')
-          this.getExchanges()
+          this.msgSuccess("删除成功");
+          this.getExchanges();
         } else {
-          this.msgError(response.msg)
+          this.msgError(response.msg);
         }
-      })
+      });
     },
     handleQueueDelete(row) {
       let params = {
-        exchangeType: '',
-        exchangeName: '',
+        exchangeType: "",
+        exchangeName: "",
         queueName: row.name,
-        routingKey: '',
-      }
+        routingKey: "",
+      };
       deleteQueue(params).then((response) => {
         if (response.code === 200) {
-          this.msgSuccess('删除成功')
-          this.getQueues()
+          this.msgSuccess("删除成功");
+          this.getQueues();
         } else {
-          this.msgError(response.msg)
+          this.msgError(response.msg);
         }
-      })
+      });
     },
     purgeQueue(row) {
       let params = {
-        exchangeType: '',
-        exchangeName: '',
+        exchangeType: "",
+        exchangeName: "",
         queueName: row.name,
-        routingKey: '',
-      }
+        routingKey: "",
+      };
       purgeQueue(params).then((response) => {
         if (response.code === 200) {
-          this.msgSuccess('操作成功')
-          this.getQueues()
+          this.msgSuccess("操作成功");
+          this.getQueues();
         } else {
-          this.msgError(response.msg)
+          this.msgError(response.msg);
         }
-      })
+      });
     },
     handleDetail(row) {
       let params = {
         vhost: row.vhost,
         queueName: row.name,
-      }
+      };
       this.$router.push({
-        name: 'Bindings',
-        path: '/mq/bindings',
+        name: "Bindings",
+        path: "/mq/bindings",
         params: params,
-      })
+      });
     },
   },
-}
+};
 </script>

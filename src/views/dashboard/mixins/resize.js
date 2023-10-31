@@ -3,15 +3,15 @@ import { debounce } from '@/utils'
 export default {
   data() {
     return {
-      $_sidebarElm: null,
-      $_resizeHandler: null,
+      sidebarElm: null,
+      resizeHandler: null,
     }
   },
   mounted() {
     this.initListener()
   },
   activated() {
-    if (!this.$_resizeHandler) {
+    if (!this.resizeHandler) {
       // avoid duplication init
       this.initListener()
     }
@@ -30,29 +30,29 @@ export default {
     // https://vuejs.org/v2/style-guide/index.html#Private-property-names-essential
     $_sidebarResizeHandler(e) {
       if (e.propertyName === 'width') {
-        this.$_resizeHandler()
+        this.resizeHandler()
       }
     },
     initListener() {
-      this.$_resizeHandler = debounce(() => {
+      this.resizeHandler = debounce(() => {
         this.resize()
       }, 100)
-      window.addEventListener('resize', this.$_resizeHandler)
+      window.addEventListener('resize', this.resizeHandler)
 
-      this.$_sidebarElm =
+      this.sidebarElm =
         document.getElementsByClassName('sidebar-container')[0]
-      this.$_sidebarElm &&
-        this.$_sidebarElm.addEventListener(
+      this.sidebarElm &&
+        this.sidebarElm.addEventListener(
           'transitionend',
           this.$_sidebarResizeHandler
         )
     },
     destroyListener() {
-      window.removeEventListener('resize', this.$_resizeHandler)
-      this.$_resizeHandler = null
+      window.removeEventListener('resize', this.resizeHandler)
+      this.resizeHandler = null
 
-      this.$_sidebarElm &&
-        this.$_sidebarElm.removeEventListener(
+      this.sidebarElm &&
+        this.sidebarElm.removeEventListener(
           'transitionend',
           this.$_sidebarResizeHandler
         )

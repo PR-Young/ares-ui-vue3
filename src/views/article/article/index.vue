@@ -38,11 +38,11 @@
         <el-button
           type="primary"
           :icon="ElIconSearch"
-          size="mini"
+          size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="ElIconRefresh" size="mini" @click="resetQuery"
+        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -53,7 +53,7 @@
         <el-button
           type="primary"
           :icon="ElIconPlus"
-          size="mini"
+          size="default"
           @click="handleAdd"
           v-hasPermi="['articles:edit']"
           >新增</el-button
@@ -63,7 +63,7 @@
         <el-button
           type="success"
           :icon="ElIconEdit"
-          size="mini"
+          size="default"
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['articles:edit']"
@@ -74,7 +74,7 @@
         <el-button
           type="danger"
           :icon="ElIconDelete"
-          size="mini"
+          size="default"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['articles:delete']"
@@ -85,7 +85,7 @@
         <el-button
           type="warning"
           :icon="ElIconDownload"
-          size="mini"
+          size="default"
           @click="handleExport"
           v-hasPermi="['articles:export']"
           >导出</el-button
@@ -163,7 +163,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="mini"
+            size="default"
             tlink
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
@@ -171,7 +171,7 @@
             >修改</el-button
           >
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconDelete"
             @click="handleDelete(scope.row)"
@@ -241,7 +241,7 @@ import {
   Edit as ElIconEdit,
   Delete as ElIconDelete,
   Download as ElIconDownload,
-} from '@element-plus/icons'
+} from "@element-plus/icons";
 import {
   listArticles,
   getArticles,
@@ -249,8 +249,8 @@ import {
   addArticles,
   updateArticles,
   exportArticles,
-} from '@/api/articles'
-import Editor from '@/components/Editor/index.vue'
+} from "@/api/articles";
+import Editor from "@/components/Editor/index.vue";
 
 export default {
   data() {
@@ -268,7 +268,7 @@ export default {
       // 岗位表格数据
       articlesList: [],
       // 弹出层标题
-      title: '',
+      title: "",
       // 是否显示弹出层
       open: false,
       // 状态数据字典
@@ -287,16 +287,16 @@ export default {
       // 表单校验
       rules: {
         title: [
-          { required: true, message: '文章标题不能为空', trigger: 'blur' },
+          { required: true, message: "文章标题不能为空", trigger: "blur" },
         ],
         name: [
-          { required: true, message: '文章作者不能为空', trigger: 'blur' },
+          { required: true, message: "文章作者不能为空", trigger: "blur" },
         ],
         content: [
-          { required: true, message: '文章内容不能为空', trigger: 'blur' },
+          { required: true, message: "文章内容不能为空", trigger: "blur" },
         ],
         type: [
-          { required: true, message: '文章类别不能为空', trigger: 'blur' },
+          { required: true, message: "文章类别不能为空", trigger: "blur" },
         ],
       },
       ElIconSearch,
@@ -305,41 +305,41 @@ export default {
       ElIconEdit,
       ElIconDelete,
       ElIconDownload,
-    }
+    };
   },
-  name: 'Articles',
+  name: "Articles",
   components: {
     Editor,
   },
   created() {
-    this.getDicts('article_status').then((response) => {
-      this.statusOptions = response.data
-    })
-    this.getDicts('article_types').then((response) => {
-      this.typeOptions = response.data
-    })
-    this.getList()
+    this.getDicts("article_status").then((response) => {
+      this.statusOptions = response.data;
+    });
+    this.getDicts("article_types").then((response) => {
+      this.typeOptions = response.data;
+    });
+    this.getList();
   },
   methods: {
     statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status)
+      return this.selectDictLabel(this.statusOptions, row.status);
     },
     typeFormat(row, column) {
-      return this.selectDictLabel(this.typeOptions, row.type)
+      return this.selectDictLabel(this.typeOptions, row.type);
     },
     /** 查询岗位列表 */
     getList() {
-      this.loading = true
+      this.loading = true;
       listArticles(this.queryParams).then((response) => {
-        this.articlesList = response.rows
-        this.total = response.total
-        this.loading = false
-      })
+        this.articlesList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
     // 取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -347,105 +347,105 @@ export default {
         id: undefined,
         content: undefined,
         name: undefined,
-        status: '1',
+        status: "1",
         title: undefined,
         type: undefined,
-      }
-      this.resetForm('form')
+      };
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
+      this.queryParams.pageNum = 1;
+      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm('queryForm')
-      this.handleQuery()
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id)
-      this.single = selection.length != 1
-      this.multiple = !selection.length
+      this.ids = selection.map((item) => item.id);
+      this.single = selection.length != 1;
+      this.multiple = !selection.length;
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset()
-      this.open = true
-      this.title = '添加文章'
+      this.reset();
+      this.open = true;
+      this.title = "添加文章";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset()
-      const id = row.id || this.ids
+      this.reset();
+      const id = row.id || this.ids;
       getArticles(id).then((response) => {
-        this.form = response.data
-        this.open = true
-        this.title = '修改文章'
-      })
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改文章";
+      });
     },
     /** 提交按钮 */
     submitForm: function () {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.id != undefined) {
             updateArticles(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('修改成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("修改成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           } else {
             addArticles(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('新增成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("新增成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           }
         }
-      })
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const ids = row.id || this.ids
-      this.$confirm('是否确认删除文章编号为"' + ids + '"的数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      const ids = row.id || this.ids;
+      this.$confirm('是否确认删除文章编号为"' + ids + '"的数据项?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return delArticles(ids)
+          return delArticles(ids);
         })
         .then(() => {
-          this.getList()
-          this.msgSuccess('删除成功')
+          this.getList();
+          this.msgSuccess("删除成功");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
     /** 导出按钮操作 */
     handleExport() {
-      const queryParams = this.queryParams
-      this.$confirm('是否确认导出所有文章数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      const queryParams = this.queryParams;
+      this.$confirm("是否确认导出所有文章数据项?", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return exportArticles(queryParams)
+          return exportArticles(queryParams);
         })
         .then((response) => {
-          this.download(response.msg)
+          this.download(response.msg);
         })
-        .catch(function () {})
+        .catch(function () {});
     },
   },
-}
+};
 </script>

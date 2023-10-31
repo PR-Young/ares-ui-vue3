@@ -60,11 +60,11 @@
             <el-button
               type="primary"
               :icon="ElIconSearch"
-              size="mini"
+              size="default"
               @click="handleQuery"
               >搜索</el-button
             >
-            <el-button :icon="ElIconRefresh" size="mini" @click="resetQuery"
+            <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
               >重置</el-button
             >
           </el-form-item>
@@ -75,7 +75,7 @@
             <el-button
               type="primary"
               :icon="ElIconPlus"
-              size="mini"
+              size="default"
               @click="handleAdd"
               v-hasPermi="['user:edit']"
               >新增</el-button
@@ -85,7 +85,7 @@
             <el-button
               type="success"
               :icon="ElIconEdit"
-              size="mini"
+              size="default"
               :disabled="single"
               @click="handleUpdate"
               v-hasPermi="['user:edit']"
@@ -96,7 +96,7 @@
             <el-button
               type="danger"
               :icon="ElIconDelete"
-              size="mini"
+              size="default"
               :disabled="multiple"
               @click="handleDelete"
               v-hasPermi="['user:delete']"
@@ -107,7 +107,7 @@
             <el-button
               type="info"
               :icon="ElIconUpload"
-              size="mini"
+              size="default"
               @click="handleImport"
               v-hasPermi="['user:import']"
               >导入</el-button
@@ -117,7 +117,7 @@
             <el-button
               type="warning"
               :icon="ElIconDownload"
-              size="mini"
+              size="default"
               @click="handleExport"
               >导出</el-button
             >
@@ -190,7 +190,7 @@
           >
             <template v-slot="scope">
               <el-button
-                size="mini"
+                size="default"
                 link
                 :icon="ElIconEdit"
                 @click="handleUpdate(scope.row)"
@@ -199,7 +199,7 @@
               >
               <el-button
                 v-if="scope.row.id != 1"
-                size="mini"
+                size="default"
                 link
                 :icon="ElIconDelete"
                 @click="handleDelete(scope.row)"
@@ -207,14 +207,14 @@
                 >删除</el-button
               >
               <el-button
-                size="mini"
+                size="default"
                 link
                 :icon="ElIconKey"
                 @click="handleResetPwd(scope.row)"
                 >重置</el-button
               >
               <el-button
-                size="mini"
+                size="default"
                 link
                 :icon="ElIconBottom"
                 @click="handleKickUser(scope.row)"
@@ -240,10 +240,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="用户帐号" prop="account">
-              <el-input
-                v-model="form.account"
-                placeholder="请输入用户帐号"
-              />
+              <el-input v-model="form.account" placeholder="请输入用户帐号" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -275,10 +272,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="用户名称" prop="userName">
-              <el-input
-                v-model="form.userName"
-                placeholder="请输入用户名称"
-              />
+              <el-input v-model="form.userName" placeholder="请输入用户名称" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -304,11 +298,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="角色">
-              <el-select
-                v-model="form.roleIds"
-                multiple
-                placeholder="请选择"
-              >
+              <el-select v-model="form.roleIds" multiple placeholder="请选择">
                 <el-option
                   v-for="item in roleOptions"
                   :key="item.id"
@@ -363,7 +353,9 @@
             <el-checkbox
               v-model="upload.updateSupport"
             />是否更新已经存在的用户数据
-            <span style="color: red">提示：仅允许导入“xls”或“xlsx”格式文件！</span>
+            <span style="color: red"
+              >提示：仅允许导入“xls”或“xlsx”格式文件！</span
+            >
             <el-link type="info" style="font-size: 12px" @click="importTemplate"
               >下载模板</el-link
             >
@@ -412,10 +404,7 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="部门编号" prop="code">
-              <el-input
-                v-model="deptForm.code"
-                placeholder="请输入部门编号"
-              />
+              <el-input v-model="deptForm.code" placeholder="请输入部门编号" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -449,7 +438,7 @@ import {
   Download as ElIconDownload,
   Key as ElIconKey,
   Bottom as ElIconBottom,
-} from '@element-plus/icons'
+} from "@element-plus/icons";
 import {
   listUser,
   getUser,
@@ -461,17 +450,17 @@ import {
   changeUserStatus,
   importTemplate,
   kickUser,
-} from '@/api/system/user'
-import { getToken } from '@/utils/auth'
+} from "@/api/system/user";
+import { getToken } from "@/utils/auth";
 import {
   treeselect,
   delDept,
   addDept,
   updateDept,
   getDept,
-} from '@/api/system/dept'
-import Treeselect from 'vue3-treeselect'
-import 'vue3-treeselect/dist/vue3-treeselect.css'
+} from "@/api/system/dept";
+import Treeselect from "vue3-treeselect";
+import "vue3-treeselect/dist/vue3-treeselect.css";
 
 export default {
   data() {
@@ -479,7 +468,7 @@ export default {
       selectedTreeNode: undefined,
       selectedParentNode: undefined,
       deptOpen: false,
-      deptTitle: '',
+      deptTitle: "",
       deptForm: {},
       rightVisible: false,
       left: 0,
@@ -497,7 +486,7 @@ export default {
       // 用户表格数据
       userList: null,
       // 弹出层标题
-      title: '',
+      title: "",
       // 部门树选项
       deptOptions: undefined,
       // 是否显示弹出层
@@ -505,7 +494,7 @@ export default {
       // 部门名称
       deptName: undefined,
       // 默认密码
-      initPassword: '123456',
+      initPassword: "123456",
       // 日期范围
       dateRange: [],
       // 状态数据字典
@@ -519,23 +508,23 @@ export default {
       // 表单参数
       form: {},
       defaultProps: {
-        children: 'children',
-        label: 'label',
+        children: "children",
+        label: "label",
       },
       // 用户导入参数
       upload: {
         // 是否显示弹出层（用户导入）
         open: false,
         // 弹出层标题（用户导入）
-        title: '',
+        title: "",
         // 是否禁用上传
         isUploading: false,
         // 是否更新已经存在的用户数据
         updateSupport: 0,
         // 设置上传的请求头部
-        headers: { Authorization: 'Bearer ' + getToken() },
+        headers: { Authorization: "Bearer " + getToken() },
         // 上传的地址
-        url: process.env.VUE_APP_BASE_API + '/ares/system/user/importData',
+        url: process.env.VUE_APP_BASE_API + "/ares/system/user/importData",
       },
       // 查询参数
       queryParams: {
@@ -544,23 +533,23 @@ export default {
         userName: undefined,
         phonenumber: undefined,
         status: undefined,
-        deptId: '1',
+        deptId: "1",
         sortColumn: undefined,
         sortAsc: undefined,
       },
       // 表单校验
       rules: {
         userName: [
-          { required: true, message: '用户名称不能为空', trigger: 'blur' },
+          { required: true, message: "用户名称不能为空", trigger: "blur" },
         ],
         account: [
-          { required: true, message: '用户帐号不能为空', trigger: 'blur' },
+          { required: true, message: "用户帐号不能为空", trigger: "blur" },
         ],
         deptId: [
-          { required: true, message: '归属部门不能为空', trigger: 'blur' },
+          { required: true, message: "归属部门不能为空", trigger: "blur" },
         ],
         password: [
-          { required: true, message: '用户密码不能为空', trigger: 'blur' },
+          { required: true, message: "用户密码不能为空", trigger: "blur" },
         ],
         // email: [
         //   { required: true, message: "邮箱地址不能为空", trigger: "blur" },
@@ -588,68 +577,68 @@ export default {
       ElIconDownload,
       ElIconKey,
       ElIconBottom,
-    }
+    };
   },
   components: {
     Treeselect,
     ElIconUpload,
   },
-  name: 'User',
+  name: "User",
   watch: {
     // 根据名称筛选部门树
     deptName(val) {
-      this.$refs.tree.filter(val)
+      this.$refs.tree.filter(val);
     },
     rightVisible(value) {
       if (value) {
-        document.body.addEventListener('click', this.closeMenu)
+        document.body.addEventListener("click", this.closeMenu);
       } else {
-        document.body.removeEventListener('click', this.closeMenu)
+        document.body.removeEventListener("click", this.closeMenu);
       }
     },
   },
   created() {
-    this.getList()
-    this.getTreeselect()
+    this.getList();
+    this.getTreeselect();
   },
   methods: {
     sortChange(data) {
-      const { prop, order } = data
-      this.queryParams.sortColumn = prop
-      this.queryParams.sortAsc = order === null ? 'descending' : order
-      this.getList()
+      const { prop, order } = data;
+      this.queryParams.sortColumn = prop;
+      this.queryParams.sortAsc = order === null ? "descending" : order;
+      this.getList();
     },
     /** 查询用户列表 */
     getList() {
-      this.loading = true
+      this.loading = true;
       listUser(this.addDateRange(this.queryParams, this.dateRange)).then(
         (response) => {
-          this.userList = response.rows
-          this.total = response.total
-          this.loading = false
+          this.userList = response.rows;
+          this.total = response.total;
+          this.loading = false;
         }
-      )
+      );
     },
     /** 查询部门下拉树结构 */
     getTreeselect() {
       treeselect().then((response) => {
-        this.deptOptions = response.data
-      })
+        this.deptOptions = response.data;
+      });
     },
     // 筛选节点
     filterNode(value, data) {
-      if (!value) return true
-      return data.label.indexOf(value) !== -1
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
     },
     // 节点单击事件
     handleNodeClick(data) {
-      this.queryParams.deptId = data.id
-      this.getList()
+      this.queryParams.deptId = data.id;
+      this.getList();
     },
     // 取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -663,211 +652,211 @@ export default {
         email: undefined,
         postId: undefined,
         roleIds: [],
-      }
-      this.resetForm('form')
+      };
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.page = 1
-      this.getList()
+      this.queryParams.page = 1;
+      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.dateRange = []
-      this.resetForm('queryForm')
-      this.handleQuery()
+      this.dateRange = [];
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id)
-      this.single = selection.length != 1
-      this.multiple = !selection.length
+      this.ids = selection.map((item) => item.id);
+      this.single = selection.length != 1;
+      this.multiple = !selection.length;
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset()
-      this.getTreeselect()
+      this.reset();
+      this.getTreeselect();
       getUser().then((response) => {
-        this.postOptions = response.posts
-        this.roleOptions = response.roles
-        this.open = true
-        this.title = '添加用户'
-        this.form.password = this.initPassword
-      })
+        this.postOptions = response.posts;
+        this.roleOptions = response.roles;
+        this.open = true;
+        this.title = "添加用户";
+        this.form.password = this.initPassword;
+      });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset()
-      this.getTreeselect()
-      const userId = row.id || this.ids
+      this.reset();
+      this.getTreeselect();
+      const userId = row.id || this.ids;
       getUser(userId).then((response) => {
-        this.form = response.data
-        this.postOptions = response.posts
-        this.roleOptions = response.roles
-        this.form.roleIds = response.roleIds
-        this.open = true
-        this.title = '修改用户'
-      })
+        this.form = response.data;
+        this.postOptions = response.posts;
+        this.roleOptions = response.roles;
+        this.form.roleIds = response.roleIds;
+        this.open = true;
+        this.title = "修改用户";
+      });
     },
     /** 重置密码按钮操作 */
     handleResetPwd(row) {
-      this.$confirm('是否重置密码', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm("是否重置密码", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
       })
         .then(({ value }) => {
           resetUserPwd(row.id, value).then((response) => {
             if (response.code === 200) {
-              this.msgSuccess('修改成功，新密码是：123456')
+              this.msgSuccess("修改成功，新密码是：123456");
             } else {
-              this.msgError(response.msg)
+              this.msgError(response.msg);
             }
-          })
+          });
         })
-        .catch(() => {})
+        .catch(() => {});
     },
     handleStatusChange(row) {
-      let text = row.status === 1 ? '启用' : '停用'
-      this.$confirm('确认要"' + text + '""' + row.userName + '"吗?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      let text = row.status === 1 ? "启用" : "停用";
+      this.$confirm('确认要"' + text + '""' + row.userName + '"吗?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
           updateUser(row).then((response) => {
             if (response.code === 200) {
-              this.msgSuccess('修改成功')
-              this.open = false
-              this.getList()
+              this.msgSuccess("修改成功");
+              this.open = false;
+              this.getList();
             } else {
-              this.msgError(response.msg)
+              this.msgError(response.msg);
             }
-          })
+          });
         })
         .then(() => {
-          this.msgSuccess(text + '成功')
+          this.msgSuccess(text + "成功");
         })
         .catch(function () {
-          row.status = row.status === 1 ? 1 : 0
-        })
+          row.status = row.status === 1 ? 1 : 0;
+        });
     },
     /** 提交按钮 */
     submitForm: function () {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.id != undefined) {
             updateUser(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('修改成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("修改成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           } else {
             addUser(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('新增成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("新增成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           }
         }
-      })
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const userIds = row.id || this.ids
-      if (row.id == '1' || this.ids.includes('1')) {
-        this.msgError('管理员帐号不能删除！')
-        return
+      const userIds = row.id || this.ids;
+      if (row.id == "1" || this.ids.includes("1")) {
+        this.msgError("管理员帐号不能删除！");
+        return;
       }
-      this.$confirm('是否确认删除用户为"' + userIds + '"的数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      this.$confirm('是否确认删除用户为"' + userIds + '"的数据项?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return delUser(userIds)
+          return delUser(userIds);
         })
         .then(() => {
-          this.getList()
-          this.msgSuccess('删除成功')
+          this.getList();
+          this.msgSuccess("删除成功");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
     /** 导出按钮操作 */
     handleExport() {
-      const queryParams = this.queryParams
-      this.$confirm('是否确认导出所有用户数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      const queryParams = this.queryParams;
+      this.$confirm("是否确认导出所有用户数据项?", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return exportUser(queryParams)
+          return exportUser(queryParams);
         })
         .then((response) => {
-          this.download(response, '用户信息')
+          this.download(response, "用户信息");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
     /** 导入按钮操作 */
     handleImport() {
-      this.upload.title = '用户导入'
-      this.upload.open = true
+      this.upload.title = "用户导入";
+      this.upload.open = true;
     },
     /** 下载模板操作 */
     importTemplate() {
       importTemplate().then((response) => {
-        this.download(response, '用户导入模版')
-      })
+        this.download(response, "用户导入模版");
+      });
     },
     // 文件上传中处理
     handleFileUploadProgress(event, file, fileList) {
-      this.upload.isUploading = true
+      this.upload.isUploading = true;
     },
     // 文件上传成功处理
     handleFileSuccess(response, file, fileList) {
-      this.upload.open = false
-      this.upload.isUploading = false
-      this.$refs.upload.clearFiles()
-      this.$alert(response.msg, '导入结果', { dangerouslyUseHTMLString: true })
-      this.getList()
+      this.upload.open = false;
+      this.upload.isUploading = false;
+      this.$refs.upload.clearFiles();
+      this.$alert(response.msg, "导入结果", { dangerouslyUseHTMLString: true });
+      this.getList();
     },
     // 提交上传文件
     submitFileForm() {
-      this.$refs.upload.submit()
+      this.$refs.upload.submit();
     },
 
     openMenu(event, data, node, element) {
-      const menuMinWidth = 105
-      const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
-      const offsetWidth = this.$el.offsetWidth // container width
-      const maxLeft = offsetWidth - menuMinWidth // left boundary
-      const left = event.clientX - offsetLeft // 15: margin right
+      const menuMinWidth = 105;
+      const offsetLeft = this.$el.getBoundingClientRect().left; // container margin left
+      const offsetWidth = this.$el.offsetWidth; // container width
+      const maxLeft = offsetWidth - menuMinWidth; // left boundary
+      const left = event.clientX - offsetLeft; // 15: margin right
 
       if (left > maxLeft) {
-        this.left = maxLeft
+        this.left = maxLeft;
       } else {
-        this.left = left
+        this.left = left;
       }
-      this.top = event.clientY - 80 // fix 位置bug
-      this.selectedTreeNode = data
-      this.selectedParentNode = node.parent.data
-      this.rightVisible = true
+      this.top = event.clientY - 80; // fix 位置bug
+      this.selectedTreeNode = data;
+      this.selectedParentNode = node.parent.data;
+      this.rightVisible = true;
     },
     closeMenu() {
-      this.rightVisible = false
+      this.rightVisible = false;
     },
     // 取消按钮
     deptCancel() {
-      this.deptOpen = false
-      this.deptReset()
+      this.deptOpen = false;
+      this.deptReset();
     },
     // 表单重置
     deptReset() {
@@ -877,96 +866,96 @@ export default {
         parentDeptName: undefined,
         code: undefined,
         deptName: undefined,
-      }
-      this.resetForm('form')
+      };
+      this.resetForm("form");
     },
     addDept() {
-      this.deptReset()
-      this.deptForm.parentDeptId = this.selectedTreeNode.id
-      this.deptForm.parentDeptName = this.selectedTreeNode.label
-      this.deptOpen = true
-      this.deptTitle = '添加部门'
+      this.deptReset();
+      this.deptForm.parentDeptId = this.selectedTreeNode.id;
+      this.deptForm.parentDeptName = this.selectedTreeNode.label;
+      this.deptOpen = true;
+      this.deptTitle = "添加部门";
     },
     updateDept() {
-      this.deptReset()
-      const id = this.selectedTreeNode.id
+      this.deptReset();
+      const id = this.selectedTreeNode.id;
       getDept(id).then((response) => {
-        this.deptForm = response.data
-        this.deptOpen = true
-        this.deptTitle = '修改部门'
-      })
+        this.deptForm = response.data;
+        this.deptOpen = true;
+        this.deptTitle = "修改部门";
+      });
     },
     submitDeptForm: function () {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.deptForm.id != undefined) {
             updateDept(this.deptForm).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('修改成功')
-                this.deptOpen = false
-                this.getTreeselect()
-                this.getList()
+                this.msgSuccess("修改成功");
+                this.deptOpen = false;
+                this.getTreeselect();
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           } else {
             addDept(this.deptForm).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('新增成功')
-                this.deptOpen = false
-                this.getTreeselect()
-                this.getList()
+                this.msgSuccess("新增成功");
+                this.deptOpen = false;
+                this.getTreeselect();
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           }
         }
-      })
+      });
     },
     deleteDept() {
-      const id = this.selectedTreeNode.id
-      if (id === '1') {
-        this.msgError('根节点不能删除！')
-        return
+      const id = this.selectedTreeNode.id;
+      if (id === "1") {
+        this.msgError("根节点不能删除！");
+        return;
       }
-      this.$confirm('是否确认删除?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      this.$confirm("是否确认删除?", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return delDept(id)
+          return delDept(id);
         })
         .then(() => {
-          this.getList()
-          this.getTreeselect()
-          this.msgSuccess('删除成功')
+          this.getList();
+          this.getTreeselect();
+          this.msgSuccess("删除成功");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
     refreshTree() {
-      this.getTreeselect()
+      this.getTreeselect();
     },
     handleKickUser(row) {
-      const userName = row.userName
-      this.$confirm('是否让用户"' + userName + '"下线?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      const userName = row.userName;
+      this.$confirm('是否让用户"' + userName + '"下线?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return kickUser(row.account)
+          return kickUser(row.account);
         })
         .then(() => {
-          this.getList()
-          this.msgSuccess('下线成功')
+          this.getList();
+          this.msgSuccess("下线成功");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
   },
-}
+};
 </script>
 
 <style>

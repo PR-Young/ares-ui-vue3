@@ -16,14 +16,14 @@
             </el-radio-group>
           </el-form-item> -->
     <el-form-item>
-      <el-button type="primary" size="mini" @click="submit">保存</el-button>
-      <el-button type="danger" size="mini" @click="close">关闭</el-button>
+      <el-button type="primary" size="default" @click="submit">保存</el-button>
+      <el-button type="danger" size="default" @click="close">关闭</el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
-import { updateUserProfile } from '@/api/system/user'
+import { updateUserProfile } from "@/api/system/user";
 
 export default {
   props: {
@@ -36,7 +36,7 @@ export default {
       // 表单校验
       rules: {
         userName: [
-          { required: true, message: '用户名称不能为空', trigger: 'blur' },
+          { required: true, message: "用户名称不能为空", trigger: "blur" },
         ],
         // email: [
         //   { required: true, message: "邮箱地址不能为空", trigger: "blur" },
@@ -55,26 +55,26 @@ export default {
         //   }
         // ]
       },
-    }
+    };
   },
   methods: {
     submit() {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           updateUserProfile(this.user).then((response) => {
             if (response.code === 200) {
-              this.msgSuccess('修改成功')
+              this.msgSuccess("修改成功");
             } else {
-              this.msgError(response.msg)
+              this.msgError(response.msg);
             }
-          })
+          });
         }
-      })
+      });
     },
     close() {
-      this.$store.dispatch('tagsView/delView', this.$route)
-      this.$router.push({ path: '/index' })
+      this.$store.dispatch("tagsView/delView", this.$route);
+      this.$router.push({ path: "/index" });
     },
   },
-}
+};
 </script>

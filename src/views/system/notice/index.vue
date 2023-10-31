@@ -34,11 +34,11 @@
         <el-button
           type="primary"
           :icon="ElIconSearch"
-          size="mini"
+          size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="ElIconRefresh" size="mini" @click="resetQuery"
+        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -49,7 +49,7 @@
         <el-button
           type="primary"
           :icon="ElIconPlus"
-          size="mini"
+          size="default"
           @click="handleAdd"
           v-hasPermi="['notice:edit']"
           >新增</el-button
@@ -59,7 +59,7 @@
         <el-button
           type="success"
           :icon="ElIconEdit"
-          size="mini"
+          size="default"
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['notice:edit']"
@@ -70,7 +70,7 @@
         <el-button
           type="danger"
           :icon="ElIconDelete"
-          size="mini"
+          size="default"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['notice:delete']"
@@ -150,14 +150,14 @@
       >
         <template v-slot="scope">
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconView"
             @click="handleShowDetail(scope.row)"
             >查看</el-button
           >
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
@@ -165,7 +165,7 @@
             >修改</el-button
           >
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconDelete"
             @click="handleDelete(scope.row)"
@@ -245,12 +245,7 @@
       </template>
     </el-dialog>
 
-    <el-dialog
-      :title="title"
-      v-model="showDetail"
-      width="880px"
-      append-to-body
-    >
+    <el-dialog :title="title" v-model="showDetail" width="880px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
@@ -324,14 +319,14 @@ import {
   Edit as ElIconEdit,
   Delete as ElIconDelete,
   View as ElIconView,
-} from '@element-plus/icons'
+} from "@element-plus/icons";
 import {
   listNotice,
   getNotice,
   delNotice,
   editNotice,
-} from '@/api/system/notice'
-import Editor from '@/components/Editor/index.vue'
+} from "@/api/system/notice";
+import Editor from "@/components/Editor/index.vue";
 
 export default {
   data() {
@@ -349,7 +344,7 @@ export default {
       // 公告表格数据
       noticeList: [],
       // 弹出层标题
-      title: '',
+      title: "",
       // 是否显示弹出层
       open: false,
       showDetail: false,
@@ -372,13 +367,13 @@ export default {
       // 表单校验
       rules: {
         noticeTitle: [
-          { required: true, message: '公告标题不能为空', trigger: 'blur' },
+          { required: true, message: "公告标题不能为空", trigger: "blur" },
         ],
         noticeType: [
-          { required: true, message: '公告类型不能为空', trigger: 'blur' },
+          { required: true, message: "公告类型不能为空", trigger: "blur" },
         ],
         deadline: [
-          { required: true, message: '到期时间不能为空', trigger: 'blur' },
+          { required: true, message: "到期时间不能为空", trigger: "blur" },
         ],
       },
       ElIconSearch,
@@ -387,49 +382,49 @@ export default {
       ElIconEdit,
       ElIconDelete,
       ElIconView,
-    }
+    };
   },
-  name: 'Notice',
+  name: "Notice",
   components: {
     Editor,
   },
   created() {
-    this.getList()
-    this.getDicts('sys_notice_status').then((response) => {
-      this.statusOptions = response.data
-    })
-    this.getDicts('sys_notice_type').then((response) => {
-      this.typeOptions = response.data
-    })
+    this.getList();
+    this.getDicts("sys_notice_status").then((response) => {
+      this.statusOptions = response.data;
+    });
+    this.getDicts("sys_notice_type").then((response) => {
+      this.typeOptions = response.data;
+    });
   },
   methods: {
     sortChange(data) {
-      const { prop, order } = data
-      this.queryParams.sortColumn = prop
-      this.queryParams.sortAsc = order === null ? 'descending' : order
-      this.getList()
+      const { prop, order } = data;
+      this.queryParams.sortColumn = prop;
+      this.queryParams.sortAsc = order === null ? "descending" : order;
+      this.getList();
     },
     /** 查询公告列表 */
     getList() {
-      this.loading = true
+      this.loading = true;
       listNotice(this.queryParams).then((response) => {
-        this.noticeList = response.rows
-        this.total = response.total
-        this.loading = false
-      })
+        this.noticeList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
     // 公告状态字典翻译
     statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.noticeStatus)
+      return this.selectDictLabel(this.statusOptions, row.noticeStatus);
     },
     // 公告状态字典翻译
     typeFormat(row, column) {
-      return this.selectDictLabel(this.typeOptions, row.noticeType)
+      return this.selectDictLabel(this.typeOptions, row.noticeType);
     },
     // 取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -439,102 +434,102 @@ export default {
         noticeType: undefined,
         noticeContent: undefined,
         deadline: undefined,
-        noticeStatus: '0',
-      }
-      this.resetForm('form')
+        noticeStatus: "0",
+      };
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
+      this.queryParams.pageNum = 1;
+      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm('queryForm')
-      this.handleQuery()
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id)
-      this.single = selection.length != 1
-      this.multiple = !selection.length
+      this.ids = selection.map((item) => item.id);
+      this.single = selection.length != 1;
+      this.multiple = !selection.length;
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset()
-      this.open = true
-      this.title = '添加公告'
+      this.reset();
+      this.open = true;
+      this.title = "添加公告";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset()
-      const noticeId = row.id || this.ids
+      this.reset();
+      const noticeId = row.id || this.ids;
       getNotice(noticeId).then((response) => {
-        this.form = response.data
-        this.open = true
-        this.title = '修改公告'
-      })
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改公告";
+      });
     },
     handleShowDetail(row) {
-      this.reset()
-      const noticeId = row.id || this.ids
+      this.reset();
+      const noticeId = row.id || this.ids;
       getNotice(noticeId).then((response) => {
-        this.form = response.data
-        this.showDetail = true
-        this.title = '公告详情'
-      })
+        this.form = response.data;
+        this.showDetail = true;
+        this.title = "公告详情";
+      });
     },
     /** 提交按钮 */
     submitForm: function () {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.id != undefined) {
             editNotice(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('修改成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("修改成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           } else {
             editNotice(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('新增成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("新增成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           }
         }
-      })
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const noticeIds = row.id || this.ids
+      const noticeIds = row.id || this.ids;
       this.$confirm(
         '是否确认删除公告编号为"' + noticeIds + '"的数据项?',
-        '警告',
+        "警告",
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
         }
       )
         .then(function () {
-          return delNotice(noticeIds)
+          return delNotice(noticeIds);
         })
         .then(() => {
-          this.getList()
-          this.msgSuccess('删除成功')
+          this.getList();
+          this.msgSuccess("删除成功");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
   },
-}
+};
 </script>
 
 <style>

@@ -30,11 +30,11 @@
         <el-button
           type="primary"
           :icon="ElIconSearch"
-          size="mini"
+          size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="ElIconRefresh" size="mini" @click="resetQuery"
+        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -74,9 +74,9 @@
 import {
   Search as ElIconSearch,
   Refresh as ElIconRefresh,
-} from '@element-plus/icons'
-import { $on, $off, $once, $emit } from '../../../utils/gogocodeTransfer'
-import { listDbTable, importTable } from '@/api/tool/gen'
+} from "@element-plus/icons";
+import { $on, $off, $once, $emit } from "../../../utils/gogocodeTransfer";
+import { listDbTable, importTable } from "@/api/tool/gen";
 export default {
   data() {
     return {
@@ -97,51 +97,51 @@ export default {
       },
       ElIconSearch,
       ElIconRefresh,
-    }
+    };
   },
   methods: {
     // 显示弹框
     show() {
-      this.getList()
-      this.visible = true
+      this.getList();
+      this.visible = true;
     },
     clickRow(row) {
-      this.$refs.table.toggleRowSelection(row)
+      this.$refs.table.toggleRowSelection(row);
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.tables = selection.map((item) => item.tableName)
+      this.tables = selection.map((item) => item.tableName);
     },
     // 查询表数据
     getList() {
       listDbTable(this.queryParams).then((res) => {
         if (res.code === 200) {
-          this.dbTableList = res.rows
-          this.total = res.total
+          this.dbTableList = res.rows;
+          this.total = res.total;
         }
-      })
+      });
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
+      this.queryParams.pageNum = 1;
+      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm('queryForm')
-      this.handleQuery()
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     /** 导入按钮操作 */
     handleImportTable() {
-      importTable({ tables: this.tables.join(',') }).then((res) => {
-        this.msgSuccess(res.msg)
+      importTable({ tables: this.tables.join(",") }).then((res) => {
+        this.msgSuccess(res.msg);
         if (res.code === 200) {
-          this.visible = false
-          $emit(this, 'ok')
+          this.visible = false;
+          $emit(this, "ok");
         }
-      })
+      });
     },
   },
-  emits: ['ok'],
-}
+  emits: ["ok"],
+};
 </script>

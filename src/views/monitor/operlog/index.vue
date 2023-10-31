@@ -74,11 +74,11 @@
         <el-button
           type="primary"
           :icon="ElIconSearch"
-          size="mini"
+          size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="ElIconRefresh" size="mini" @click="resetQuery"
+        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -89,7 +89,7 @@
         <el-button
           type="danger"
           :icon="ElIconDelete"
-          size="mini"
+          size="default"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['monitor:operlog:remove']"
@@ -100,7 +100,7 @@
         <el-button
           type="danger"
           :icon="ElIconDelete"
-          size="mini"
+          size="default"
           @click="handleClean"
           v-hasPermi="['monitor:operlog:remove']"
           >清空</el-button
@@ -110,7 +110,7 @@
         <el-button
           type="warning"
           :icon="ElIconDownload"
-          size="mini"
+          size="default"
           @click="handleExport"
           v-hasPermi="['system:config:export']"
           >导出</el-button
@@ -165,7 +165,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconView"
             @click="handleView(scope.row, scope.index)"
@@ -185,13 +185,8 @@
     />
 
     <!-- 操作日志详细 -->
-    <el-dialog
-      title="操作日志详细"
-      v-model="open"
-      width="700px"
-      append-to-body
-    >
-      <el-form ref="form" :model="form" label-width="100px" size="mini">
+    <el-dialog title="操作日志详细" v-model="open" width="700px" append-to-body>
+      <el-form ref="form" :model="form" label-width="100px" size="default">
         <el-row>
           <el-col :span="12">
             <el-form-item label="操作模块："
@@ -253,13 +248,13 @@ import {
   Delete as ElIconDelete,
   Download as ElIconDownload,
   View as ElIconView,
-} from '@element-plus/icons'
+} from "@element-plus/icons";
 import {
   list,
   delOperlog,
   cleanOperlog,
   exportOperlog,
-} from '@/api/monitor/operlog'
+} from "@/api/monitor/operlog";
 
 export default {
   data() {
@@ -298,112 +293,112 @@ export default {
       ElIconDelete,
       ElIconDownload,
       ElIconView,
-    }
+    };
   },
-  name: 'Operlog',
+  name: "Operlog",
   created() {
-    this.getList()
-    this.getDicts('sys_oper_type').then((response) => {
-      this.typeOptions = response.data
-    })
-    this.getDicts('sys_common_status').then((response) => {
-      this.statusOptions = response.data
-    })
+    this.getList();
+    this.getDicts("sys_oper_type").then((response) => {
+      this.typeOptions = response.data;
+    });
+    this.getDicts("sys_common_status").then((response) => {
+      this.statusOptions = response.data;
+    });
   },
   methods: {
     /** 查询登录日志 */
     getList() {
-      this.loading = true
+      this.loading = true;
       list(this.addDateRange(this.queryParams, this.dateRange)).then(
         (response) => {
-          this.list = response.rows
-          this.total = response.total
-          this.loading = false
+          this.list = response.rows;
+          this.total = response.total;
+          this.loading = false;
         }
-      )
+      );
     },
     // 操作日志状态字典翻译
     statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status)
+      return this.selectDictLabel(this.statusOptions, row.status);
     },
     // 操作日志类型字典翻译
     typeFormat(row, column) {
-      return this.selectDictLabel(this.typeOptions, row.businessType)
+      return this.selectDictLabel(this.typeOptions, row.businessType);
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
+      this.queryParams.pageNum = 1;
+      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.dateRange = []
-      this.resetForm('queryForm')
-      this.handleQuery()
+      this.dateRange = [];
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.operId)
-      this.multiple = !selection.length
+      this.ids = selection.map((item) => item.operId);
+      this.multiple = !selection.length;
     },
     /** 详细按钮操作 */
     handleView(row) {
-      this.open = true
-      this.form = row
+      this.open = true;
+      this.form = row;
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const operIds = row.operId || this.ids
+      const operIds = row.operId || this.ids;
       this.$confirm(
         '是否确认删除日志编号为"' + operIds + '"的数据项?',
-        '警告',
+        "警告",
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
         }
       )
         .then(function () {
-          return delOperlog(operIds)
+          return delOperlog(operIds);
         })
         .then(() => {
-          this.getList()
-          this.msgSuccess('删除成功')
+          this.getList();
+          this.msgSuccess("删除成功");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
     /** 清空按钮操作 */
     handleClean() {
-      this.$confirm('是否确认清空所有操作日志数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      this.$confirm("是否确认清空所有操作日志数据项?", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return cleanOperlog()
+          return cleanOperlog();
         })
         .then(() => {
-          this.getList()
-          this.msgSuccess('清空成功')
+          this.getList();
+          this.msgSuccess("清空成功");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
     /** 导出按钮操作 */
     handleExport() {
-      const queryParams = this.queryParams
-      this.$confirm('是否确认导出所有操作日志数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      const queryParams = this.queryParams;
+      this.$confirm("是否确认导出所有操作日志数据项?", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return exportOperlog(queryParams)
+          return exportOperlog(queryParams);
         })
         .then((response) => {
-          this.download(response.msg)
+          this.download(response.msg);
         })
-        .catch(function () {})
+        .catch(function () {});
     },
   },
-}
+};
 </script>

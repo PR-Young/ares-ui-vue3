@@ -32,11 +32,11 @@
         <el-button
           type="primary"
           :icon="ElIconSearch"
-          size="mini"
+          size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="ElIconRefresh" size="mini" @click="resetQuery"
+        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -47,7 +47,7 @@
         <el-button
           type="primary"
           :icon="ElIconPlus"
-          size="mini"
+          size="default"
           @click="handleAdd"
           v-hasPermi="['sysTemplate:edit']"
           >新增</el-button
@@ -57,7 +57,7 @@
         <el-button
           type="success"
           :icon="ElIconEdit"
-          size="mini"
+          size="default"
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['sysTemplate:edit']"
@@ -68,7 +68,7 @@
         <el-button
           type="danger"
           :icon="ElIconDelete"
-          size="mini"
+          size="default"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['sysTemplate:delete']"
@@ -79,7 +79,7 @@
         <el-button
           type="warning"
           :icon="ElIconDownload"
-          size="mini"
+          size="default"
           @click="handleExport"
           v-hasPermi="['sysTemplate:export']"
           >导出</el-button
@@ -141,7 +141,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
@@ -149,7 +149,7 @@
             >修改</el-button
           >
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconDelete"
             @click="handleDelete(scope.row)"
@@ -217,7 +217,7 @@ import {
   Edit as ElIconEdit,
   Delete as ElIconDelete,
   Download as ElIconDownload,
-} from '@element-plus/icons'
+} from "@element-plus/icons";
 import {
   listTemplate,
   getTemplate,
@@ -225,7 +225,7 @@ import {
   addTemplate,
   updateTemplate,
   exportTemplate,
-} from '@/api/system/template'
+} from "@/api/system/template";
 
 export default {
   data() {
@@ -243,7 +243,7 @@ export default {
       // 参数表格数据
       templateList: [],
       // 弹出层标题
-      title: '',
+      title: "",
       // 是否显示弹出层
       open: false,
       // 类型数据字典
@@ -263,13 +263,13 @@ export default {
       // 表单校验
       rules: {
         name: [
-          { required: true, message: '模版名称不能为空', trigger: 'blur' },
+          { required: true, message: "模版名称不能为空", trigger: "blur" },
         ],
         subject: [
-          { required: true, message: '模版标题不能为空', trigger: 'blur' },
+          { required: true, message: "模版标题不能为空", trigger: "blur" },
         ],
         html: [
-          { required: true, message: '模版内容不能为空', trigger: 'blur' },
+          { required: true, message: "模版内容不能为空", trigger: "blur" },
         ],
       },
       ElIconSearch,
@@ -278,34 +278,34 @@ export default {
       ElIconEdit,
       ElIconDelete,
       ElIconDownload,
-    }
+    };
   },
-  name: 'Template',
+  name: "Template",
   created() {
-    this.getList()
+    this.getList();
   },
   methods: {
     sortChange(data) {
-      const { prop, order } = data
-      this.queryParams.sortColumn = prop
-      this.queryParams.sortAsc = order === null ? 'descending' : order
-      this.getList()
+      const { prop, order } = data;
+      this.queryParams.sortColumn = prop;
+      this.queryParams.sortAsc = order === null ? "descending" : order;
+      this.getList();
     },
     /** 查询参数列表 */
     getList() {
-      this.loading = true
+      this.loading = true;
       listTemplate(this.addDateRange(this.queryParams, this.dateRange)).then(
         (response) => {
-          this.templateList = response.rows
-          this.total = response.total
-          this.loading = false
+          this.templateList = response.rows;
+          this.total = response.total;
+          this.loading = false;
         }
-      )
+      );
     },
     // 取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -315,107 +315,107 @@ export default {
         text: undefined,
         html: undefined,
         param: undefined,
-      }
-      this.resetForm('form')
+      };
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
+      this.queryParams.pageNum = 1;
+      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.dateRange = []
-      this.resetForm('queryForm')
-      this.handleQuery()
+      this.dateRange = [];
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset()
-      this.open = true
-      this.title = '添加参数'
+      this.reset();
+      this.open = true;
+      this.title = "添加参数";
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id)
-      this.single = selection.length != 1
-      this.multiple = !selection.length
+      this.ids = selection.map((item) => item.id);
+      this.single = selection.length != 1;
+      this.multiple = !selection.length;
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset()
-      const templateId = row.id || this.ids
+      this.reset();
+      const templateId = row.id || this.ids;
       getTemplate(templateId).then((response) => {
-        this.form = response.data
-        this.open = true
-        this.title = '修改参数'
-      })
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改参数";
+      });
     },
     /** 提交按钮 */
     submitForm: function () {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.id != undefined) {
             updateTemplate(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('修改成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("修改成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           } else {
             addTemplate(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('新增成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("新增成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           }
         }
-      })
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const templateIds = row.id || this.ids
+      const templateIds = row.id || this.ids;
       this.$confirm(
         '是否确认删除参数编号为"' + templateIds + '"的数据项?',
-        '警告',
+        "警告",
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
         }
       )
         .then(function () {
-          return delTemplate(templateIds)
+          return delTemplate(templateIds);
         })
         .then(() => {
-          this.getList()
-          this.msgSuccess('删除成功')
+          this.getList();
+          this.msgSuccess("删除成功");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
     /** 导出按钮操作 */
     handleExport() {
-      const queryParams = this.queryParams
-      this.$confirm('是否确认导出所有参数数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      const queryParams = this.queryParams;
+      this.$confirm("是否确认导出所有参数数据项?", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return exportTemplate(queryParams)
+          return exportTemplate(queryParams);
         })
         .then((response) => {
-          this.download(response.msg)
+          this.download(response.msg);
         })
-        .catch(function () {})
+        .catch(function () {});
     },
   },
-}
+};
 </script>

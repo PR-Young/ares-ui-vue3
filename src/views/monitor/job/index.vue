@@ -49,11 +49,11 @@
         <el-button
           type="primary"
           :icon="ElIconSearch"
-          size="mini"
+          size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="ElIconRefresh" size="mini" @click="resetQuery"
+        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -64,7 +64,7 @@
         <el-button
           type="primary"
           :icon="ElIconPlus"
-          size="mini"
+          size="default"
           @click="handleAdd"
           v-hasPermi="['quartz:edit']"
           >新增</el-button
@@ -74,7 +74,7 @@
         <el-button
           type="success"
           :icon="ElIconEdit"
-          size="mini"
+          size="default"
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['quartz:edit']"
@@ -85,7 +85,7 @@
         <el-button
           type="danger"
           :icon="ElIconDelete"
-          size="mini"
+          size="default"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['quartz:delete']"
@@ -96,7 +96,7 @@
         <el-button
           type="warning"
           :icon="ElIconDownload"
-          size="mini"
+          size="default"
           @click="handleExport"
           v-hasPermi="['quartz:export']"
           >导出</el-button
@@ -106,7 +106,7 @@
         <el-button
           type="info"
           :icon="ElIconSOperation"
-          size="mini"
+          size="default"
           @click="handleJobLog"
           v-hasPermi="['quartz:logList']"
           >日志</el-button
@@ -162,7 +162,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
@@ -170,14 +170,14 @@
             >修改</el-button
           >
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconCaretRight"
             @click="handleRun(scope.row)"
             >执行一次</el-button
           >
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconView"
             @click="handleView(scope.row)"
@@ -201,10 +201,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="任务名称" prop="jobName">
-              <el-input
-                v-model="form.jobName"
-                placeholder="请输入任务名称"
-              />
+              <el-input v-model="form.jobName" placeholder="请输入任务名称" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -294,13 +291,8 @@
     </el-dialog>
 
     <!-- 任务日志详细 -->
-    <el-dialog
-      title="任务详细"
-      v-model="openView"
-      width="700px"
-      append-to-body
-    >
-      <el-form ref="form" :model="form" label-width="120px" size="mini">
+    <el-dialog title="任务详细" v-model="openView" width="700px" append-to-body>
+      <el-form ref="form" :model="form" label-width="120px" size="default">
         <el-row>
           <el-col :span="12">
             <el-form-item label="任务编号：">{{ form.id }}</el-form-item>
@@ -359,7 +351,7 @@ import {
   Operation as ElIconSOperation,
   CaretRight as ElIconCaretRight,
   View as ElIconView,
-} from '@element-plus/icons'
+} from "@element-plus/icons";
 import {
   listJob,
   getJob,
@@ -369,7 +361,7 @@ import {
   exportJob,
   runJob,
   changeJobStatus,
-} from '@/api/monitor/job'
+} from "@/api/monitor/job";
 
 export default {
   data() {
@@ -387,7 +379,7 @@ export default {
       // 定时任务表格数据
       jobList: [],
       // 弹出层标题
-      title: '',
+      title: "",
       // 是否显示弹出层
       open: false,
       // 是否显示详细弹出层
@@ -396,8 +388,8 @@ export default {
       jobGroupOptions: [],
       // 状态字典
       statusOptions: [
-        { dictValue: 0, dictLabel: '启用' },
-        { dictValue: 1, dictLabel: '停用' },
+        { dictValue: 0, dictLabel: "启用" },
+        { dictValue: 1, dictLabel: "停用" },
       ],
       // 查询参数
       queryParams: {
@@ -412,20 +404,20 @@ export default {
       // 表单校验
       rules: {
         jobName: [
-          { required: true, message: '任务名称不能为空', trigger: 'blur' },
+          { required: true, message: "任务名称不能为空", trigger: "blur" },
         ],
         invokeTarget: [
           {
             required: true,
-            message: '调用目标字符串不能为空',
-            trigger: 'blur',
+            message: "调用目标字符串不能为空",
+            trigger: "blur",
           },
         ],
         cronExpression: [
           {
             required: true,
-            message: 'cron执行表达式不能为空',
-            trigger: 'blur',
+            message: "cron执行表达式不能为空",
+            trigger: "blur",
           },
         ],
       },
@@ -438,17 +430,17 @@ export default {
       ElIconSOperation,
       ElIconCaretRight,
       ElIconView,
-    }
+    };
   },
   components: {
     ElIconQuestion,
   },
-  name: 'Job',
+  name: "Job",
   created() {
-    this.getList()
-    this.getDicts('sys_job_group').then((response) => {
-      this.jobGroupOptions = response.data
-    })
+    this.getList();
+    this.getDicts("sys_job_group").then((response) => {
+      this.jobGroupOptions = response.data;
+    });
     // this.getDicts("sys_job_status").then(response => {
     //   this.statusOptions = response.data;
     // });
@@ -456,25 +448,25 @@ export default {
   methods: {
     /** 查询定时任务列表 */
     getList() {
-      this.loading = true
+      this.loading = true;
       listJob(this.queryParams).then((response) => {
-        this.jobList = response.rows
-        this.total = response.total
-        this.loading = false
-      })
+        this.jobList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
     // 任务组名字典翻译
     jobGroupFormat(row, column) {
-      return this.selectDictLabel(this.jobGroupOptions, row.jobGroup)
+      return this.selectDictLabel(this.jobGroupOptions, row.jobGroup);
     },
     // 状态字典翻译
     statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status)
+      return this.selectDictLabel(this.statusOptions, row.status);
     },
     // 取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -485,156 +477,156 @@ export default {
         invokeTarget: undefined,
         cronExpression: undefined,
         misfirePolicy: 1,
-        concurrent: '1',
+        concurrent: "1",
         status: 0,
-      }
-      this.resetForm('form')
+      };
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
+      this.queryParams.pageNum = 1;
+      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm('queryForm')
-      this.handleQuery()
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id)
-      this.single = selection.length != 1
-      this.multiple = !selection.length
+      this.ids = selection.map((item) => item.id);
+      this.single = selection.length != 1;
+      this.multiple = !selection.length;
     },
     // 任务状态修改
     handleStatusChange(row) {
-      let text = row.status === 0 ? '启用' : '停用'
+      let text = row.status === 0 ? "启用" : "停用";
       this.$confirm(
         '确认要"' + text + '""' + row.jobName + '"任务吗?',
-        '警告',
+        "警告",
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
         }
       )
         .then(function () {
-          return changeJobStatus(row.id, row.status)
+          return changeJobStatus(row.id, row.status);
         })
         .then(() => {
-          this.msgSuccess(text + '成功')
+          this.msgSuccess(text + "成功");
         })
         .catch(function () {
-          row.status = row.status === 0 ? 1 : 0
-        })
+          row.status = row.status === 0 ? 1 : 0;
+        });
     },
     /* 立即执行一次 */
     handleRun(row) {
-      this.$confirm('确认要立即执行一次"' + row.jobName + '"任务吗?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      this.$confirm('确认要立即执行一次"' + row.jobName + '"任务吗?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return runJob(row.id, row.jobGroup)
+          return runJob(row.id, row.jobGroup);
         })
         .then(function () {
-          this.msgSuccess('执行成功')
+          this.msgSuccess("执行成功");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
     /** 任务详细信息 */
     handleView(row) {
       getJob(row.id).then((response) => {
-        this.form = response.data
-        this.openView = true
-      })
+        this.form = response.data;
+        this.openView = true;
+      });
     },
     /** 任务日志列表查询 */
     handleJobLog() {
-      this.$router.push('/joblog/log')
+      this.$router.push("/joblog/log");
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset()
-      this.open = true
-      this.title = '添加任务'
+      this.reset();
+      this.open = true;
+      this.title = "添加任务";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset()
-      const jobId = row.id || this.ids
+      this.reset();
+      const jobId = row.id || this.ids;
       getJob(jobId).then((response) => {
-        this.form = response.data
-        this.open = true
-        this.title = '修改任务'
-      })
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改任务";
+      });
     },
     /** 提交按钮 */
     submitForm: function () {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.id != undefined) {
             updateJob(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('修改成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("修改成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           } else {
             addJob(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess('新增成功')
-                this.open = false
-                this.getList()
+                this.msgSuccess("新增成功");
+                this.open = false;
+                this.getList();
               } else {
-                this.msgError(response.msg)
+                this.msgError(response.msg);
               }
-            })
+            });
           }
         }
-      })
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const jobIds = row.id || this.ids
+      const jobIds = row.id || this.ids;
       this.$confirm(
         '是否确认删除定时任务编号为"' + jobIds + '"的数据项?',
-        '警告',
+        "警告",
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
         }
       )
         .then(function () {
-          return delJob(jobIds)
+          return delJob(jobIds);
         })
         .then(() => {
-          this.getList()
-          this.msgSuccess('删除成功')
+          this.getList();
+          this.msgSuccess("删除成功");
         })
-        .catch(function () {})
+        .catch(function () {});
     },
     /** 导出按钮操作 */
     handleExport() {
-      const queryParams = this.queryParams
-      this.$confirm('是否确认导出所有定时任务数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      const queryParams = this.queryParams;
+      this.$confirm("是否确认导出所有定时任务数据项?", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return exportJob(queryParams)
+          return exportJob(queryParams);
         })
         .then((response) => {
-          this.download(response.msg)
+          this.download(response.msg);
         })
-        .catch(function () {})
+        .catch(function () {});
     },
   },
-}
+};
 </script>

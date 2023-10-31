@@ -31,11 +31,11 @@
         <el-button
           type="primary"
           :icon="ElIconSearch"
-          size="mini"
+          size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="ElIconRefresh" size="mini" @click="resetQuery"
+        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -47,7 +47,7 @@
           type="danger"
           plain
           :icon="ElIconDelete"
-          size="mini"
+          size="default"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:deployment:remove']"
@@ -84,7 +84,7 @@
         <template v-slot="scope">
           <label
             >{{ scope.row.startUserName }}
-            <el-tag type="info" size="mini">{{
+            <el-tag type="info" size="default">{{
               scope.row.startDeptName
             }}</el-tag></label
           >
@@ -115,14 +115,14 @@
       >
         <template v-slot="scope">
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconTickets"
             @click="handleFlowRecord(scope.row)"
             >流转记录</el-button
           >
           <el-button
-            size="mini"
+            size="default"
             link
             :icon="ElIconTickets"
             @click="handleRevoke(scope.row)"
@@ -148,7 +148,7 @@ import {
   Refresh as ElIconRefresh,
   Delete as ElIconDelete,
   Tickets as ElIconTickets,
-} from '@element-plus/icons'
+} from "@element-plus/icons";
 import {
   finishedList,
   getDeployment,
@@ -157,7 +157,7 @@ import {
   updateDeployment,
   exportDeployment,
   revokeProcess,
-} from '@/api/flowable/finished'
+} from "@/api/flowable/finished";
 
 export default {
   data() {
@@ -177,10 +177,10 @@ export default {
       // 已办任务列表数据
       finishedList: [],
       // 弹出层标题
-      title: '',
+      title: "",
       // 是否显示弹出层
       open: false,
-      src: '',
+      src: "",
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -203,27 +203,27 @@ export default {
       ElIconRefresh,
       ElIconDelete,
       ElIconTickets,
-    }
+    };
   },
-  name: 'Deploy',
+  name: "Deploy",
   components: {},
   created() {
-    this.getList()
+    this.getList();
   },
   methods: {
     /** 查询流程定义列表 */
     getList() {
-      this.loading = true
+      this.loading = true;
       finishedList(this.queryParams).then((response) => {
-        this.finishedList = response.rows
-        this.total = response.total
-        this.loading = false
-      })
+        this.finishedList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
     // 取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -238,132 +238,132 @@ export default {
         derivedFromRoot: null,
         parentDeploymentId: null,
         engineVersion: null,
-      }
-      this.resetForm('form')
+      };
+      this.resetForm("form");
     },
     setIcon(val) {
       if (val) {
-        return 'el-icon-check'
+        return "el-icon-check";
       } else {
-        return 'el-icon-time'
+        return "el-icon-time";
       }
     },
     setColor(val) {
       if (val) {
-        return '#2bc418'
+        return "#2bc418";
       } else {
-        return '#b3bdbb'
+        return "#b3bdbb";
       }
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
+      this.queryParams.pageNum = 1;
+      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm('queryForm')
-      this.handleQuery()
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id)
-      this.single = selection.length !== 1
-      this.multiple = !selection.length
+      this.ids = selection.map((item) => item.id);
+      this.single = selection.length !== 1;
+      this.multiple = !selection.length;
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset()
-      this.open = true
-      this.title = '添加流程定义'
+      this.reset();
+      this.open = true;
+      this.title = "添加流程定义";
     },
     /** 流程流转记录 */
     handleFlowRecord(row) {
       this.$router.push({
-        path: '/flowable/task/record/index',
+        path: "/flowable/task/record/index",
         query: {
           procInsId: row.procInsId,
           deployId: row.deployId,
           taskId: row.taskId,
           finished: false,
         },
-      })
+      });
     },
     /** 撤回任务 */
     handleRevoke(row) {
       const params = {
         instanceId: row.procInsId,
-      }
+      };
       revokeProcess(params).then((res) => {
-        this.msgSuccess(res.msg)
-        this.getList()
-      })
+        this.msgSuccess(res.msg);
+        this.getList();
+      });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset()
-      const id = row.id || this.ids
+      this.reset();
+      const id = row.id || this.ids;
       getDeployment(id).then((response) => {
-        this.form = response.data
-        this.open = true
-        this.title = '修改流程定义'
-      })
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改流程定义";
+      });
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.id != null) {
             updateDeployment(this.form).then((response) => {
-              this.msgSuccess('修改成功')
-              this.open = false
-              this.getList()
-            })
+              this.msgSuccess("修改成功");
+              this.open = false;
+              this.getList();
+            });
           } else {
             addDeployment(this.form).then((response) => {
-              this.msgSuccess('新增成功')
-              this.open = false
-              this.getList()
-            })
+              this.msgSuccess("新增成功");
+              this.open = false;
+              this.getList();
+            });
           }
         }
-      })
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const ids = row.id || this.ids
+      const ids = row.id || this.ids;
       this.$confirm(
         '是否确认删除流程定义编号为"' + ids + '"的数据项?',
-        '警告',
+        "警告",
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
         }
       )
         .then(function () {
-          return delDeployment(ids)
+          return delDeployment(ids);
         })
         .then(() => {
-          this.getList()
-          this.msgSuccess('删除成功')
-        })
+          this.getList();
+          this.msgSuccess("删除成功");
+        });
     },
     /** 导出按钮操作 */
     handleExport() {
-      const queryParams = this.queryParams
-      this.$confirm('是否确认导出所有流程定义数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      const queryParams = this.queryParams;
+      this.$confirm("是否确认导出所有流程定义数据项?", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(function () {
-          return exportDeployment(queryParams)
+          return exportDeployment(queryParams);
         })
         .then((response) => {
-          this.download(response.msg)
-        })
+          this.download(response.msg);
+        });
     },
   },
-}
+};
 </script>

@@ -16,7 +16,7 @@
           <el-button
             type="primary"
             :icon="ElIconSearch"
-            size="mini"
+            size="default"
             @click="handleQuery"
           ></el-button>
         </el-form-item>
@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import { Search as ElIconSearch } from '@element-plus/icons'
-import { queryByKey } from '@/api/home'
+import { Search as ElIconSearch } from "@element-plus/icons";
+import { queryByKey } from "@/api/home";
 
 export default {
   data() {
@@ -52,22 +52,22 @@ export default {
         data: [],
       },
       ElIconSearch,
-    }
+    };
   },
-  name: 'QueryResult',
+  name: "QueryResult",
   created() {
-    const data = this.$route.query && this.$route.query.data
+    const data = this.$route.query && this.$route.query.data;
     this.queryParams.searchValue =
-      this.$route.query && this.$route.query.searchValue
-    this.result.data = data.data
+      this.$route.query && this.$route.query.searchValue;
+    this.result.data = data.data;
   },
   methods: {
     /** 搜索按钮操作 */
     handleQuery() {
       queryByKey(this.queryParams).then((res) => {
-        this.result.data = res.data
-      })
+        this.result.data = res.data;
+      });
     },
   },
-}
+};
 </script>

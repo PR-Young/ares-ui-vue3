@@ -22,62 +22,62 @@
               style="margin-right: 10px; display: inline-block"
             >
               <el-tooltip effect="dark" content="加载xml" placement="bottom">
-                <el-button size="mini" :icon="ElIconFolderOpened" />
+                <el-button size="default" :icon="ElIconFolderOpened" />
               </el-tooltip>
             </el-upload>
             <el-tooltip effect="dark" content="新建" placement="bottom">
               <el-button
-                size="mini"
+                size="default"
                 :icon="ElIconCirclePlus"
                 @click="newDiagram"
               />
             </el-tooltip>
             <el-tooltip effect="dark" content="自适应屏幕" placement="bottom">
-              <el-button size="mini" :icon="ElIconRank" @click="fitViewport" />
+              <el-button size="default" :icon="ElIconRank" @click="fitViewport" />
             </el-tooltip>
             <el-tooltip effect="dark" content="放大" placement="bottom">
               <el-button
-                size="mini"
+                size="default"
                 :icon="ElIconZoomIn"
                 @click="zoomViewport(true)"
               />
             </el-tooltip>
             <el-tooltip effect="dark" content="缩小" placement="bottom">
               <el-button
-                size="mini"
+                size="default"
                 :icon="ElIconZoomOut"
                 @click="zoomViewport(false)"
               />
             </el-tooltip>
             <el-tooltip effect="dark" content="后退" placement="bottom">
               <el-button
-                size="mini"
+                size="default"
                 :icon="ElIconBack"
                 @click="modeler.get('commandStack').undo()"
               />
             </el-tooltip>
             <el-tooltip effect="dark" content="前进" placement="bottom">
               <el-button
-                size="mini"
+                size="default"
                 :icon="ElIconRight"
                 @click="modeler.get('commandStack').redo()"
               />
             </el-tooltip>
           </div>
           <div>
-            <el-button size="mini" :icon="ElIconView" @click="showXML"
+            <el-button size="default" :icon="ElIconView" @click="showXML"
               >查看xml</el-button
             >
-            <el-button size="mini" :icon="ElIconDownload" @click="saveXML(true)"
+            <el-button size="default" :icon="ElIconDownload" @click="saveXML(true)"
               >下载xml</el-button
             >
             <el-button
-              size="mini"
+              size="default"
               :icon="ElIconPicture"
               @click="saveImg('svg', true)"
               >下载svg</el-button
             >
-            <el-button size="mini" type="primary" @click="save"
+            <el-button size="default" type="primary" @click="save"
               >保存模型</el-button
             >
           </div>
