@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import CountTo from 'vue-count-to'
-import { getPanelGroups } from '@/api/home'
+import { CountTo } from "vue3-count-to";
+import { getPanelGroups } from "@/api/home";
 
 export default {
   components: {
@@ -40,20 +40,20 @@ export default {
   data() {
     return {
       panelGroups: [],
-    }
+    };
   },
   created() {
     getPanelGroups().then((res) => {
-      this.panelGroups = res.data
-    })
+      this.panelGroups = res.data;
+    });
   },
   methods: {
     handleSetLineChartData(type) {
-      $emit(this, 'handleSetLineChartData', type)
+      $emit(this, "handleSetLineChartData", type);
     },
   },
-  emits: ['handleSetLineChartData'],
-}
+  emits: ["handleSetLineChartData"],
+};
 </script>
 
 <style lang="scss" scoped>
