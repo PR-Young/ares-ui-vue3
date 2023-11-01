@@ -214,7 +214,7 @@ import {
   Plus as ElIconPlus,
   Edit as ElIconEdit,
   Delete as ElIconDelete,
-  SOperation as ElIconSOperation,
+  Operation as ElIconSOperation,
   Upload as ElIconUpload,
 } from "@element-plus/icons";
 import {

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   title: 'Ares管理系统',
 
   /**

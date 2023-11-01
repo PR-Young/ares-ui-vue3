@@ -87,7 +87,7 @@
           <el-table-column label="查询方式" min-width="10%">
             <template v-slot="scope">
               <el-select v-model="scope.row.queryType">
-                <el-option label== value="EQ"/>
+                <el-option label="=" value="EQ" />
                 <el-option label="!=" value="NE" />
                 <el-option label=">" value="GT" />
                 <el-option label=">=" value="GTE" />
@@ -158,13 +158,13 @@
 </template>
 
 <script>
-import { getGenTable, updateGenTable } from '@/api/tool/gen'
-import { optionselect as getDictOptionselect } from '@/api/system/dict/type'
-import basicInfoForm from './basicInfoForm'
-import genInfoForm from './genInfoForm'
-import Sortable from 'sortablejs'
+import { getGenTable, updateGenTable } from "@/api/tool/gen";
+import { optionselect as getDictOptionselect } from "@/api/system/dict/type";
+import basicInfoForm from "./basicInfoForm.vue";
+import genInfoForm from "./genInfoForm.vue";
+import Sortable from "sortablejs";
 export default {
-  name: 'GenEdit',
+  name: "GenEdit",
   components: {
     basicInfoForm,
     genInfoForm,
@@ -172,84 +172,84 @@ export default {
   data() {
     return {
       // 选中选项卡的 name
-      activeName: 'cloum',
+      activeName: "cloum",
       // 表格的高度
-      tableHeight: document.documentElement.scrollHeight - 245 + 'px',
+      tableHeight: document.documentElement.scrollHeight - 245 + "px",
       // 表列信息
       cloumns: [],
       // 字典信息
       dictOptions: [],
       // 表详细信息
       info: {},
-    }
+    };
   },
   beforeCreate() {
-    const { tableId } = this.$route.query
+    const { tableId } = this.$route.query;
     if (tableId) {
       // 获取表详细信息
       getGenTable(tableId).then((res) => {
-        this.cloumns = res.data.rows
-        this.info = res.data.info
-      })
+        this.cloumns = res.data.rows;
+        this.info = res.data.info;
+      });
       /** 查询字典下拉列表 */
       getDictOptionselect().then((response) => {
-        this.dictOptions = response.data
-      })
+        this.dictOptions = response.data;
+      });
     }
   },
   methods: {
     /** 提交按钮 */
     submitForm() {
-      const basicForm = this.$refs.basicInfo.$refs.basicInfoForm
-      const genForm = this.$refs.genInfo.$refs.genInfoForm
+      const basicForm = this.$refs.basicInfo.$refs.basicInfoForm;
+      const genForm = this.$refs.genInfo.$refs.genInfoForm;
       Promise.all([basicForm, genForm].map(this.getFormPromise)).then((res) => {
-        const validateResult = res.every((item) => !!item)
+        const validateResult = res.every((item) => !!item);
         if (validateResult) {
-          const genTable = Object.assign({}, basicForm.model, genForm.model)
-          genTable.columns = this.cloumns
+          const genTable = Object.assign({}, basicForm.model, genForm.model);
+          genTable.columns = this.cloumns;
           genTable.params = {
             treeCode: genTable.treeCode,
             treeName: genTable.treeName,
             treeParentCode: genTable.treeParentCode,
-          }
+          };
           updateGenTable(genTable).then((res) => {
-            this.msgSuccess(res.msg)
+            this.msgSuccess(res.msg);
             if (res.code === 200) {
-              this.close()
+              this.close();
             }
-          })
+          });
         } else {
-          this.msgError('表单校验未通过，请重新检查提交内容')
+          this.msgError("表单校验未通过，请重新检查提交内容");
         }
-      })
+      });
     },
     getFormPromise(form) {
       return new Promise((resolve) => {
         form.validate((res) => {
-          resolve(res)
-        })
-      })
+          resolve(res);
+        });
+      });
     },
     /** 关闭按钮 */
     close() {
-      this.$store.dispatch('tagsView/delView', this.$route)
-      this.$router.push({ path: '/tool/gen', query: { t: Date.now() } })
+      this.$store.dispatch("tagsView/delView", this.$route);
+      this.$router.push({ path: "/tool/gen", query: { t: Date.now() } });
     },
   },
   mounted() {
     const el = this.$refs.dragTable.$el.querySelectorAll(
-      '.el-table__body-wrapper > table > tbody'
-    )[0]
+      ".el-table__body-wrapper > table > tbody"
+    )[0];
     const sortable = Sortable.create(el, {
-      handle: '.allowDrag',
+      handle: ".allowDrag",
       onEnd: (evt) => {
-        const targetRow = this.cloumns.splice(evt.oldIndex, 1)[0]
-        this.cloumns.splice(evt.newIndex, 0, targetRow)
+        const targetRow = this.cloumns.splice(evt.oldIndex, 1)[0];
+        this.cloumns.splice(evt.newIndex, 0, targetRow);
         for (let index in this.cloumns) {
-          this.cloumns[index].sort = parseInt(index) + 1
+          this.cloumns[index].sort = parseInt(index) + 1;
         }
       },
-    })
+    });
   },
-}
+};
 </script>

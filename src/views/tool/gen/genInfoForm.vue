@@ -155,12 +155,12 @@
 </template>
 
 <script>
-import { Question as ElIconQuestion } from '@element-plus/icons'
+import { QuestionFilled as ElIconQuestion } from "@element-plus/icons";
 export default {
   components: {
     ElIconQuestion,
   },
-  name: 'BasicInfoForm',
+  name: "BasicInfoForm",
   props: {
     info: {
       type: Object,
@@ -171,23 +171,23 @@ export default {
     return {
       rules: {
         tplCategory: [
-          { required: true, message: '请选择生成模板', trigger: 'blur' },
+          { required: true, message: "请选择生成模板", trigger: "blur" },
         ],
         packageName: [
-          { required: true, message: '请输入生成包路径', trigger: 'blur' },
+          { required: true, message: "请输入生成包路径", trigger: "blur" },
         ],
         moduleName: [
-          { required: true, message: '请输入生成模块名', trigger: 'blur' },
+          { required: true, message: "请输入生成模块名", trigger: "blur" },
         ],
         businessName: [
-          { required: true, message: '请输入生成业务名', trigger: 'blur' },
+          { required: true, message: "请输入生成业务名", trigger: "blur" },
         ],
         functionName: [
-          { required: true, message: '请输入生成功能名', trigger: 'blur' },
+          { required: true, message: "请输入生成功能名", trigger: "blur" },
         ],
       },
-    }
+    };
   },
   created() {},
-}
+};
 </script>
