@@ -191,7 +191,7 @@
             <template v-slot="scope">
               <el-button
                 size="default"
-                link
+                type="text"
                 :icon="ElIconEdit"
                 @click="handleUpdate(scope.row)"
                 v-hasPermi="['user:edit']"
@@ -200,7 +200,7 @@
               <el-button
                 v-if="scope.row.id != 1"
                 size="default"
-                link
+                type="text"
                 :icon="ElIconDelete"
                 @click="handleDelete(scope.row)"
                 v-hasPermi="['user:delete']"
@@ -208,14 +208,14 @@
               >
               <el-button
                 size="default"
-                link
+                type="text"
                 :icon="ElIconKey"
                 @click="handleResetPwd(scope.row)"
                 >重置</el-button
               >
               <el-button
                 size="default"
-                link
+                type="text"
                 :icon="ElIconBottom"
                 @click="handleKickUser(scope.row)"
                 >下线</el-button

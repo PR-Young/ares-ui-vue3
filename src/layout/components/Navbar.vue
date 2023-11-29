@@ -26,7 +26,11 @@
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
         <el-tooltip content="布局大小" effect="dark" placement="bottom">
-          <size-select id="size-select" style="padding-top:15px" class="right-menu-item hover-effect" />
+          <size-select
+            id="size-select"
+            style="padding-top: 15px"
+            class="right-menu-item hover-effect"
+          />
         </el-tooltip>
       </template>
 
@@ -64,13 +68,20 @@
 import {
   Bell as ElIconBell,
   CaretBottom as ElIconCaretBottom,
-} from '@element-plus/icons'
-import { mapGetters, mapState } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb/index.vue'
-import Hamburger from '@/components/Hamburger/index.vue'
-import Screenfull from '@/components/Screenfull/index.vue'
-import SizeSelect from '@/components/SizeSelect/index.vue'
-import Search from '@/components/HeaderSearch/index.vue'
+} from "@element-plus/icons";
+import Breadcrumb from "@/components/Breadcrumb/index.vue";
+import Hamburger from "@/components/Hamburger/index.vue";
+import Screenfull from "@/components/Screenfull/index.vue";
+import SizeSelect from "@/components/SizeSelect/index.vue";
+import Search from "@/components/HeaderSearch/index.vue";
+import useAppStore from "@/store/modules/app";
+import useUserStore from "@/store/modules/user";
+import useSettingsStore from "@/store/modules/settings";
+import store from "@/store";
+
+const app = useAppStore(store);
+const user = useUserStore(store);
+const settings = useSettingsStore(store);
 
 export default {
   components: {
@@ -83,86 +94,91 @@ export default {
     ElIconCaretBottom,
   },
   created() {
-    // setInterval(() => {
-    //   store.dispatch("GetNoticeNumber");
-    // }, 60 * 1000);
-    this.connectWebsocket()
+    this.connectWebsocket();
   },
   unmounted() {
     //clearInterval();
   },
   computed: {
-    ...mapGetters(['sidebar', 'avatar', 'device', 'notice_num']),
+    sidebar() {
+      return app.sidebar;
+    },
+    avatar() {
+      return user.avatar;
+    },
+    device() {
+      return app.device;
+    },
+    notice_num() {
+      return user.getNoticeNum;
+    },
     setting: {
       get() {
-        return this.$store.state.settings.showSettings
+        return settings.showSettings;
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'showSettings',
-          value: val,
-        })
+        settings.changeSetting(val);
       },
     },
   },
   methods: {
     imgError(avatar) {
-      avatar.url = require('@/assets/image/profile.jpeg')
+      avatar.url = require("@/assets/image/profile.jpeg");
     },
     toggleSideBar() {
-      this.$store.dispatch('app/toggleSideBar')
+      app.toggleSideBar();
     },
     async logout() {
-      this.$confirm('确定注销并退出系统吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      this.$confirm("确定注销并退出系统吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       }).then(() => {
-        this.$store.dispatch('LogOut').then(() => {
-          location.reload()
-        })
-      })
+        user.LogOut().then(() => {
+          location.reload();
+        });
+      });
     },
     connectWebsocket() {
-      let userAccount = this.$store.getters.userAccount
-      let websocket
-      if (typeof WebSocket === 'undefined') {
-        console.log('您的浏览器不支持WebSocket')
-        return
+      let userAccount = user.userAccount;
+      let websocket;
+      if (typeof WebSocket === "undefined") {
+        console.log("您的浏览器不支持WebSocket");
+        return;
       } else {
-        let protocol = 'ws'
-        let url = ''
-        if (window.location.protocol == 'https:') {
-          protocol = 'wss'
+        let protocol = "ws";
+        let url = "";
+        if (window.location.protocol == "https:") {
+          protocol = "wss";
         }
 
-        url = `${protocol}://10.211.55.4:8080/ares/ws/` + userAccount
+        url = `${protocol}://localhost:8080/ares/ws/` + userAccount;
 
         // 打开一个websocket
-        websocket = new WebSocket(url)
+        websocket = new WebSocket(url);
         // 建立连接
         websocket.onopen = () => {
           // 发送数据
           //websocket.send("发送数据");
-          console.log('websocket发送数据中')
-        }
+          console.log("websocket发送数据中");
+        };
         // 客户端接收服务端返回的数据
         websocket.onmessage = (evt) => {
-          this.$store.dispatch('updateNoticeNumber', evt.data)
-          console.log('websocket返回的数据:', evt)
-        }
+          user.updateNoticeNumber(evt.data);
+          console.log("websocket返回的数据:", evt);
+        };
         // 发生错误时
         websocket.onerror = (evt) => {
-          console.log('websocket错误:', evt)
-        }
+          console.log("websocket错误:", evt);
+        };
         // 关闭连接
         websocket.onclose = (evt) => {
-          console.log('websocket关闭:', evt)
-        }
+          console.log("websocket关闭:", evt);
+        };
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -45,6 +45,7 @@
     "@form-create/element-ui": "^3.1.25",
     "@tinymce/tinymce-vue": "^5.1.0",
     "@vueup/vue-quill": "^1.2.0",
+    "@vueuse/core": "^10.6.1",
     "axios": "1.4.0",
     "clipboard": "2.0.11",
     "codemirror": "^5.65.15",
@@ -65,6 +66,7 @@
     "particles.vue3": "^2.10.1",
     "path-browserify": "^1.0.1",
     "path-to-regexp": "^6.2.1",
+    "pinia": "^2.1.7",
     "sass": "^1.62.1",
     "screenfull": "6.0.2",
     "sortablejs": "1.15.0",
@@ -88,7 +90,6 @@
     "vue3-count-to": "^1.1.2",
     "vue3-treeselect": "^0.1.10",
     "vuedraggable": "^2.24.3",
-    "vuex": "^4.1.0",
     "workflow-bpmn-modeler": "^0.2.8",
     "xcrud-vue3": "^0.0.12"
   },

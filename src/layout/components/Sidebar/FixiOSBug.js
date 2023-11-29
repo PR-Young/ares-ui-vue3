@@ -1,7 +1,10 @@
+import useAppStore from "@/store/modules/app"
+import store from "@/store"
+const app = useAppStore(store)
 export default {
   computed: {
     device() {
-      return this.$store.state.app.device
+      return app.device
     },
   },
   mounted() {

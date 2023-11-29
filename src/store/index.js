@@ -1,20 +1,3 @@
-import * as Vuex from 'vuex'
-import app from './modules/app'
-import user from './modules/user'
-import tagsView from './modules/tagsView'
-import permission from './modules/permission'
-import settings from './modules/settings'
-import getters from './getters'
-
-const store = Vuex.createStore({
-  modules: {
-    app,
-    user,
-    tagsView,
-    permission,
-    settings,
-  },
-  getters,
-})
-
+import { createPinia } from 'pinia'
+const store = createPinia()
 export default store

@@ -166,7 +166,7 @@
         <template v-slot="scope">
           <el-button
             size="default"
-            link
+            type="text"
             :icon="ElIconView"
             @click="handleView(scope.row, scope.index)"
             v-hasPermi="['monitor:operlog:query']"

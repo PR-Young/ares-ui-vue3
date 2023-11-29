@@ -30,6 +30,9 @@
 
 <script>
 import { updateUserPwd } from "@/api/system/user";
+import store from "@/store";
+import useTagsViewStore from "@/store/modules/tagsView";
+const tagsView = useTagsViewStore(store);
 
 export default {
   data() {
@@ -85,8 +88,8 @@ export default {
       });
     },
     close() {
-      this.$store.dispatch("tagsView/delView", this.$route);
-      this.$router.push({ path: "/index" });
+      tagsView.delView(this.$route);
+      this.$router.push({ path: "/" });
     },
   },
 };

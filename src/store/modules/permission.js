@@ -1,38 +1,39 @@
+import { defineStore } from 'pinia'
 import { constantRoutes } from '@/router'
 import { getRouters } from '@/api/menu'
 import Layout from '@/layout/index.vue'
 
-const permission = {
-  state: {
-    routes: [],
-    addRoutes: [],
-  },
-  mutations: {
-    SET_ROUTES: (state, routes) => {
-      state.addRoutes = routes
-      state.routes = constantRoutes.concat(routes)
-    },
+const routeAllPathToCompMap = import.meta.glob(`@/views/**/*.vue`);
+
+const usePermissionStore = defineStore('permission', {
+  state: () => {
+    return {
+      routes: [],
+      addRoutes: [],
+    }
   },
   actions: {
     // 生成路由
-    GenerateRoutes({ commit }) {
+    GenerateRoutes() {
       return new Promise((resolve) => {
         // 向后端请求路由数据
         getRouters().then((res) => {
           const accessedRoutes = filterAsyncRouter(res.data)
           accessedRoutes.push({ path: '/:pathMatch(.*)', redirect: '/404', hidden: true })
-          commit('SET_ROUTES', accessedRoutes)
+          this.routes = constantRoutes.concat(accessedRoutes)
+          this.addRoutes = accessedRoutes
           resolve(accessedRoutes)
         })
       })
     },
   },
-}
-
-const routeAllPathToCompMap = import.meta.glob(`@/views/**/*.vue`);
+  getters: {
+    permissionRoutes() { return this.routes },
+  }
+})
 
 // 遍历后台传来的路由字符串，转换为组件对象
-function filterAsyncRouter(asyncRouterMap) {
+export function filterAsyncRouter(asyncRouterMap) {
   return asyncRouterMap.filter((route) => {
     if (route.component) {
       // Layout组件特殊处理
@@ -55,4 +56,4 @@ export const loadView = (view) => {
   return routeAllPathToCompMap[`/src/views/${view}.vue`]
 }
 
-export default permission
+export default usePermissionStore

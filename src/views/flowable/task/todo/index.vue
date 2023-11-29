@@ -104,7 +104,7 @@
         <template v-slot="scope">
           <el-button
             size="default"
-            link
+            type="text"
             :icon="ElIconEditOutline"
             @click="handleProcess(scope.row)"
             >处理

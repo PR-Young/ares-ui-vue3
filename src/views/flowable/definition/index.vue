@@ -123,7 +123,7 @@
         :show-overflow-tooltip="true"
       >
         <template v-slot="scope">
-          <el-button link @click="handleReadImage(scope.row.deploymentId)">
+          <el-button type="text" @click="handleReadImage(scope.row.deploymentId)">
             <span>{{ scope.row.name }}</span>
           </el-button>
         </template>
@@ -136,7 +136,7 @@
         <template v-slot="scope">
           <el-button
             v-if="scope.row.formId"
-            link
+            type="text"
             @click="handleForm(scope.row.formId)"
           >
             <span>{{ scope.row.formName }}</span>
@@ -340,7 +340,7 @@
               <template v-slot="scope">
                 <el-button
                   size="default"
-                  link
+                  type="text"
                   @click="submitFormDeploy(scope.row)"
                   >确定</el-button
                 >

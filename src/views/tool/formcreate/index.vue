@@ -82,6 +82,9 @@ import {
 } from "@element-plus/icons";
 import formCreate from "@form-create/element-ui";
 import { getForm, addForm, updateForm } from "@/api/flowable/form";
+import store from "@/store";
+import useTagsViewStore from "@/store/modules/tagsView";
+const tagsView = useTagsViewStore(store);
 
 export default {
   data() {
@@ -291,7 +294,7 @@ export default {
           }
           this.formOpen = false;
           // 关闭当前标签页并返回上个页面
-          this.$store.dispatch("tagsView/delView", this.$route);
+          tagsView.delView(this.$route);
           this.$router.go(-1);
         }
       });

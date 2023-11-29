@@ -6,33 +6,23 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="文章标题" prop="title">
+      <el-form-item label="租户别称" prop="tenantAlias">
         <el-input
-          v-model="queryParams.title"
-          placeholder="请输入文章标题"
+          v-model="queryParams.tenantAlias"
+          placeholder="请输入租户别称"
           clearable
-          size="default"
+          size="small"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="文章作者" prop="name">
+      <el-form-item label="租户名" prop="tenantName">
         <el-input
-          v-model="queryParams.name"
-          placeholder="请输入文章标题"
+          v-model="queryParams.tenantName"
+          placeholder="请输入租户名"
           clearable
-          size="default"
+          size="small"
           @keyup.enter="handleQuery"
         />
-      </el-form-item>
-      <el-form-item label="文章类别" prop="type">
-        <el-select v-model="queryParams.type" placeholder="请选择">
-          <el-option
-            v-for="item in typeOptions"
-            :key="item.dictValue"
-            :label="item.dictLabel"
-            :value="item.dictValue"
-          ></el-option>
-        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button
@@ -40,8 +30,8 @@
           :icon="ElIconSearch"
           size="default"
           @click="handleQuery"
-          >搜索</el-button
-        >
+          >搜索
+        </el-button>
         <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
           >重置</el-button
         >
@@ -55,9 +45,9 @@
           :icon="ElIconPlus"
           size="default"
           @click="handleAdd"
-          v-hasPermi="['articles:edit']"
-          >新增</el-button
-        >
+          v-hasPermi="['sysTenants:edit']"
+          >新增
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -66,9 +56,9 @@
           size="default"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['articles:edit']"
-          >修改</el-button
-        >
+          v-hasPermi="['sysTenants:edit']"
+          >修改
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -77,9 +67,9 @@
           size="default"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['articles:delete']"
-          >删除</el-button
-        >
+          v-hasPermi="['sysTenants:delete']"
+          >删除
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -87,53 +77,37 @@
           :icon="ElIconDownload"
           size="default"
           @click="handleExport"
-          v-hasPermi="['articles:export']"
-          >导出</el-button
-        >
+          v-hasPermi="['sysTenants:export']"
+          >导出
+        </el-button>
       </el-col>
     </el-row>
 
     <el-table
       border
       v-loading="loading"
-      :data="articlesList"
+      :data="sysTenantsList"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="55" align="center" />
       <el-table-column
-        label="文章标题"
+        type="selection"
+        width="55"
         align="center"
-        prop="title"
-        fixed
-        width="200"
+        :selectable="selectable"
       />
-      <el-table-column
-        label="文章作者"
-        align="center"
-        prop="name"
-        width="120"
-      />
-      <el-table-column
-        label="文章内容"
-        align="center"
-        prop="content"
-        width="300"
-        :show-overflow-tooltip="true"
-      />
-      <el-table-column
-        label="文章类别"
-        align="center"
-        prop="type"
-        width="200"
-        :formatter="typeFormat"
-      />
-      <el-table-column
-        label="状态"
-        align="center"
-        prop="status"
-        width="120"
-        :formatter="statusFormat"
-      />
+      <el-table-column label="租户名" align="center" prop="tenantName" />
+      <el-table-column label="租户别称" align="center" prop="tenantAlias" />
+      <el-table-column label="状态" align="center">
+        <template v-slot="scope">
+          <el-switch
+            v-model="scope.row.tenantStatus"
+            :active-value="'0'"
+            :inactive-value="'1'"
+            @change="handleStatusChange(scope.row)"
+            :disabled="scope.row.id == '1'"
+          ></el-switch>
+        </template>
+      </el-table-column>
       <el-table-column
         label="创建时间"
         align="center"
@@ -145,21 +119,9 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="修改时间"
-        align="center"
-        prop="modifyTime"
-        width="180"
-      >
-        <template v-slot="scope">
-          <span>{{ parseTime(scope.row.modifyTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
         label="操作"
         align="center"
         class-name="small-padding fixed-width"
-        fixed="right"
-        width="180"
       >
         <template v-slot="scope">
           <el-button
@@ -167,17 +129,18 @@
             type="text"
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['articles:edit']"
-            >修改</el-button
-          >
+            v-hasPermi="['sysTenants:edit']"
+            >修改
+          </el-button>
           <el-button
             size="default"
             type="text"
             :icon="ElIconDelete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['articles:delete']"
-            >删除</el-button
-          >
+            v-hasPermi="['sysTenants:delete']"
+            :disabled="scope.row.id == '1'"
+            >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -193,24 +156,14 @@
     <!-- 添加或修改岗位对话框 -->
     <el-dialog :title="title" v-model="open" width="800px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="文章标题" prop="title">
-          <el-input v-model="form.title" placeholder="请输入文章标题" />
+        <el-form-item label="租户名" prop="tenantName">
+          <el-input v-model="form.tenantName" placeholder="请输入租户名" />
         </el-form-item>
-        <el-form-item label="文章作者" prop="name">
-          <el-input v-model="form.name" placeholder="请输入文章作者" />
+        <el-form-item label="租户别称" prop="tenantAlias">
+          <el-input v-model="form.tenantAlias" placeholder="请输入租户别称" />
         </el-form-item>
-        <el-form-item label="文章类别" prop="type">
-          <el-select v-model="form.type" placeholder="请选择">
-            <el-option
-              v-for="item in typeOptions"
-              :key="item.dictValue"
-              :label="item.dictLabel"
-              :value="item.dictValue"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="状态" prop="status">
-          <el-radio-group v-model="form.status">
+        <el-form-item label="状态">
+          <el-radio-group v-model="form.tenantStatus">
             <el-radio
               v-for="dict in statusOptions"
               :key="dict.dictValue"
@@ -219,12 +172,19 @@
             >
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="文章内容" prop="content">
-          <Editor v-model="form.content" />
+        <el-form-item label="用户">
+          <el-transfer
+            filterable
+            :titles="titleOptions"
+            filter-placeholder
+            :data="userOptions"
+            v-model="selectedUsers"
+            @right-check-change="change"
+          ></el-transfer>
         </el-form-item>
       </el-form>
       <template v-slot:footer>
-        <div class="dialog-footer" style="padding-top: 20px">
+        <div class="dialog-footer">
           <el-button type="primary" @click="submitForm">确 定</el-button>
           <el-button @click="cancel">取 消</el-button>
         </div>
@@ -243,16 +203,17 @@ import {
   Download as ElIconDownload,
 } from "@element-plus/icons";
 import {
-  listArticles,
-  getArticles,
-  delArticles,
-  addArticles,
-  updateArticles,
-  exportArticles,
-} from "@/api/articles";
-import Editor from "@/components/Editor/index.vue";
+  addSysTenants,
+  delSysTenants,
+  exportSysTenants,
+  getSysTenants,
+  listSysTenants,
+  updateSysTenants,
+  changeStatus,
+} from "@/api/system/tenant";
 
 export default {
+  name: "SysTenants",
   data() {
     return {
       // 遮罩层
@@ -266,39 +227,31 @@ export default {
       // 总条数
       total: 0,
       // 岗位表格数据
-      articlesList: [],
+      sysTenantsList: [],
+      // 用户选项
+      userOptions: [],
+      selectedUsers: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
+      titleOptions: ["未选择", "已选择"],
       // 状态数据字典
-      statusOptions: [],
-      typeOptions: [],
+      statusOptions: [
+        { dictValue: "0", dictLabel: "启用" },
+        { dictValue: "1", dictLabel: "停用" },
+      ],
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        title: undefined,
-        name: undefined,
-        type: undefined,
+        tenantAlias: undefined,
+        tenantName: undefined,
       },
       // 表单参数
       form: {},
       // 表单校验
-      rules: {
-        title: [
-          { required: true, message: "文章标题不能为空", trigger: "blur" },
-        ],
-        name: [
-          { required: true, message: "文章作者不能为空", trigger: "blur" },
-        ],
-        content: [
-          { required: true, message: "文章内容不能为空", trigger: "blur" },
-        ],
-        type: [
-          { required: true, message: "文章类别不能为空", trigger: "blur" },
-        ],
-      },
+      rules: {},
       ElIconSearch,
       ElIconRefresh,
       ElIconPlus,
@@ -307,49 +260,40 @@ export default {
       ElIconDownload,
     };
   },
-  name: "Articles",
-  components: {
-    Editor,
-  },
   created() {
-    this.getDicts("article_status").then((response) => {
-      this.statusOptions = response.data;
-    });
-    this.getDicts("article_types").then((response) => {
-      this.typeOptions = response.data;
-    });
     this.getList();
   },
   methods: {
-    statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status);
-    },
-    typeFormat(row, column) {
-      return this.selectDictLabel(this.typeOptions, row.type);
-    },
     /** 查询岗位列表 */
     getList() {
       this.loading = true;
-      listArticles(this.queryParams).then((response) => {
-        this.articlesList = response.rows;
+      listSysTenants(this.queryParams).then((response) => {
+        this.sysTenantsList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
+    },
+    selectable(row, index) {
+      if (row.id === "1") {
+        return false;
+      }
+      return true;
     },
     // 取消按钮
     cancel() {
       this.open = false;
       this.reset();
     },
+    change() {
+      for (let i = 0; i < this.selectedUsers.length; i++) {}
+    },
     // 表单重置
     reset() {
       this.form = {
         id: undefined,
-        content: undefined,
-        name: undefined,
-        status: "1",
-        title: undefined,
-        type: undefined,
+        tenantName: undefined,
+        tenantAlias: undefined,
+        tenantStatus: undefined,
       };
       this.resetForm("form");
     },
@@ -372,25 +316,54 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      this.open = true;
-      this.title = "添加文章";
+      getSysTenants().then((response) => {
+        this.open = true;
+        this.title = "添加租户";
+        this.userOptions = [];
+        this.selectedUsers = [];
+        let data = response.allUser;
+        data.forEach((item) => {
+          this.userOptions.push({
+            label: item.userName,
+            key: item.id,
+            user: item.userName,
+            disabled: item.disabled === 0,
+          });
+        });
+      });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids;
-      getArticles(id).then((response) => {
+      getSysTenants(id).then((response) => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改文章";
+        this.title = "修改租户";
+        this.userOptions = [];
+        this.selectedUsers = [];
+        let data = response.allUser;
+        data.forEach((item) => {
+          this.userOptions.push({
+            label: item.userName,
+            key: item.id,
+            user: item.userName,
+            //disabled: item.disabled === 0
+          });
+        });
+        let checked = response.checkedKeys;
+        checked.forEach((item) => {
+          this.selectedUsers.push(item);
+        });
       });
     },
     /** 提交按钮 */
     submitForm: function () {
       this.$refs["form"].validate((valid) => {
         if (valid) {
+          this.form.userIds = this.selectedUsers;
           if (this.form.id != undefined) {
-            updateArticles(this.form).then((response) => {
+            updateSysTenants(this.form).then((response) => {
               if (response.code === 200) {
                 this.msgSuccess("修改成功");
                 this.open = false;
@@ -400,7 +373,7 @@ export default {
               }
             });
           } else {
-            addArticles(this.form).then((response) => {
+            addSysTenants(this.form).then((response) => {
               if (response.code === 200) {
                 this.msgSuccess("新增成功");
                 this.open = false;
@@ -416,13 +389,13 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$confirm('是否确认删除文章编号为"' + ids + '"的数据项?', "警告", {
+      this.$confirm('是否确认删除租户编号为"' + ids + '"的数据项?', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(function () {
-          return delArticles(ids);
+          return delSysTenants(ids);
         })
         .then(() => {
           this.getList();
@@ -433,18 +406,39 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm("是否确认导出所有文章数据项?", "警告", {
+      this.$confirm("是否确认导出所有租户数据项?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(function () {
-          return exportArticles(queryParams);
+          return exportSysTenants(queryParams);
         })
         .then((response) => {
           this.download(response.msg);
         })
         .catch(function () {});
+    },
+    handleStatusChange(row) {
+      let text = row.tenantStatus === "0" ? "启用" : "停用";
+      this.$confirm(
+        "确认要" + text + "[" + row.tenantName + "]租户吗?",
+        "警告",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      )
+        .then(function () {
+          return changeStatus(row.id, row.tenantStatus);
+        })
+        .then(() => {
+          this.msgSuccess(text + "成功");
+        })
+        .catch(function () {
+          row.tenantStatus = row.tenantStatus === "0" ? "1" : "0";
+        });
     },
   },
 };

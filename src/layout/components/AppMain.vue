@@ -1,9 +1,13 @@
 <template>
-  <section class="app-main" >
-    <router-view v-slot="{ Component }">
+  <section class="app-main">
+    <router-view v-slot="{ Component, route }">
       <transition name="fade-transform" mode="out-in">
-        <keep-alive>
-          <component :is="Component" :key="key" />
+        <keep-alive :include="cachedViews">
+          <component
+            v-if="!route.meta.link"
+            :is="Component"
+            :key="route.path"
+          />
         </keep-alive>
       </transition>
     </router-view>
@@ -11,18 +15,21 @@
 </template>
 
 <script>
+import useTagsViewStore from "@/store/modules/tagsView";
+import store from "@/store";
+const tagsViewStore = useTagsViewStore(store);
 export default {
-  name: 'AppMain',
+  name: "AppMain",
   computed: {
-    cachedViews() {debugger
-      const cachedViews = this.$store.state.tagsView.cachedViews
-      return [cachedViews]
+    cachedViews() {
+      const cachedViews = tagsViewStore.cachedViews;
+      return [cachedViews];
     },
     key() {
-      return this.$route.fullPath
+      return this.$route.fullPath;
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

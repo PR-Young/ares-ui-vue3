@@ -30,57 +30,61 @@
 </template>
 
 <script>
-import ThemePicker from '@/components/ThemePicker/index.vue'
+import ThemePicker from "@/components/ThemePicker/index.vue";
+import useSettingsStore from "@/store/modules/settings";
+import store from "@/store";
+
+const settings = useSettingsStore(store);
 
 export default {
   components: { ThemePicker },
   data() {
-    return {}
+    return {};
   },
   computed: {
     fixedHeader: {
       get() {
-        return this.$store.state.settings.fixedHeader
+        return settings.fixedHeader;
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'fixedHeader',
+        settings.changeSetting({
+          key: "fixedHeader",
           value: val,
-        })
+        });
       },
     },
     tagsView: {
       get() {
-        return this.$store.state.settings.tagsView
+        return settings.tagsView;
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'tagsView',
+        settings.changeSetting({
+          key: "tagsView",
           value: val,
-        })
+        });
       },
     },
     sidebarLogo: {
       get() {
-        return this.$store.state.settings.sidebarLogo
+        return settings.sidebarLogo;
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'sidebarLogo',
+        settings.changeSetting({
+          key: "sidebarLogo",
           value: val,
-        })
+        });
       },
     },
   },
   methods: {
     themeChange(val) {
-      this.$store.dispatch('settings/changeSetting', {
-        key: 'theme',
+      settings.changeSetting({
+        key: "theme",
         value: val,
-      })
+      });
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

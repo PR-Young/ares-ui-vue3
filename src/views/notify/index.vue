@@ -32,26 +32,28 @@
 </template>
 
 <script>
-import { getNotices } from '@/api/notify/message'
-import store from '@/store'
+import { getNotices } from "@/api/notify/message";
+import store from "@/store";
+import useUserStore from "@/store/modules/user";
+const user = useUserStore(store);
 
 export default {
-  name: 'Message',
+  name: "Message",
   data() {
     return {
       msgList: [],
-    }
+    };
   },
   created() {
-    this.getList()
-    store.dispatch('GetNoticeNumber')
+    this.getList();
+    user.GetNoticeNumber();
   },
   methods: {
     getList() {
       getNotices().then((response) => {
-        this.msgList = response.data
-      })
+        this.msgList = response.data;
+      });
     },
   },
-}
+};
 </script>

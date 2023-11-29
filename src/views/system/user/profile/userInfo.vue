@@ -24,6 +24,9 @@
 
 <script>
 import { updateUserProfile } from "@/api/system/user";
+import store from "@/store";
+import useTagsViewStore from "@/store/modules/tagsView";
+const tagsView = useTagsViewStore(store);
 
 export default {
   props: {
@@ -72,8 +75,8 @@ export default {
       });
     },
     close() {
-      this.$store.dispatch("tagsView/delView", this.$route);
-      this.$router.push({ path: "/index" });
+      tagsView.delView(this.$route);
+      this.$router.push({ path: "/" });
     },
   },
 };

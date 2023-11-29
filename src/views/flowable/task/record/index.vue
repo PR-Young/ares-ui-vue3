@@ -312,6 +312,9 @@ import "vue3-treeselect/dist/vue3-treeselect.css";
 import Treeselect from "vue3-treeselect";
 import { listUser } from "@/api/system/user";
 import formCreate from "@form-create/element-ui";
+import store from "@/store";
+import useTagsViewStore from "@/store/modules/tagsView";
+const tagsView = useTagsViewStore(store);
 
 export default {
   data() {
@@ -605,7 +608,7 @@ export default {
     /** 返回页面 */
     goBack() {
       // 关闭当前标签页并返回上个页面
-      this.$store.dispatch("tagsView/delView", this.$route);
+      tagsView.delView(this.$route);
       this.$router.go(-1);
     },
     /** 接收子组件传的值 */

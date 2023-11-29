@@ -20,50 +20,64 @@
 </template>
 
 <script>
-import RightPanel from '@/components/RightPanel/index.vue'
-import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
-import ResizeMixin from './mixin/ResizeHandler'
-import { mapState } from 'vuex'
+import RightPanel from "@/components/RightPanel/index.vue";
+import { AppMain, Navbar, Settings, Sidebar, TagsView } from "./components";
+import ResizeMixin from "./mixin/ResizeHandler";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
+import useSettingsStore from "@/store/modules/settings";
+import { markRaw } from "vue";
+
+const app = useAppStore(store);
+const settings = useSettingsStore(store);
 
 export default {
-  name: 'Layout',
+  name: "Layout",
   components: {
-    AppMain,
-    Navbar,
-    RightPanel,
-    Settings,
-    Sidebar,
-    TagsView,
+    AppMain: markRaw(AppMain),
+    Navbar: markRaw(Navbar),
+    RightPanel: markRaw(RightPanel),
+    Settings: markRaw(Settings),
+    Sidebar: markRaw(Sidebar),
+    TagsView: markRaw(TagsView),
   },
   mixins: [ResizeMixin],
   computed: {
-    ...mapState({
-      sidebar: (state) => state.app.sidebar,
-      device: (state) => state.app.device,
-      showSettings: (state) => state.settings.showSettings,
-      needTagsView: (state) => state.settings.tagsView,
-      fixedHeader: (state) => state.settings.fixedHeader,
-    }),
+    sidebar() {
+      return app.sidebar;
+    },
+    device() {
+      return app.device;
+    },
+    showSettings() {
+      return settings.showSettings;
+    },
+    needTagsView() {
+      return settings.tagsView;
+    },
+    fixedHeader() {
+      return settings.fixedHeader;
+    },
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,
         openSidebar: this.sidebar.opened,
         withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === 'mobile',
-      }
+        mobile: this.device === "mobile",
+      };
     },
   },
   methods: {
     handleClickOutside() {
-      this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
+      app.closeSideBar(false);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/styles/mixin.scss';
-@import '../assets/styles/variables.module.scss';
+@import "../assets/styles/mixin.scss";
+@import "../assets/styles/variables.module.scss";
 .app-wrapper {
   @include clearfix;
   position: relative;

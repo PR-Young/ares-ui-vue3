@@ -5,11 +5,13 @@ import Element from 'element-plus'
 import './assets/styles/element-variables.scss'
 import './assets/styles/index.scss' // global css
 import './assets/styles/ares.scss' // ares css
-
 import App from './App.vue'
 import store from './store'
 import router from './router'
 import permission from './directive/permission'
+import workflowBpmnModelerInstall from './components/Process/index'
+import bpmnViewerInstall from './components/BpmnViewer/index'
+import install from './directive/permission/index'
 
 //import './assets/icons' // icon
 import SvgIcon from '@/components/SvgIcon/index.vue'
@@ -42,42 +44,46 @@ zhCn.el.pagination.pagesize = '条/页';
 zhCn.el.pagination.pageClassifier = '页';
 
 
-window.$vueApp = Vue.createApp(App)
+const app = Vue.createApp(App)
 
+workflowBpmnModelerInstall(app)
+bpmnViewerInstall(app)
+//install(app)
 // 全局方法挂载
-window.$vueApp.config.globalProperties.getDicts = getDicts
-window.$vueApp.config.globalProperties.getConfigKey = getConfigKey
-window.$vueApp.config.globalProperties.parseTime = parseTime
-window.$vueApp.config.globalProperties.resetForm = resetForm
-window.$vueApp.config.globalProperties.addDateRange = addDateRange
-window.$vueApp.config.globalProperties.selectDictLabel = selectDictLabel
-window.$vueApp.config.globalProperties.download = download
-window.$vueApp.config.globalProperties.handleTree = handleTree
+app.config.globalProperties.getDicts = getDicts
+app.config.globalProperties.getConfigKey = getConfigKey
+app.config.globalProperties.parseTime = parseTime
+app.config.globalProperties.resetForm = resetForm
+app.config.globalProperties.addDateRange = addDateRange
+app.config.globalProperties.selectDictLabel = selectDictLabel
+app.config.globalProperties.download = download
+app.config.globalProperties.handleTree = handleTree
 
-window.$vueApp.config.globalProperties.msgSuccess = function (msg) {
+app.config.globalProperties.msgSuccess = function (msg) {
   this.$message({ showClose: true, message: msg, type: 'success' })
 }
 
-window.$vueApp.config.globalProperties.msgError = function (msg) {
+app.config.globalProperties.msgError = function (msg) {
   this.$message({ showClose: true, message: msg, type: 'error' })
 }
 
-window.$vueApp.config.globalProperties.msgInfo = function (msg) {
+app.config.globalProperties.msgInfo = function (msg) {
   this.$message.info(msg)
 }
 
 // 全局组件挂载
-window.$vueApp.component('Pagination', Pagination)
-window.$vueApp.component('svg-icon', SvgIcon)
+app.component('Pagination', Pagination)
+app.component('svg-icon', SvgIcon)
 
-window.$vueApp.use(permission)
-window.$vueApp.use(VueParticles)
-window.$vueApp.use(mavonEditor)
-window.$vueApp.use(formCreate)
-window.$vueApp.use(FcDesigner)
+app.use(permission)
+app.use(VueParticles)
+app.use(mavonEditor)
+app.use(formCreate)
+app.use(FcDesigner)
+
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-  window.$vueApp.component(key, component)
+  app.component(key, component)
 }
 
 /**
@@ -89,14 +95,14 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
  * please remove it before going online! ! !
  */
 
-window.$vueApp.use(Element, {
+app.use(Element, {
   size: Cookies.get('size') || 'default', // set element-ui default size
   locale: zhCn
 })
 
-window.$vueApp.config.globalProperties.routerAppend = (path, pathToAppend) => {
+app.config.globalProperties.routerAppend = (path, pathToAppend) => {
   return path + (path.endsWith('/') ? '' : '/') + pathToAppend
 }
-window.$vueApp.use(store)
-window.$vueApp.use(router)
-window.$vueApp.mount('#app')
+app.use(router)
+app.use(store)
+app.mount('#app')

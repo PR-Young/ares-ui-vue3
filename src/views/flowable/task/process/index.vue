@@ -226,7 +226,7 @@
           <template v-slot="scope">
             <el-button
               size="default"
-              link
+              type="text"
               :icon="ElIconEditOutline"
               @click="handleStartProcess(scope.row)"
               >发起流程</el-button

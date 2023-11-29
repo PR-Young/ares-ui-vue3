@@ -24,33 +24,45 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Logo from './Logo.vue'
-import SidebarItem from './SidebarItem.vue'
-import variables from '@/assets/styles/variables.module.scss?inlineq'
+import store from "@/store";
+import Logo from "./Logo.vue";
+import SidebarItem from "./SidebarItem.vue";
+import variables from "@/assets/styles/variables.module.scss?inlineq";
+import usePermissionStore from "@/store/modules/permission";
+import useAppStore from "@/store/modules/app";
+import useSettingsStore from "@/store/modules/settings";
+
+const permission = usePermissionStore(store);
+const app = useAppStore(store);
+const settings = useSettingsStore(store);
 
 export default {
   components: { SidebarItem, Logo },
   computed: {
-    ...mapGetters(['permission_routes', 'sidebar']),
+    permission_routes() {
+      return permission.permissionRoutes;
+    },
+    sidebar() {
+      return app.sidebar;
+    },
     activeMenu() {
-      const route = this.$route
-      const { meta, path } = route
+      const route = this.$route;
+      const { meta, path } = route;
       // if set path, the sidebar will highlight the path you set
       if (meta.activeMenu) {
-        return meta.activeMenu
+        return meta.activeMenu;
       }
-      return path
+      return path;
     },
     showLogo() {
-      return this.$store.state.settings.sidebarLogo
+      return settings.sidebarLogo;
     },
     variables() {
-      return variables
+      return variables;
     },
     isCollapse() {
-      return !this.sidebar.opened
+      return !this.sidebar.opened;
     },
   },
-}
+};
 </script>

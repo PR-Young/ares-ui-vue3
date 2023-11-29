@@ -2,6 +2,8 @@ import axios from 'axios'
 import { ElNotification, ElMessageBox, ElMessage } from 'element-plus'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import useUserStore from '@/store/modules/user'
+const user = useUserStore(store)
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 
@@ -49,7 +51,7 @@ service.interceptors.response.use(
             type: 'warning',
           }
         ).then(() => {
-          store.dispatch('LogOut').then(() => {
+          user.LogOut().then(() => {
             location.hash = '/login'
             location.reload() // 为了重新实例化vue-router对象 避免bug
           })
@@ -74,7 +76,7 @@ service.interceptors.response.use(
               type: 'warning',
             }
           ).then(() => {
-            store.dispatch('LogOut').then(() => {
+            user.LogOut().then(() => {
               location.hash = '/login'
               location.reload() // 为了重新实例化vue-router对象 避免bug
             })

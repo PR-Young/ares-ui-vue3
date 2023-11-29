@@ -42,9 +42,7 @@
         <el-button :icon="ElIconPlus" link @click="handleForm">
           保存
         </el-button>
-        <el-button :icon="ElIconVideoPlay" link @click="run">
-          运行
-        </el-button>
+        <el-button :icon="ElIconVideoPlay" link @click="run"> 运行 </el-button>
         <el-button :icon="ElIconView" link @click="showJson">
           查看json
         </el-button>
@@ -59,12 +57,7 @@
         >
           复制代码
         </el-button>
-        <el-button
-          class="delete-btn"
-          :icon="ElIconDelete"
-          link
-          @click="empty"
-        >
+        <el-button class="delete-btn" :icon="ElIconDelete" link @click="empty">
           清空
         </el-button>
       </div>
@@ -139,10 +132,7 @@
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="表单名称" prop="formName">
-          <el-input
-            v-model="form.formName"
-            placeholder="请输入表单名称"
-          />
+          <el-input v-model="form.formName" placeholder="请输入表单名称" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" placeholder="请输入备注" />
@@ -159,7 +149,7 @@
 </template>
 
 <script>
-import * as Vue from 'vue'
+import * as Vue from "vue";
 import {
   Plus as ElIconPlus,
   VideoPlay as ElIconVideoPlay,
@@ -167,21 +157,21 @@ import {
   Download as ElIconDownload,
   DocumentCopy as ElIconDocumentCopy,
   Delete as ElIconDelete,
-} from '@element-plus/icons'
-import {VueDraggableNext as draggable} from 'vue-draggable-next'
-import { debounce } from 'throttle-debounce'
-import { saveAs } from 'file-saver'
-import ClipboardJS from 'clipboard'
-import render from '@/components/render/render'
-import FormDrawer from './FormDrawer.vue'
-import JsonDrawer from './JsonDrawer.vue'
-import RightPanel from './RightPanel.vue'
+} from "@element-plus/icons";
+import { VueDraggableNext as draggable } from "vue-draggable-next";
+import { debounce } from "throttle-debounce";
+import { saveAs } from "file-saver";
+import ClipboardJS from "clipboard";
+import render from "@/components/render/render";
+import FormDrawer from "./FormDrawer.vue";
+import JsonDrawer from "./JsonDrawer.vue";
+import RightPanel from "./RightPanel.vue";
 import {
   inputComponents,
   selectComponents,
   layoutComponents,
   formConf,
-} from '@/utils/generator/config'
+} from "@/utils/generator/config";
 import {
   exportDefault,
   beautifierConf,
@@ -189,36 +179,39 @@ import {
   titleCase,
   deepClone,
   isObjectObject,
-} from '@/utils/index'
+} from "@/utils/index";
 import {
   makeUpHtml,
   vueTemplate,
   vueScript,
   cssStyle,
-} from '@/utils/generator/html'
-import { makeUpJs } from '@/utils/generator/js'
-import { makeUpCss } from '@/utils/generator/css'
-import drawingDefalut from '@/utils/generator/drawingDefalut'
-import logo from '@/assets/logo/logo.png'
-import CodeTypeDialog from './CodeTypeDialog.vue'
-import DraggableItem from './DraggableItem.vue'
+} from "@/utils/generator/html";
+import { makeUpJs } from "@/utils/generator/js";
+import { makeUpCss } from "@/utils/generator/css";
+import drawingDefalut from "@/utils/generator/drawingDefalut";
+import logo from "@/assets/logo/logo.png";
+import CodeTypeDialog from "./CodeTypeDialog.vue";
+import DraggableItem from "./DraggableItem.vue";
 import {
   getDrawingList,
   saveDrawingList,
   getIdGlobal,
   saveIdGlobal,
   getFormConf,
-} from '@/utils/db'
-import loadBeautifier from '@/utils/loadBeautifier'
-import { getForm, addForm, updateForm } from '@/api/flowable/form'
+} from "@/utils/db";
+import loadBeautifier from "@/utils/loadBeautifier";
+import { getForm, addForm, updateForm } from "@/api/flowable/form";
+import store from "@/store";
+import useTagsViewStore from "@/store/modules/tagsView";
+const tagsView = useTagsViewStore(store);
 
-let beautifier
-const emptyActiveData = { style: {}, autosize: {} }
-let oldActiveId
-let tempActiveData
-const drawingListInDB = getDrawingList()
-const formConfInDB = getFormConf()
-const idGlobal = getIdGlobal()
+let beautifier;
+const emptyActiveData = { style: {}, autosize: {} };
+let oldActiveId;
+let tempActiveData;
+const drawingListInDB = getDrawingList();
+const formConfInDB = getFormConf();
+const idGlobal = getIdGlobal();
 
 export default {
   data() {
@@ -244,20 +237,20 @@ export default {
       saveIdGlobalDebounce: debounce(340, saveIdGlobal),
       leftComponents: [
         {
-          title: '输入型组件',
+          title: "输入型组件",
           list: inputComponents,
         },
         {
-          title: '选择型组件',
+          title: "选择型组件",
           list: selectComponents,
         },
         {
-          title: '布局型组件',
+          title: "布局型组件",
           list: layoutComponents,
         },
       ],
       formOpen: false,
-      formTitle: '',
+      formTitle: "",
       // 表单参数
       form: {
         id: null,
@@ -273,7 +266,7 @@ export default {
       ElIconDownload,
       ElIconDocumentCopy,
       ElIconDelete,
-    }
+    };
   },
   components: {
     draggable,
@@ -287,30 +280,30 @@ export default {
   computed: {},
   watch: {
     // eslint-disable-next-line func-names
-    'activeData.__config__.label': function (val, oldVal) {
+    "activeData.__config__.label": function (val, oldVal) {
       if (
         this.activeData.placeholder === undefined ||
         !this.activeData.__config__.tag ||
         oldActiveId !== this.activeId
       ) {
-        return
+        return;
       }
       this.activeData.placeholder =
-        this.activeData.placeholder.replace(oldVal, '') + val
+        this.activeData.placeholder.replace(oldVal, "") + val;
     },
     activeId: {
       deep: true,
 
       handler(val) {
-        oldActiveId = val
+        oldActiveId = val;
       },
 
       immediate: true,
     },
     drawingList: {
       handler(val) {
-        this.saveDrawingListDebounce(val)
-        if (val.length === 0) this.idGlobal = 100
+        this.saveDrawingListDebounce(val);
+        if (val.length === 0) this.idGlobal = 100;
       },
       deep: true,
     },
@@ -318,270 +311,271 @@ export default {
       deep: true,
 
       handler(val) {
-        this.saveIdGlobalDebounce(val)
+        this.saveIdGlobalDebounce(val);
       },
 
       immediate: true,
     },
   },
   mounted() {
-    const that = this
+    const that = this;
     if (Array.isArray(drawingListInDB) && drawingListInDB.length > 0) {
-      that.drawingList = drawingListInDB
+      that.drawingList = drawingListInDB;
     } else {
-      that.drawingList = drawingDefalut
+      that.drawingList = drawingDefalut;
     }
-    this.activeFormItem(that.drawingList[0])
+    this.activeFormItem(that.drawingList[0]);
     // // if (formConfInDB) {
     // //   this.formConf = formConfInDB
     // // }
-    that.drawingList = []
-    const formId = that.$route.query && that.$route.query.formId
+    that.drawingList = [];
+    const formId = that.$route.query && that.$route.query.formId;
     if (formId) {
       getForm(formId).then((res) => {
-        that.formConf = JSON.parse(res.data.formContent)
-        that.drawingList = that.formConf.fields
-        that.form = res.data
-      })
+        that.formConf = JSON.parse(res.data.formContent);
+        that.drawingList = that.formConf.fields;
+        that.form = res.data;
+      });
     } else {
       if (formConfInDB) {
-        that.formConf = formConfInDB
+        that.formConf = formConfInDB;
       }
     }
     loadBeautifier((btf) => {
-      beautifier = btf
-    })
-    const clipboard = new ClipboardJS('#copyNode', {
+      beautifier = btf;
+    });
+    const clipboard = new ClipboardJS("#copyNode", {
       text: (trigger) => {
-        const codeStr = this.generateCode()
+        const codeStr = this.generateCode();
         this.$notify({
-          title: '成功',
-          message: '代码已复制到剪切板，可粘贴。',
-          type: 'success',
-        })
-        return codeStr
+          title: "成功",
+          message: "代码已复制到剪切板，可粘贴。",
+          type: "success",
+        });
+        return codeStr;
       },
-    })
-    clipboard.on('error', (e) => {
-      this.$message.error('代码复制失败')
-    })
+    });
+    clipboard.on("error", (e) => {
+      this.$message.error("代码复制失败");
+    });
   },
   methods: {
     setObjectValueReduce(obj, strKeys, data) {
-      const arr = strKeys.split('.')
+      const arr = strKeys.split(".");
       arr.reduce((pre, item, i) => {
         if (arr.length === i + 1) {
-          pre[item] = data
+          pre[item] = data;
         } else if (!isObjectObject(pre[item])) {
-          pre[item] = {}
+          pre[item] = {};
         }
-        return pre[item]
-      }, obj)
+        return pre[item];
+      }, obj);
     },
     setRespData(component, resp) {
-      const { dataPath, renderKey, dataConsumer } = component.__config__
-      if (!dataPath || !dataConsumer) return
+      const { dataPath, renderKey, dataConsumer } = component.__config__;
+      if (!dataPath || !dataConsumer) return;
       const respData = dataPath
-        .split('.')
-        .reduce((pre, item) => pre[item], resp)
+        .split(".")
+        .reduce((pre, item) => pre[item], resp);
 
       // 将请求回来的数据，赋值到指定属性。
       // 以el-tabel为例，根据Element文档，应该将数据赋值给el-tabel的data属性，所以dataConsumer的值应为'data';
       // 此时赋值代码可写成 component[dataConsumer] = respData；
       // 但为支持更深层级的赋值（如：dataConsumer的值为'options.data'）,使用setObjectValueReduce
-      this.setObjectValueReduce(component, dataConsumer, respData)
+      this.setObjectValueReduce(component, dataConsumer, respData);
       const i = this.drawingList.findIndex(
         (item) => item.__config__.renderKey === renderKey
-      )
-      if (i > -1) this.drawingList[i] = component
+      );
+      if (i > -1) this.drawingList[i] = component;
     },
     fetchData(component) {
-      const { dataType, method, url } = component.__config__
-      if (dataType === 'dynamic' && method && url) {
-        this.setLoading(component, true)
+      const { dataType, method, url } = component.__config__;
+      if (dataType === "dynamic" && method && url) {
+        this.setLoading(component, true);
         this.$axios({
           method,
           url,
         }).then((resp) => {
-          this.setLoading(component, false)
-          this.setRespData(component, resp.data)
-        })
+          this.setLoading(component, false);
+          this.setRespData(component, resp.data);
+        });
       }
     },
     setLoading(component, val) {
-      const { directives } = component
+      const { directives } = component;
       if (Array.isArray(directives)) {
-        const t = directives.find((d) => d.name === 'loading')
-        if (t) t.value = val
+        const t = directives.find((d) => d.name === "loading");
+        if (t) t.value = val;
       }
     },
     activeFormItem(currentItem) {
-      this.activeData = currentItem
-      this.activeId = currentItem.formId
+      this.activeData = currentItem;
+      this.activeId = currentItem.formId;
     },
     onEnd(obj) {
       if (obj.from !== obj.to) {
-        this.fetchData(tempActiveData)
-        this.activeData = tempActiveData
-        this.activeId = this.idGlobal
+        this.fetchData(tempActiveData);
+        this.activeData = tempActiveData;
+        this.activeId = this.idGlobal;
       }
     },
     addComponent(item) {
-      const clone = this.cloneComponent(item)
-      this.fetchData(clone)
-      this.drawingList.push(clone)
-      this.activeFormItem(clone)
+      const clone = this.cloneComponent(item);
+      this.fetchData(clone);
+      this.drawingList.push(clone);
+      this.activeFormItem(clone);
     },
     cloneComponent(origin) {
-      const clone = deepClone(origin)
-      const config = clone.__config__
-      config.span = this.formConf.span // 生成代码时，会根据span做精简判断
-      this.createIdAndKey(clone)
-      clone.placeholder !== undefined && (clone.placeholder += config.label)
-      tempActiveData = clone
-      return tempActiveData
+      const clone = deepClone(origin);
+      const config = clone.__config__;
+      config.span = this.formConf.span; // 生成代码时，会根据span做精简判断
+      this.createIdAndKey(clone);
+      clone.placeholder !== undefined && (clone.placeholder += config.label);
+      tempActiveData = clone;
+      return tempActiveData;
     },
     createIdAndKey(item) {
-      const config = item.__config__
-      config.formId = ++this.idGlobal
-      config.renderKey = `${config.formId}${+new Date()}` // 改变renderKey后可以实现强制更新组件
-      if (config.layout === 'colFormItem') {
-        item.__vModel__ = `field${this.idGlobal}`
-      } else if (config.layout === 'rowFormItem') {
-        config.componentName = `row${this.idGlobal}`
-        !Array.isArray(config.children) && (config.children = [])
-        delete config.label // rowFormItem无需配置label属性
+      const config = item.__config__;
+      config.formId = ++this.idGlobal;
+      config.renderKey = `${config.formId}${+new Date()}`; // 改变renderKey后可以实现强制更新组件
+      if (config.layout === "colFormItem") {
+        item.__vModel__ = `field${this.idGlobal}`;
+      } else if (config.layout === "rowFormItem") {
+        config.componentName = `row${this.idGlobal}`;
+        !Array.isArray(config.children) && (config.children = []);
+        delete config.label; // rowFormItem无需配置label属性
       }
       if (Array.isArray(config.children)) {
         config.children = config.children.map((childItem) =>
           this.createIdAndKey(childItem)
-        )
+        );
       }
-      return item
+      return item;
     },
     AssembleFormData() {
       this.formData = {
         fields: deepClone(this.drawingList),
         ...this.formConf,
-      }
+      };
     },
     generate(data) {
-      const func = this[`exec${titleCase(this.operationType)}`]
-      this.generateConf = data
-      func && func(data)
+      const func = this[`exec${titleCase(this.operationType)}`];
+      this.generateConf = data;
+      func && func(data);
     },
     execRun(data) {
-      this.AssembleFormData()
-      this.drawerVisible = true
+      this.AssembleFormData();
+      this.drawerVisible = true;
     },
     execDownload(data) {
-      const codeStr = this.generateCode()
-      const blob = new Blob([codeStr], { type: 'text/plain;charset=utf-8' })
-      saveAs(blob, data.fileName)
+      const codeStr = this.generateCode();
+      const blob = new Blob([codeStr], { type: "text/plain;charset=utf-8" });
+      saveAs(blob, data.fileName);
     },
     execCopy(data) {
-      document.getElementById('copyNode').click()
+      document.getElementById("copyNode").click();
     },
     empty() {
-      this.$confirm('确定要清空所有组件吗？', '提示', { type: 'warning' }).then(
+      this.$confirm("确定要清空所有组件吗？", "提示", { type: "warning" }).then(
         () => {
-          this.drawingList = []
-          this.idGlobal = 100
+          this.drawingList = [];
+          this.idGlobal = 100;
         }
-      )
+      );
     },
     drawingItemCopy(item, list) {
-      let clone = deepClone(item)
-      clone = this.createIdAndKey(clone)
-      list.push(clone)
-      this.activeFormItem(clone)
+      let clone = deepClone(item);
+      clone = this.createIdAndKey(clone);
+      list.push(clone);
+      this.activeFormItem(clone);
     },
     drawingItemDelete(index, list) {
-      list.splice(index, 1)
+      list.splice(index, 1);
       this.$nextTick(() => {
-        const len = this.drawingList.length
+        const len = this.drawingList.length;
         if (len) {
-          this.activeFormItem(this.drawingList[len - 1])
+          this.activeFormItem(this.drawingList[len - 1]);
         }
-      })
+      });
     },
     generateCode() {
-      const { type } = this.generateConf
-      this.AssembleFormData()
-      const script = vueScript(makeUpJs(this.formData, type))
-      const html = vueTemplate(makeUpHtml(this.formData, type))
-      const css = cssStyle(makeUpCss(this.formData))
-      return beautifier.html(html + script + css, beautifierConf.html)
+      const { type } = this.generateConf;
+      this.AssembleFormData();
+      const script = vueScript(makeUpJs(this.formData, type));
+      const html = vueTemplate(makeUpHtml(this.formData, type));
+      const css = cssStyle(makeUpCss(this.formData));
+      return beautifier.html(html + script + css, beautifierConf.html);
     },
     showJson() {
-      this.AssembleFormData()
-      this.jsonDrawerVisible = true
+      this.AssembleFormData();
+      this.jsonDrawerVisible = true;
     },
     download() {
-      this.dialogVisible = true
-      this.showFileName = true
-      this.operationType = 'download'
+      this.dialogVisible = true;
+      this.showFileName = true;
+      this.operationType = "download";
     },
     run() {
-      this.dialogVisible = true
-      this.showFileName = false
-      this.operationType = 'run'
+      this.dialogVisible = true;
+      this.showFileName = false;
+      this.operationType = "run";
     },
     copy() {
-      this.dialogVisible = true
-      this.showFileName = false
-      this.operationType = 'copy'
+      this.dialogVisible = true;
+      this.showFileName = false;
+      this.operationType = "copy";
     },
-    tagChange(newTag) {debugger
-      newTag = this.cloneComponent(newTag)
-      const config = newTag.__config__
-      newTag.__vModel__ = this.activeData.__vModel__
-      config.formId = this.activeId
-      config.span = this.activeData.__config__.span
-      this.activeData.__config__.tag = config.tag
-      this.activeData.__config__.tagIcon = config.tagIcon
-      this.activeData.__config__.document = config.document
+    tagChange(newTag) {
+      debugger;
+      newTag = this.cloneComponent(newTag);
+      const config = newTag.__config__;
+      newTag.__vModel__ = this.activeData.__vModel__;
+      config.formId = this.activeId;
+      config.span = this.activeData.__config__.span;
+      this.activeData.__config__.tag = config.tag;
+      this.activeData.__config__.tagIcon = config.tagIcon;
+      this.activeData.__config__.document = config.document;
       if (
         typeof this.activeData.__config__.defaultValue ===
         typeof config.defaultValue
       ) {
-        config.defaultValue = this.activeData.__config__.defaultValue
+        config.defaultValue = this.activeData.__config__.defaultValue;
       }
       Object.keys(newTag).forEach((key) => {
         if (this.activeData[key] !== undefined) {
-          newTag[key] = this.activeData[key]
+          newTag[key] = this.activeData[key];
         }
-      })
-      this.activeData = newTag
-      this.updateDrawingList(newTag, this.drawingList)
+      });
+      this.activeData = newTag;
+      this.updateDrawingList(newTag, this.drawingList);
     },
     updateDrawingList(newTag, list) {
       const index = list.findIndex(
         (item) => item.__config__.formId === this.activeId
-      )
+      );
       if (index > -1) {
-        list.splice(index, 1, newTag)
+        list.splice(index, 1, newTag);
       } else {
         list.forEach((item) => {
           if (Array.isArray(item.__config__.children))
-            this.updateDrawingList(newTag, item.__config__.children)
-        })
+            this.updateDrawingList(newTag, item.__config__.children);
+        });
       }
     },
     refreshJson(data) {
-      this.drawingList = deepClone(data.fields)
-      delete data.fields
-      this.formConf = data
+      this.drawingList = deepClone(data.fields);
+      delete data.fields;
+      this.formConf = data;
     },
     /** 表单基本信息 */
     handleForm() {
       this.formData = {
         fields: deepClone(this.drawingList),
         ...this.formConf,
-      }
-      this.form.formContent = JSON.stringify(this.formData)
-      this.formOpen = true
-      this.formTitle = '添加表单'
+      };
+      this.form.formContent = JSON.stringify(this.formData);
+      this.formOpen = true;
+      this.formTitle = "添加表单";
     },
     // 表单重置
     reset() {
@@ -590,42 +584,42 @@ export default {
         formName: null,
         formContent: null,
         remark: null,
-      }
-      this.resetForm('form')
+      };
+      this.resetForm("form");
     },
     // 取消按钮
     cancel() {
-      this.formOpen = false
-      this.reset()
+      this.formOpen = false;
+      this.reset();
     },
     /** 保存表单信息 */
     submitForm() {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.id != null) {
             updateForm(this.form).then((response) => {
-              this.msgSuccess('修改成功')
-            })
+              this.msgSuccess("修改成功");
+            });
           } else {
             addForm(this.form).then((response) => {
-              this.msgSuccess('新增成功')
-            })
+              this.msgSuccess("新增成功");
+            });
           }
-          this.drawingList = []
-          this.idGlobal = 100
-          this.open = false
+          this.drawingList = [];
+          this.idGlobal = 100;
+          this.open = false;
           // 关闭当前标签页并返回上个页面
-          this.$store.dispatch('tagsView/delView', this.$route)
-          this.$router.go(-1)
+          tagsView.delView(this.$route);
+          this.$router.go(-1);
         }
-      })
+      });
     },
   },
-}
+};
 </script>
 
 <style lang="scss">
-@import '@/styles/home';
+@import "@/styles/home";
 .el-tabs__nav {
   width: 100%;
 }

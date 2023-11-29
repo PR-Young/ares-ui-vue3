@@ -91,6 +91,8 @@ import store from "@/store";
 import "vue-cropper/dist/index.css";
 import { VueCropper } from "vue-cropper";
 import { uploadAvatar } from "@/api/system/user";
+import useUserStore from "@/store/modules/user";
+const user = useUserStore(store);
 
 export default {
   data() {
@@ -100,7 +102,7 @@ export default {
       // 弹出层标题
       title: "修改头像",
       options: {
-        img: store.getters.avatar.url, //裁剪图片的地址
+        img: user.avatar.url, //裁剪图片的地址
         autoCrop: true, // 是否默认生成截图框
         autoCropWidth: 200, // 默认生成截图框宽度
         autoCropHeight: 200, // 默认生成截图框高度

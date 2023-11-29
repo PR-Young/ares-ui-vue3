@@ -163,6 +163,9 @@ import { optionselect as getDictOptionselect } from "@/api/system/dict/type";
 import basicInfoForm from "./basicInfoForm.vue";
 import genInfoForm from "./genInfoForm.vue";
 import Sortable from "sortablejs";
+import store from "@/store";
+import useTagsViewStore from "@/store/modules/tagsView";
+const tagsView = useTagsViewStore(store);
 export default {
   name: "GenEdit",
   components: {
@@ -232,7 +235,7 @@ export default {
     },
     /** 关闭按钮 */
     close() {
-      this.$store.dispatch("tagsView/delView", this.$route);
+      tagsView.delView(this.$route);
       this.$router.push({ path: "/tool/gen", query: { t: Date.now() } });
     },
   },

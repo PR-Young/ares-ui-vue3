@@ -151,14 +151,14 @@
         <template v-slot="scope">
           <el-button
             size="default"
-            link
+            type="text"
             :icon="ElIconView"
             @click="handleShowDetail(scope.row)"
             >查看</el-button
           >
           <el-button
             size="default"
-            link
+            type="text"
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['notice:edit']"
@@ -166,7 +166,7 @@
           >
           <el-button
             size="default"
-            link
+            type="text"
             :icon="ElIconDelete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['notice:delete']"

@@ -1,58 +1,54 @@
+import { defineStore } from 'pinia'
 import Cookies from 'js-cookie'
 
-const state = {
-  sidebar: {
-    opened: Cookies.get('sidebarStatus')
-      ? !!+Cookies.get('sidebarStatus')
-      : true,
-    withoutAnimation: false,
-  },
-  device: 'desktop',
-  size: Cookies.get('size') || 'default',
-}
 
-const mutations = {
-  TOGGLE_SIDEBAR: (state) => {
-    state.sidebar.opened = !state.sidebar.opened
-    state.sidebar.withoutAnimation = false
-    if (state.sidebar.opened) {
-      Cookies.set('sidebarStatus', 1)
-    } else {
-      Cookies.set('sidebarStatus', 0)
+const useAppStore = defineStore('app', {
+  state: () => {
+    return {
+      sidebar: {
+        opened: Cookies.get('sidebarStatus')
+          ? !!+Cookies.get('sidebarStatus')
+          : true,
+        withoutAnimation: false,
+      },
+      device: 'desktop',
+      size: Cookies.get('size') || 'default',
     }
   },
-  CLOSE_SIDEBAR: (state, withoutAnimation) => {
-    Cookies.set('sidebarStatus', 0)
-    state.sidebar.opened = false
-    state.sidebar.withoutAnimation = withoutAnimation
+  actions: {
+    toggleSideBar() {
+      this.sidebar.opened = !this.sidebar.opened
+      this.sidebar.withoutAnimation = false
+      if (this.sidebar.opened) {
+        Cookies.set('sidebarStatus', 1)
+      } else {
+        Cookies.set('sidebarStatus', 0)
+      }
+    },
+    closeSideBar(withoutAnimation) {
+      Cookies.set('sidebarStatus', 0)
+      this.sidebar.opened = false
+      this.sidebar.withoutAnimation = withoutAnimation
+    },
+    toggleDevice(device) {
+      this.device = device
+    },
+    setSize(size) {
+      this.size = size
+      Cookies.set('size', size)
+    },
   },
-  TOGGLE_DEVICE: (state, device) => {
-    state.device = device
-  },
-  SET_SIZE: (state, size) => {
-    state.size = size
-    Cookies.set('size', size)
-  },
-}
+  getters: {
+    getSidebar() {
+      return this.sidebar
+    },
+    getSize() {
+      return this.size
+    },
+    getDevice() {
+      return this.device
+    }
+  }
+})
 
-const actions = {
-  toggleSideBar({ commit }) {
-    commit('TOGGLE_SIDEBAR')
-  },
-  closeSideBar({ commit }, { withoutAnimation }) {
-    commit('CLOSE_SIDEBAR', withoutAnimation)
-  },
-  toggleDevice({ commit }, device) {
-    commit('TOGGLE_DEVICE', device)
-  },
-  setSize({ commit }, size) {
-    commit('SET_SIZE', size)
-  },
-}
-
-export default {
-  namespaced: true,
-  state,
-  mutations,
-  actions,
-}
+export default useAppStore
