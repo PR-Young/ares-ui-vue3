@@ -32,6 +32,7 @@
 <script>
 import { CountTo } from "vue3-count-to";
 import { getPanelGroups } from "@/api/home";
+import { $on, $off, $once, $emit } from "../../utils/gogocodeTransfer";
 
 export default {
   components: {

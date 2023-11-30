@@ -11,7 +11,6 @@ import router from './router'
 import permission from './directive/permission'
 import workflowBpmnModelerInstall from './components/Process/index'
 import bpmnViewerInstall from './components/BpmnViewer/index'
-import install from './directive/permission/index'
 
 //import './assets/icons' // icon
 import SvgIcon from '@/components/SvgIcon/index.vue'
@@ -48,7 +47,7 @@ const app = Vue.createApp(App)
 
 workflowBpmnModelerInstall(app)
 bpmnViewerInstall(app)
-//install(app)
+
 // 全局方法挂载
 app.config.globalProperties.getDicts = getDicts
 app.config.globalProperties.getConfigKey = getConfigKey

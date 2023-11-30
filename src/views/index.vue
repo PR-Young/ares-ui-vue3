@@ -2,38 +2,38 @@
   <div class="dashboard-editor-container">
     <el-row>
       <el-col>
-      <el-form :inline="true" style="text-align: center">
-        <el-form-item>
-          <el-input
-            style="width: 500px"
-            v-model="queryParams.searchValue"
-            placeholder="请输入"
-            clearable
-            size="default"
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            type="primary"
-            :icon="ElIconSearch"
-            size="default"
-            @click="handleQuery"
-          ></el-button>
-        </el-form-item>
-      </el-form>
-    </el-col>
+        <el-form :inline="true" style="text-align: center">
+          <el-form-item>
+            <el-input
+              style="width: 500px"
+              v-model="queryParams.searchValue"
+              placeholder="请输入"
+              clearable
+              size="default"
+              @keyup.enter="handleQuery"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              type="primary"
+              :icon="ElIconSearch"
+              size="default"
+              @click="handleQuery"
+            ></el-button>
+          </el-form-item>
+        </el-form>
+      </el-col>
     </el-row>
 
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
-    <el-row style="background: #fff; padding: 16px 16px 0; margin-bottom: 32px">
-      <time-line-chart :chart-data="lineData" />
-    </el-row>
-
     <!-- <el-row style="background: #fff; padding: 16px 16px 0; margin-bottom: 32px">
-            <line-chart :chart-data="lineChartData" />
-          </el-row> -->
+      <time-line-chart :chart-data="lineData" />
+    </el-row> -->
+
+    <el-row style="background: #fff; padding: 16px 16px 0; margin-bottom: 32px">
+      <line-chart :chart-data="lineChartData" />
+    </el-row>
 
     <el-row :gutter="32">
       <el-col :xs="24" :sm="24" :lg="8">
@@ -60,15 +60,15 @@
 </template>
 
 <script>
-import { Search as ElIconSearch } from '@element-plus/icons'
-import PanelGroup from './dashboard/PanelGroup.vue'
-import LineChart from './dashboard/LineChart.vue'
-import RaddarChart from './dashboard/RaddarChart.vue'
-import PieChart from './dashboard/PieChart.vue'
-import BarChart from './dashboard/BarChart.vue'
-import TimeLineChart from './dashboard/TimeLineChart.vue'
-import { getLineChartData, getLineChart, queryByKey } from '@/api/home'
-import {markRaw} from "vue"
+import { Search as ElIconSearch } from "@element-plus/icons";
+import PanelGroup from "./dashboard/PanelGroup.vue";
+import LineChart from "./dashboard/LineChart.vue";
+import RaddarChart from "./dashboard/RaddarChart.vue";
+import PieChart from "./dashboard/PieChart.vue";
+import BarChart from "./dashboard/BarChart.vue";
+import TimeLineChart from "./dashboard/TimeLineChart.vue";
+import { getLineChartData, getLineChart, queryByKey } from "@/api/home";
+import { markRaw } from "vue";
 
 export default {
   data() {
@@ -83,31 +83,31 @@ export default {
         searchValue: undefined,
       },
       ElIconSearch,
-    }
+    };
   },
-  name: 'Index',
+  name: "Index",
   components: {
-    PanelGroup:PanelGroup,
-    LineChart:markRaw(LineChart),
-    RaddarChart:markRaw(RaddarChart),
-    PieChart:markRaw(PieChart),
-    BarChart:markRaw(BarChart),
-    TimeLineChart:markRaw(TimeLineChart),
-    ElIconSearch:markRaw(ElIconSearch)
+    PanelGroup: PanelGroup,
+    LineChart: markRaw(LineChart),
+    RaddarChart: markRaw(RaddarChart),
+    PieChart: markRaw(PieChart),
+    BarChart: markRaw(BarChart),
+    TimeLineChart: markRaw(TimeLineChart),
+    ElIconSearch: markRaw(ElIconSearch),
   },
   created() {
     getLineChartData().then((res) => {
-      this.lineChartData = res.data.newVisitis
-    })
+      this.lineChartData = res.data.newVisitis;
+    });
     getLineChart().then((res) => {
-      this.lineData = res.data
-    })
+      this.lineData = res.data;
+    });
   },
   methods: {
     handleSetLineChartData(type) {
       getLineChartData().then((res) => {
-        this.lineChartData = res.data[type]
-      })
+        this.lineChartData = res.data[type];
+      });
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -115,12 +115,12 @@ export default {
         const data = {
           searchValue: this.queryParams.searchValue,
           data: res.data,
-        }
-        this.$router.push({ path: '/query/result', query: data })
-      })
+        };
+        this.$router.push({ path: "/query/result", query: data });
+      });
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -16,7 +16,7 @@
         <span v-if="!isAffix(tag)" @click.prevent.stop="closeSelectedTag(tag)">
           <el-icon
             class="el-icon-close"
-            style="width: 1em; height: 1em; vertical-align: middle"
+            style="width: 1em; height: 1em; vertical-align: text-bottom"
             ><Close
           /></el-icon>
         </span>
