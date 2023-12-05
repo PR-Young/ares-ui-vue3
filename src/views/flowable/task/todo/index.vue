@@ -104,7 +104,8 @@
         <template v-slot="scope">
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconEditOutline"
             @click="handleProcess(scope.row)"
             >处理
@@ -140,6 +141,7 @@ import {
   delDeployment,
   exportDeployment,
 } from "@/api/flowable/todo";
+import { markRaw } from "vue";
 
 export default {
   data() {
@@ -180,7 +182,12 @@ export default {
     };
   },
   name: "Deploy",
-  components: {},
+  components: {
+    ElIconSearch: markRaw(ElIconSearch),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconDelete: markRaw(ElIconDelete),
+    ElIconEditOutline: markRaw(ElIconEditOutline),
+  },
   created() {
     this.getList();
   },

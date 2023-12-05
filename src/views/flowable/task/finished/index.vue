@@ -116,14 +116,16 @@
         <template v-slot="scope">
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconTickets"
             @click="handleFlowRecord(scope.row)"
             >流转记录</el-button
           >
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconTickets"
             @click="handleRevoke(scope.row)"
             >撤回
@@ -158,6 +160,7 @@ import {
   exportDeployment,
   revokeProcess,
 } from "@/api/flowable/finished";
+import { markRaw } from "vue";
 
 export default {
   data() {
@@ -206,7 +209,12 @@ export default {
     };
   },
   name: "Deploy",
-  components: {},
+  components: {
+    ElIconSearch: markRaw(ElIconSearch),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconDelete: markRaw(ElIconDelete),
+    ElIconTickets: markRaw(ElIconTickets),
+  },
   created() {
     this.getList();
   },

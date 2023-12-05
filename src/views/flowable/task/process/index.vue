@@ -226,7 +226,8 @@
           <template v-slot="scope">
             <el-button
               size="default"
-              type="text"
+              type="primary"
+              link
               :icon="ElIconEditOutline"
               @click="handleStartProcess(scope.row)"
               >发起流程</el-button
@@ -271,6 +272,7 @@ import {
   applyFlowList,
 } from "@/api/flowable/process";
 import { listDefinition } from "@/api/flowable/definition";
+import { markRaw } from "vue";
 export default {
   data() {
     return {
@@ -326,7 +328,15 @@ export default {
     };
   },
   components: {
-    ElIconArrowDown,
+    ElIconArrowDown: markRaw(ElIconArrowDown),
+    ElIconSearch: markRaw(ElIconSearch),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconPlus: markRaw(ElIconPlus),
+    ElIconDelete: markRaw(ElIconDelete),
+    ElIconDownload: markRaw(ElIconDownload),
+    ElIconTickets: markRaw(ElIconTickets),
+    ElIconCircleClose: markRaw(ElIconCircleClose),
+    ElIconEditOutline: markRaw(ElIconEditOutline),
   },
   name: "Deploy",
   created() {

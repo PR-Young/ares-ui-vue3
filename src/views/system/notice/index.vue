@@ -151,14 +151,16 @@
         <template v-slot="scope">
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconView"
             @click="handleShowDetail(scope.row)"
             >查看</el-button
           >
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['notice:edit']"
@@ -166,7 +168,8 @@
           >
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconDelete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['notice:delete']"
@@ -327,6 +330,7 @@ import {
   editNotice,
 } from "@/api/system/notice";
 import Editor from "@/components/Editor/index.vue";
+import { markRaw } from "vue";
 
 export default {
   data() {
@@ -385,6 +389,14 @@ export default {
     };
   },
   name: "Notice",
+  components: {
+    ElIconSearch: markRaw(ElIconSearch),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconPlus: markRaw(ElIconPlus),
+    ElIconEdit: markRaw(ElIconEdit),
+    ElIconDelete: markRaw(ElIconDelete),
+    ElIconView: markRaw(ElIconView),
+  },
   components: {
     Editor,
   },

@@ -126,7 +126,8 @@
         <template v-slot="scope">
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['sysTenants:edit']"
@@ -134,7 +135,8 @@
           </el-button>
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconDelete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['sysTenants:delete']"
@@ -211,6 +213,7 @@ import {
   updateSysTenants,
   changeStatus,
 } from "@/api/system/tenant";
+import { markRaw } from "vue";
 
 export default {
   name: "SysTenants",
@@ -259,6 +262,14 @@ export default {
       ElIconDelete,
       ElIconDownload,
     };
+  },
+  components: {
+    ElIconSearch: markRaw(ElIconSearch),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconPlus: markRaw(ElIconPlus),
+    ElIconEdit: markRaw(ElIconEdit),
+    ElIconDelete: markRaw(ElIconDelete),
+    ElIconDownload: markRaw(ElIconDownload),
   },
   created() {
     this.getList();

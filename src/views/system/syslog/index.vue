@@ -124,7 +124,8 @@
         <template v-slot="scope">
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconView"
             @click="handleShowDetail(scope.row)"
             >查看</el-button
@@ -205,6 +206,7 @@ import {
   View as ElIconView,
 } from "@element-plus/icons";
 import { listLog } from "@/api/system/log";
+import { markRaw } from "vue";
 
 export default {
   data() {
@@ -246,6 +248,11 @@ export default {
       ElIconRefresh,
       ElIconView,
     };
+  },
+  components: {
+    ElIconSearch: markRaw(ElIconSearch),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconView: markRaw(ElIconView),
   },
   name: "SysLog",
   created() {

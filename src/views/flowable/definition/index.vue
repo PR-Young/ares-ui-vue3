@@ -123,7 +123,11 @@
         :show-overflow-tooltip="true"
       >
         <template v-slot="scope">
-          <el-button type="text" @click="handleReadImage(scope.row.deploymentId)">
+          <el-button
+            type="primary"
+            link
+            @click="handleReadImage(scope.row.deploymentId)"
+          >
             <span>{{ scope.row.name }}</span>
           </el-button>
         </template>
@@ -136,7 +140,8 @@
         <template v-slot="scope">
           <el-button
             v-if="scope.row.formId"
-            type="text"
+            type="primary"
+            link
             @click="handleForm(scope.row.formId)"
           >
             <span>{{ scope.row.formName }}</span>
@@ -340,7 +345,8 @@
               <template v-slot="scope">
                 <el-button
                   size="default"
-                  type="text"
+                  type="primary"
+                  link
                   @click="submitFormDeploy(scope.row)"
                   >确定</el-button
                 >
@@ -396,6 +402,7 @@ import { getToken } from "@/utils/auth";
 import { getForm, addDeployForm, listForm } from "@/api/flowable/form";
 import Parser from "@/components/parser/Parser.vue";
 import flow from "@/views/flowable/task/record/flow.vue";
+import { markRaw } from "vue";
 
 export default {
   data() {
@@ -490,8 +497,17 @@ export default {
   components: {
     Parser,
     flow,
-    ElIconArrowDown,
-    ElIconUpload,
+    ElIconArrowDown: markRaw(ElIconArrowDown),
+    ElIconUpload: markRaw(ElIconUpload),
+    ElIconSearch: markRaw(ElIconSearch),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconPlus: markRaw(ElIconPlus),
+    ElIconDelete: markRaw(ElIconDelete),
+    ElIconDownload: markRaw(ElIconDownload),
+    ElIconEditOutline: markRaw(ElIconEditOutline),
+    ElIconConnection: markRaw(ElIconConnection),
+    ElIconVideoPause: markRaw(ElIconVideoPause),
+    ElIconVideoPlay: markRaw(ElIconVideoPlay),
   },
   name: "Definition",
   created() {

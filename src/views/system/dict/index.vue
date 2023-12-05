@@ -170,7 +170,8 @@
         <template v-slot="scope">
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['sysDictType:edit']"
@@ -178,7 +179,8 @@
           >
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconDelete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['sysDictType:delete']"
@@ -249,6 +251,7 @@ import {
   editType,
   exportType,
 } from "@/api/system/dict/type";
+import { markRaw } from "vue";
 
 export default {
   data() {
@@ -301,6 +304,14 @@ export default {
     };
   },
   name: "Dict",
+  components: {
+    ElIconSearch: markRaw(ElIconSearch),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconPlus: markRaw(ElIconPlus),
+    ElIconEdit: markRaw(ElIconEdit),
+    ElIconDelete: markRaw(ElIconDelete),
+    ElIconDownload: markRaw(ElIconDownload),
+  },
   created() {
     this.getList();
     this.getDicts("sys_normal_status").then((response) => {

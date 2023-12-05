@@ -162,6 +162,7 @@ import {
   cleanLogininfor,
   exportLogininfor,
 } from "@/api/monitor/logininfor";
+import { markRaw } from "vue";
 
 export default {
   data() {
@@ -195,6 +196,12 @@ export default {
     };
   },
   name: "Logininfor",
+  components: {
+    ElIconSearch: markRaw(ElIconSearch),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconDelete: markRaw(ElIconDelete),
+    ElIconDownload: markRaw(ElIconDownload),
+  },
   created() {
     this.getList();
     this.getDicts("sys_common_status").then((response) => {

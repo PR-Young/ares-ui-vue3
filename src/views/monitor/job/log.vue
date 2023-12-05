@@ -167,7 +167,8 @@
         <template v-slot="scope">
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconView"
             @click="handleView(scope.row)"
             >详细</el-button
@@ -244,6 +245,7 @@ import {
   exportJobLog,
   cleanJobLog,
 } from "@/api/monitor/jobLog";
+import { markRaw } from "vue";
 
 export default {
   data() {
@@ -295,6 +297,13 @@ export default {
     };
   },
   name: "JobLog",
+  components: {
+    ElIconSearch: markRaw(ElIconSearch),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconDelete: markRaw(ElIconDelete),
+    ElIconDownload: markRaw(ElIconDownload),
+    ElIconView: markRaw(ElIconView),
+  },
   created() {
     this.getList();
     // this.getDicts("sys_job_status").then(response => {

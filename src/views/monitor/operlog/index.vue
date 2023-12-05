@@ -166,7 +166,8 @@
         <template v-slot="scope">
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconView"
             @click="handleView(scope.row, scope.index)"
             v-hasPermi="['monitor:operlog:query']"
@@ -255,6 +256,7 @@ import {
   cleanOperlog,
   exportOperlog,
 } from "@/api/monitor/operlog";
+import { markRaw } from "vue";
 
 export default {
   data() {
@@ -296,6 +298,13 @@ export default {
     };
   },
   name: "Operlog",
+  components: {
+    ElIconSearch: markRaw(ElIconSearch),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconView: markRaw(ElIconView),
+    ElIconDelete: markRaw(ElIconDelete),
+    ElIconDownload: markRaw(ElIconDownload),
+  },
   created() {
     this.getList();
     this.getDicts("sys_oper_type").then((response) => {

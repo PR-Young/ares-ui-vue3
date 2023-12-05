@@ -109,28 +109,32 @@
             <template v-slot="scope">
               <el-button
                 size="default"
-                type="text"
+                type="primary"
+                link
                 :icon="ElIconSOperation"
                 @click="handleDraw(scope.row)"
                 >流程定义</el-button
               >
               <el-button
                 size="default"
-                type="text"
+                type="primary"
+                link
                 :icon="ElIconUpload"
                 @click="handleDeploy(scope.row)"
                 >部署</el-button
               >
               <el-button
                 size="default"
-                type="text"
+                type="primary"
+                link
                 :icon="ElIconEdit"
                 @click="handleUpdate(scope.row)"
                 >修改</el-button
               >
               <el-button
                 size="default"
-                type="text"
+                type="primary"
+                link
                 :icon="ElIconDelete"
                 @click="handleDelete(scope.row)"
                 >删除</el-button

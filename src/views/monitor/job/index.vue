@@ -163,7 +163,8 @@
         <template v-slot="scope">
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['quartz:edit']"
@@ -171,14 +172,16 @@
           >
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconCaretRight"
             @click="handleRun(scope.row)"
             >执行一次</el-button
           >
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconView"
             @click="handleView(scope.row)"
             >详细</el-button
@@ -362,6 +365,7 @@ import {
   runJob,
   changeJobStatus,
 } from "@/api/monitor/job";
+import { markRaw } from "vue";
 
 export default {
   data() {
@@ -433,7 +437,16 @@ export default {
     };
   },
   components: {
-    ElIconQuestion,
+    ElIconQuestion: markRaw(ElIconQuestion),
+    ElIconSearch: markRaw(ElIconSearch),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconPlus: markRaw(ElIconPlus),
+    ElIconEdit: markRaw(ElIconEdit),
+    ElIconDelete: markRaw(ElIconDelete),
+    ElIconDownload: markRaw(ElIconDownload),
+    ElIconSOperation: markRaw(ElIconSOperation),
+    ElIconCaretRight: markRaw(ElIconCaretRight),
+    ElIconView: markRaw(ElIconView),
   },
   name: "Job",
   created() {

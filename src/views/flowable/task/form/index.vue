@@ -100,14 +100,16 @@
         <template v-slot="scope">
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconView"
             @click="handleDetail(scope.row)"
             >详情</el-button
           >
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconEdit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['sysForm:edit']"
@@ -115,7 +117,8 @@
           >
           <el-button
             size="default"
-            type="text"
+            type="primary"
+            link
             :icon="ElIconDelete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['sysForm:delete']"
@@ -189,6 +192,7 @@ import {
 import Editor from "@/components/Editor/index.vue";
 import Parser from "@/components/parser/Parser.vue";
 import formCreate from "@form-create/element-ui";
+import { markRaw } from "vue";
 export default {
   data() {
     return {
@@ -239,6 +243,13 @@ export default {
     Editor,
     Parser,
     formCreate: formCreate.$form(),
+    ElIconSearch: markRaw(ElIconSearch),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconPlus: markRaw(ElIconPlus),
+    ElIconEdit: markRaw(ElIconEdit),
+    ElIconDelete: markRaw(ElIconDelete),
+    ElIconDownload: markRaw(ElIconDownload),
+    ElIconView: markRaw(ElIconView),
   },
   created() {
     this.getList();

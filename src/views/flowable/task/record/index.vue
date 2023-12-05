@@ -314,6 +314,7 @@ import { listUser } from "@/api/system/user";
 import formCreate from "@form-create/element-ui";
 import store from "@/store";
 import useTagsViewStore from "@/store/modules/tagsView";
+import { markRaw } from "vue";
 const tagsView = useTagsViewStore(store);
 
 export default {
@@ -398,6 +399,9 @@ export default {
     flow,
     Treeselect,
     formCreate: formCreate.$form(),
+    ElIconEditOutline: markRaw(ElIconEditOutline),
+    ElIconRefreshLeft: markRaw(ElIconRefreshLeft),
+    ElIconCircleClose: markRaw(ElIconCircleClose),
   },
   props: {},
   created() {
