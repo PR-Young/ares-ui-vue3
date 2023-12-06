@@ -240,6 +240,24 @@ export const constantRoutes = [
       },
     ],
   },
+  {
+    name: "流程管理(新)",
+    redirect: "noRedirect",
+    path: '/aresflow',
+    component: Layout,
+    meta: { title: '流程管理(新)', icon: 'table', },
+    alwaysShow: true,
+    hidden: false,
+    children: [
+      {
+        path: 'build/index',
+        component: () => import('@/views/aresflow/build/index.vue'),
+        name: 'AresModel',
+        meta: { title: '流程设计', icon: 'component' },
+        hidden: false
+      },
+    ],
+  },
 ]
 
 export default VueRouter.createRouter({
