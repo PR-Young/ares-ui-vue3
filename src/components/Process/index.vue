@@ -33,7 +33,11 @@
               />
             </el-tooltip>
             <el-tooltip effect="dark" content="自适应屏幕" placement="bottom">
-              <el-button size="default" :icon="ElIconRank" @click="fitViewport" />
+              <el-button
+                size="default"
+                :icon="ElIconRank"
+                @click="fitViewport"
+              />
             </el-tooltip>
             <el-tooltip effect="dark" content="放大" placement="bottom">
               <el-button
@@ -68,7 +72,10 @@
             <el-button size="default" :icon="ElIconView" @click="showXML"
               >查看xml</el-button
             >
-            <el-button size="default" :icon="ElIconDownload" @click="saveXML(true)"
+            <el-button
+              size="default"
+              :icon="ElIconDownload"
+              @click="saveXML(true)"
               >下载xml</el-button
             >
             <el-button
@@ -116,16 +123,17 @@ import {
   View as ElIconView,
   Download as ElIconDownload,
   Picture as ElIconPicture,
-} from '@element-plus/icons'
-import { $on, $off, $once, $emit } from '../../utils/gogocodeTransfer'
+} from "@element-plus/icons";
+import { $on, $off, $once, $emit } from "../../utils/gogocodeTransfer";
 // 汉化
-import customTranslate from './common/customTranslate'
-import Modeler from 'bpmn-js/lib/Modeler'
-import panel from './PropertyPanel.vue'
-import BpmData from './BpmData'
-import getInitStr from './flowable/init'
+import customTranslate from "./common/customTranslate";
+import Modeler from "bpmn-js/lib/Modeler";
+import panel from "./PropertyPanel.vue";
+import BpmData from "./BpmData";
+import getInitStr from "./flowable/init";
 // 引入flowable的节点文件
-import flowableModdle from './flowable/flowable.json'
+import flowableModdle from "./flowable/flowable.json";
+import { markRaw } from "vue";
 export default {
   data() {
     return {
@@ -142,16 +150,26 @@ export default {
       ElIconView,
       ElIconDownload,
       ElIconPicture,
-    }
+    };
   },
-  name: 'WorkflowBpmnModeler',
+  name: "WorkflowBpmnModeler",
   components: {
-    panel,
+    panel: markRaw(panel),
+    ElIconFolderOpened: markRaw(ElIconFolderOpened),
+    ElIconCirclePlus: markRaw(ElIconCirclePlus),
+    ElIconRank: markRaw(ElIconRank),
+    ElIconZoomIn: markRaw(ElIconZoomIn),
+    ElIconZoomOut: markRaw(ElIconZoomOut),
+    ElIconBack: markRaw(ElIconBack),
+    ElIconRight: markRaw(ElIconRight),
+    ElIconView: markRaw(ElIconView),
+    ElIconDownload: markRaw(ElIconDownload),
+    ElIconPicture: markRaw(ElIconPicture),
   },
   props: {
     xml: {
       type: String,
-      default: '',
+      default: "",
     },
     users: {
       type: Array,
@@ -177,7 +195,7 @@ export default {
   watch: {
     xml: function (val) {
       if (val) {
-        this.createNewDiagram(val)
+        this.createNewDiagram(val);
       }
     },
   },
@@ -187,132 +205,132 @@ export default {
       container: this.$refs.canvas,
       additionalModules: [
         {
-          translate: ['value', customTranslate],
+          translate: ["value", customTranslate],
         },
       ],
       moddleExtensions: {
         flowable: flowableModdle,
       },
-    })
+    });
     // 新增流程定义
     if (!this.xml) {
-      this.newDiagram()
+      this.newDiagram();
     } else {
-      this.createNewDiagram(this.xml)
+      this.createNewDiagram(this.xml);
     }
   },
   methods: {
     newDiagram() {
-      this.createNewDiagram(getInitStr())
+      this.createNewDiagram(getInitStr());
     },
     // 让图能自适应屏幕
     fitViewport() {
-      this.zoom = this.modeler.get('canvas').zoom('fit-viewport')
+      this.zoom = this.modeler.get("canvas").zoom("fit-viewport");
       const bbox = document
-        .querySelector('.flow-containers .viewport')
-        .getBBox()
-      const currentViewbox = this.modeler.get('canvas').viewbox()
+        .querySelector(".flow-containers .viewport")
+        .getBBox();
+      const currentViewbox = this.modeler.get("canvas").viewbox();
       const elementMid = {
         x: bbox.x + bbox.width / 2 - 65,
         y: bbox.y + bbox.height / 2,
-      }
-      this.modeler.get('canvas').viewbox({
+      };
+      this.modeler.get("canvas").viewbox({
         x: elementMid.x - currentViewbox.width / 2,
         y: elementMid.y - currentViewbox.height / 2,
         width: currentViewbox.width,
         height: currentViewbox.height,
-      })
-      this.zoom = (bbox.width / currentViewbox.width) * 1.8
+      });
+      this.zoom = (bbox.width / currentViewbox.width) * 1.8;
     },
     // 放大缩小
     zoomViewport(zoomIn = true) {
-      this.zoom = this.modeler.get('canvas').zoom()
-      this.zoom += zoomIn ? 0.1 : -0.1
-      this.modeler.get('canvas').zoom(this.zoom)
+      this.zoom = this.modeler.get("canvas").zoom();
+      this.zoom += zoomIn ? 0.1 : -0.1;
+      this.modeler.get("canvas").zoom(this.zoom);
     },
     async createNewDiagram(data) {
       // 将字符串转换成图显示出来
       // data = data.replace(/<!\[CDATA\[(.+?)]]>/g, '&lt;![CDATA[$1]]&gt;')
       data = data.replace(/<!\[CDATA\[(.+?)]]>/g, function (match, str) {
-        return str.replace(/</g, '&lt;')
-      })
+        return str.replace(/</g, "&lt;");
+      });
       try {
-        await this.modeler.importXML(data)
-        this.adjustPalette()
-        this.fitViewport()
+        await this.modeler.importXML(data);
+        this.adjustPalette();
+        this.fitViewport();
         if (this.taskList !== undefined && this.taskList.length > 0) {
-          this.fillColor()
+          this.fillColor();
         }
       } catch (err) {
-        console.error(err.message, err.warnings)
+        console.error(err.message, err.warnings);
       }
     },
     // 调整左侧工具栏排版
     adjustPalette() {
       try {
         // 获取 bpmn 设计器实例
-        const canvas = this.$refs.canvas
-        const djsPalette = canvas.children[0].children[1].children[4]
+        const canvas = this.$refs.canvas;
+        const djsPalette = canvas.children[0].children[1].children[4];
         const djsPalStyle = {
-          width: '130px',
-          padding: '5px',
-          background: 'white',
-          left: '20px',
+          width: "130px",
+          padding: "5px",
+          background: "white",
+          left: "20px",
           borderRadius: 0,
-        }
+        };
         for (var key in djsPalStyle) {
-          djsPalette.style[key] = djsPalStyle[key]
+          djsPalette.style[key] = djsPalStyle[key];
         }
-        const palette = djsPalette.children[0]
-        const allGroups = palette.children
-        allGroups[0].style['display'] = 'none'
+        const palette = djsPalette.children[0];
+        const allGroups = palette.children;
+        allGroups[0].style["display"] = "none";
         // 修改控件样式
         for (var gKey in allGroups) {
-          const group = allGroups[gKey]
+          const group = allGroups[gKey];
           for (var cKey in group.children) {
-            const control = group.children[cKey]
+            const control = group.children[cKey];
             const controlStyle = {
-              display: 'flex',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              width: '100%',
-              padding: '5px',
-            }
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              width: "100%",
+              padding: "5px",
+            };
             if (
               control.className &&
               control.dataset &&
-              control.className.indexOf('entry') !== -1
+              control.className.indexOf("entry") !== -1
             ) {
               const controlProps = new BpmData().getControl(
                 control.dataset.action
-              )
-              control.innerHTML = `<div style='font-size: 14px;font-weight:500;margin-left:15px;'>${controlProps['title']}</div>`
+              );
+              control.innerHTML = `<div style='font-size: 14px;font-weight:500;margin-left:15px;'>${controlProps["title"]}</div>`;
               for (var csKey in controlStyle) {
-                control.style[csKey] = controlStyle[csKey]
+                control.style[csKey] = controlStyle[csKey];
               }
             }
           }
         }
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     },
     fillColor() {
-      const canvas = this.modeler.get('canvas')
+      const canvas = this.modeler.get("canvas");
       this.modeler._definitions.rootElements[0].flowElements.forEach((n) => {
-        const completeTask = this.taskList.find((m) => m.key === n.id)
-        const todoTask = this.taskList.find((m) => !m.completed)
-        const endTask = this.taskList[this.taskList.length - 1]
-        if (n.$type === 'bpmn:UserTask') {
+        const completeTask = this.taskList.find((m) => m.key === n.id);
+        const todoTask = this.taskList.find((m) => !m.completed);
+        const endTask = this.taskList[this.taskList.length - 1];
+        if (n.$type === "bpmn:UserTask") {
           if (completeTask) {
             canvas.addMarker(
               n.id,
-              completeTask.completed ? 'highlight' : 'highlight-todo'
-            )
+              completeTask.completed ? "highlight" : "highlight-todo"
+            );
             n.outgoing?.forEach((nn) => {
               const targetTask = this.taskList.find(
                 (m) => m.key === nn.targetRef.id
-              )
+              );
               if (targetTask) {
                 if (
                   todoTask &&
@@ -321,179 +339,183 @@ export default {
                 ) {
                   canvas.addMarker(
                     nn.id,
-                    todoTask.completed ? 'highlight' : 'highlight-todo'
-                  )
+                    todoTask.completed ? "highlight" : "highlight-todo"
+                  );
                   canvas.addMarker(
                     nn.targetRef.id,
-                    todoTask.completed ? 'highlight' : 'highlight-todo'
-                  )
+                    todoTask.completed ? "highlight" : "highlight-todo"
+                  );
                 } else {
                   canvas.addMarker(
                     nn.id,
-                    targetTask.completed ? 'highlight' : 'highlight-todo'
-                  )
+                    targetTask.completed ? "highlight" : "highlight-todo"
+                  );
                   canvas.addMarker(
                     nn.targetRef.id,
-                    targetTask.completed ? 'highlight' : 'highlight-todo'
-                  )
+                    targetTask.completed ? "highlight" : "highlight-todo"
+                  );
                 }
               }
-            })
+            });
           }
         }
         // 排他网关
-        else if (n.$type === 'bpmn:ExclusiveGateway') {
+        else if (n.$type === "bpmn:ExclusiveGateway") {
           if (completeTask) {
             canvas.addMarker(
               n.id,
-              completeTask.completed ? 'highlight' : 'highlight-todo'
-            )
+              completeTask.completed ? "highlight" : "highlight-todo"
+            );
             n.outgoing?.forEach((nn) => {
               const targetTask = this.taskList.find(
                 (m) => m.key === nn.targetRef.id
-              )
+              );
               if (targetTask) {
                 canvas.addMarker(
                   nn.id,
-                  targetTask.completed ? 'highlight' : 'highlight-todo'
-                )
+                  targetTask.completed ? "highlight" : "highlight-todo"
+                );
                 canvas.addMarker(
                   nn.targetRef.id,
-                  targetTask.completed ? 'highlight' : 'highlight-todo'
-                )
+                  targetTask.completed ? "highlight" : "highlight-todo"
+                );
               }
-            })
+            });
           }
         }
         // 并行网关
-        else if (n.$type === 'bpmn:ParallelGateway') {
+        else if (n.$type === "bpmn:ParallelGateway") {
           if (completeTask) {
             canvas.addMarker(
               n.id,
-              completeTask.completed ? 'highlight' : 'highlight-todo'
-            )
+              completeTask.completed ? "highlight" : "highlight-todo"
+            );
             n.outgoing?.forEach((nn) => {
               const targetTask = this.taskList.find(
                 (m) => m.key === nn.targetRef.id
-              )
+              );
               if (targetTask) {
                 canvas.addMarker(
                   nn.id,
-                  targetTask.completed ? 'highlight' : 'highlight-todo'
-                )
+                  targetTask.completed ? "highlight" : "highlight-todo"
+                );
                 canvas.addMarker(
                   nn.targetRef.id,
-                  targetTask.completed ? 'highlight' : 'highlight-todo'
-                )
+                  targetTask.completed ? "highlight" : "highlight-todo"
+                );
               }
-            })
+            });
           }
-        } else if (n.$type === 'bpmn:StartEvent') {
+        } else if (n.$type === "bpmn:StartEvent") {
           n.outgoing.forEach((nn) => {
             const completeTask = this.taskList.find(
               (m) => m.key === nn.targetRef.id
-            )
+            );
             if (completeTask) {
-              canvas.addMarker(nn.id, 'highlight')
-              canvas.addMarker(n.id, 'highlight')
-              return
+              canvas.addMarker(nn.id, "highlight");
+              canvas.addMarker(n.id, "highlight");
+              return;
             }
-          })
-        } else if (n.$type === 'bpmn:EndEvent') {
+          });
+        } else if (n.$type === "bpmn:EndEvent") {
           if (endTask.key === n.id && endTask.completed) {
-            canvas.addMarker(n.id, 'highlight')
-            return
+            canvas.addMarker(n.id, "highlight");
+            return;
           }
         }
-      })
+      });
     },
     // 对外 api
     getProcess() {
-      const element = this.getProcessElement()
+      const element = this.getProcessElement();
       return {
         id: element.id,
         name: element.name,
-        category: element.$attrs['flowable:processCategory'],
-      }
+        category: element.$attrs["flowable:processCategory"],
+      };
     },
     getProcessElement() {
-      const rootElements = this.modeler.getDefinitions().rootElements
+      const rootElements = this.modeler.getDefinitions().rootElements;
       for (let i = 0; i < rootElements.length; i++) {
-        if (rootElements[i].$type === 'bpmn:Process') return rootElements[i]
+        if (rootElements[i].$type === "bpmn:Process") return rootElements[i];
       }
     },
     async saveXML(download = false) {
       try {
-        const { xml } = await this.modeler.saveXML({ format: true })
+        const { xml } = await this.modeler.saveXML({ format: true });
         if (download) {
           this.downloadFile(
             `${this.getProcessElement().name}.bpmn20.xml`,
             xml,
-            'application/xml'
-          )
+            "application/xml"
+          );
         }
-        return xml
+        return xml;
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
     },
     async showXML() {
       try {
-        const { xml } = await this.modeler.saveXML({ format: true })
-        $emit(this, 'showXML', xml)
+        const { xml } = await this.modeler.saveXML({ format: true });
+        $emit(this, "showXML", xml);
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
     },
-    async saveImg(type = 'svg', download = false) {
+    async saveImg(type = "svg", download = false) {
       try {
-        const { svg } = await this.modeler.saveSVG({ format: true })
+        const { svg } = await this.modeler.saveSVG({ format: true });
         if (download) {
-          this.downloadFile(this.getProcessElement().name, svg, 'image/svg+xml')
+          this.downloadFile(
+            this.getProcessElement().name,
+            svg,
+            "image/svg+xml"
+          );
         }
-        return svg
+        return svg;
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
     },
     async save() {
-      const process = this.getProcess()
-      const xml = await this.saveXML()
-      const svg = await this.saveImg()
-      const result = { process, xml, svg }
-      $emit(this, 'save', result)
-      window.parent.postMessage(result, '*')
+      const process = this.getProcess();
+      const xml = await this.saveXML();
+      const svg = await this.saveImg();
+      const result = { process, xml, svg };
+      $emit(this, "save", result);
+      window.parent.postMessage(result, "*");
     },
     openBpmn(file) {
-      const reader = new FileReader()
-      reader.readAsText(file, 'utf-8')
+      const reader = new FileReader();
+      reader.readAsText(file, "utf-8");
       reader.onload = () => {
-        this.createNewDiagram(reader.result)
-      }
-      return false
+        this.createNewDiagram(reader.result);
+      };
+      return false;
     },
     downloadFile(filename, data, type) {
-      var a = document.createElement('a')
-      var url = window.URL.createObjectURL(new Blob([data], { type: type }))
-      a.href = url
-      a.download = filename
-      a.click()
-      window.URL.revokeObjectURL(url)
+      var a = document.createElement("a");
+      var url = window.URL.createObjectURL(new Blob([data], { type: type }));
+      a.href = url;
+      a.download = filename;
+      a.click();
+      window.URL.revokeObjectURL(url);
     },
     /** 获取数据类型 */
     dataType(data) {
-      $emit(this, 'dataType', data)
+      $emit(this, "dataType", data);
     },
   },
-  emits: ['showXML', 'save', 'dataType'],
-}
+  emits: ["showXML", "save", "dataType"],
+};
 </script>
 
 <style lang="scss">
-@import '~bpmn-js/dist/assets/diagram-js.css';
-@import '~bpmn-js/dist/assets/bpmn-font/css/bpmn.css';
-@import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css';
-@import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
+@import "~bpmn-js/dist/assets/diagram-js.css";
+@import "~bpmn-js/dist/assets/bpmn-font/css/bpmn.css";
+@import "~bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css";
+@import "~bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css";
 .view-mode {
   .el-header,
   .el-aside,

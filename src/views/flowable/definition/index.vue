@@ -495,8 +495,8 @@ export default {
     };
   },
   components: {
-    Parser,
-    flow,
+    Parser: markRaw(Parser),
+    flow: markRaw(flow),
     ElIconArrowDown: markRaw(ElIconArrowDown),
     ElIconUpload: markRaw(ElIconUpload),
     ElIconSearch: markRaw(ElIconSearch),

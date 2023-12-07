@@ -71,8 +71,8 @@ function renderFrom(h) {
         props={{ model: this[formConfCopy.formModel] }}
         rules={this[formConfCopy.formRules]}
       >
-        {renderFormItem.call(this, h, formConfCopy.fields)}
-        {formConfCopy.formBtns && formBtns.call(this, h)}
+        {renderFormItem.call(this, Vue.h, formConfCopy.fields)}
+        {formConfCopy.formBtns && formBtns.call(this, Vue.h)}
       </el-form>
     </el-row>
   )
@@ -97,7 +97,7 @@ function renderFormItem(h, elementList) {
     const layout = layouts[config.layout]
 
     if (layout) {
-      return layout.call(this, h, scheme)
+      return layout.call(this, Vue.h, scheme)
     }
     throw new Error(`没有与${config.layout}匹配的layout`)
   })
@@ -106,7 +106,7 @@ function renderFormItem(h, elementList) {
 function renderChildren(h, scheme) {
   const config = scheme.__config__
   if (!Array.isArray(config.children)) return null
-  return renderFormItem.call(this, h, config.children)
+  return renderFormItem.call(this, Vue.h, config.children)
 }
 
 function setValue(event, config, scheme) {
@@ -131,7 +131,7 @@ function buildListeners(scheme) {
 
 export default {
   components: {
-    render,
+    render:Vue.markRaw(render)
   },
   props: {
     formConf: {

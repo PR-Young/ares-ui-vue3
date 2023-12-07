@@ -1,5 +1,5 @@
 import { deepClone } from '@/utils/index'
-import { h, toRaw } from 'vue'
+import * as Vue from 'vue'
 
 const componentChild = {}
 /**
@@ -105,11 +105,11 @@ export default {
   },
   render() {
     const dataObject = makeDataObject()
-    const confClone = deepClone(toRaw(this.conf))
+    const confClone = deepClone(Vue.toRaw(this.conf))
     const children = this.$slots.default || []
 
     // 如果slots文件夹存在与当前tag同名的文件，则执行文件中的代码
-    mountSlotFiles.call(this, h, confClone, children)
+    mountSlotFiles.call(this, Vue.h, confClone, children)
 
     // 将字符串类型的事件，发送为消息
     emitEvents.call(this, confClone)
@@ -117,6 +117,6 @@ export default {
     // 将json表单配置转化为vue render可以识别的 “数据对象（dataObject）”
     buildDataObject.call(this, confClone, dataObject)
 
-    return h(toRaw(this.conf).__config__.tag, dataObject, children)
+    return Vue.h(Vue.toRaw(this.conf).__config__.tag, dataObject, children)
   }
 }

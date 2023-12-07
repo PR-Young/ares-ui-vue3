@@ -1,6 +1,7 @@
 import workflowBpmnModeler from './index.vue'
 
 
-export default function workflowBpmnModelerInstall(app) {
-  app.component(workflowBpmnModeler.name, workflowBpmnModeler)
-}
+workflowBpmnModeler.install = (app) =>
+  app.component(workflowBpmnModeler.name, workflowBpmnModeler) // 给组件配置install方法
+
+export default workflowBpmnModeler

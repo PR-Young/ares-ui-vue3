@@ -10,16 +10,16 @@
 </template>
 
 <script>
-import bpmnModeler from '@/components/Process/index'
+import bpmnModeler from "@/components/Process/index";
 export default {
-  name: 'Flow',
+  name: "Flow",
   components: {
     bpmnModeler,
   },
   props: {
     xmlData: {
       type: String,
-      default: '',
+      default: "",
     },
     taskData: {
       type: Array,
@@ -27,7 +27,7 @@ export default {
     },
   },
   data() {
-    return {}
+    return {};
   },
-}
+};
 </script>

@@ -1,7 +1,7 @@
 import xcrud from 'xcrud-vue3'
 import golbalConfig from 'xcrud-vue3/package/common/config'
 import showConfig from '../flowable/showConfig'
-import { toRaw } from "vue"
+import * as Vue from 'vue'
 
 golbalConfig.set({
   input: {
@@ -57,13 +57,13 @@ export default {
   methods: {
     updateProperties(properties) {
       const modeling = this.modeler.get('modeling')
-      modeling.updateProperties(toRaw(this.element), toRaw(properties))
+      modeling.updateProperties(Vue.toRaw(this.element), Vue.toRaw(properties))
     },
   },
   computed: {
     elementType() {
       const bizObj = this.element.businessObject
-      return bizObj.eventDefinitions
+      return bizObj.eventDefinitions && bizObj.eventDefinitions.length > 0
         ? bizObj.eventDefinitions[0].$type
         : bizObj.$type
     },

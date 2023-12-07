@@ -15,16 +15,16 @@
 </template>
 
 <script>
-import { $on, $off, $once, $emit } from '../../utils/gogocodeTransfer'
-import taskPanel from './components/nodePanel/task.vue'
-import startEndPanel from './components/nodePanel/startEnd.vue'
-import processPanel from './components/nodePanel/process.vue'
-import sequenceFlowPanel from './components/nodePanel/sequenceFlow.vue'
-import gatewayPanel from './components/nodePanel/gateway.vue'
-import { NodeName } from './lang/zh'
+import { $on, $off, $once, $emit } from "../../utils/gogocodeTransfer";
+import taskPanel from "./components/nodePanel/task.vue";
+import startEndPanel from "./components/nodePanel/startEnd.vue";
+import processPanel from "./components/nodePanel/process.vue";
+import sequenceFlowPanel from "./components/nodePanel/sequenceFlow.vue";
+import gatewayPanel from "./components/nodePanel/gateway.vue";
+import { NodeName } from "./lang/zh";
 
 export default {
-  name: 'PropertyPanel',
+  name: "PropertyPanel",
   components: {
     processPanel,
     taskPanel,
@@ -54,112 +54,113 @@ export default {
     return {
       element: null,
       form: {
-        id: '',
-        name: '',
+        id: "",
+        name: "",
         color: null,
       },
       roles: [
-        { value: 'manager', label: '经理' },
-        { value: 'personnel', label: '人事' },
-        { value: 'charge', label: '主管' },
+        { value: "manager", label: "经理" },
+        { value: "personnel", label: "人事" },
+        { value: "charge", label: "主管" },
       ],
-    }
+    };
   },
   computed: {
     getComponent() {
-      const type = this.element?.type
+      const type = this.element?.type;
       if (
         [
-          'bpmn:IntermediateThrowEvent',
-          'bpmn:StartEvent',
-          'bpmn:EndEvent',
+          "bpmn:IntermediateThrowEvent",
+          "bpmn:StartEvent",
+          "bpmn:EndEvent",
         ].includes(type)
       ) {
-        return 'startEndPanel'
+        return "startEndPanel";
       }
       if (
         [
-          'bpmn:UserTask',
-          'bpmn:Task',
-          'bpmn:SendTask',
-          'bpmn:ReceiveTask',
-          'bpmn:ManualTask',
-          'bpmn:BusinessRuleTask',
-          'bpmn:ServiceTask',
-          'bpmn:ScriptTask',
+          "bpmn:UserTask",
+          "bpmn:Task",
+          "bpmn:SendTask",
+          "bpmn:ReceiveTask",
+          "bpmn:ManualTask",
+          "bpmn:BusinessRuleTask",
+          "bpmn:ServiceTask",
+          "bpmn:ScriptTask",
           // 'bpmn:CallActivity',
           // 'bpmn:SubProcess'
         ].includes(type)
       ) {
-        return 'taskPanel'
+        return "taskPanel";
       }
-      if (type === 'bpmn:SequenceFlow') {
-        return 'sequenceFlowPanel'
+      if (type === "bpmn:SequenceFlow") {
+        return "sequenceFlowPanel";
       }
       if (
         [
-          'bpmn:InclusiveGateway',
-          'bpmn:ExclusiveGateway',
-          'bpmn:ParallelGateway',
-          'bpmn:EventBasedGateway',
+          "bpmn:InclusiveGateway",
+          "bpmn:ExclusiveGateway",
+          "bpmn:ParallelGateway",
+          "bpmn:EventBasedGateway",
         ].includes(type)
       ) {
-        return 'gatewayPanel'
+        return "gatewayPanel";
       }
-      if (type === 'bpmn:Process') {
-        return 'processPanel'
+      if (type === "bpmn:Process") {
+        return "processPanel";
       }
-      return null
+      return null;
     },
     nodeName() {
       if (this.element) {
-        const bizObj = this.element.businessObject
-        const type = bizObj?.eventDefinitions
-          ? bizObj.eventDefinitions[0].$type
-          : bizObj.$type
-        return NodeName[type] || type
+        const bizObj = this.element.businessObject;
+        const type =
+          bizObj.eventDefinitions && bizObj.eventDefinitions.length > 0
+            ? bizObj.eventDefinitions[0].$type
+            : bizObj.$type;
+        return NodeName[type] || type;
       }
-      return ''
+      return "";
     },
   },
   mounted() {
-    this.handleModeler()
+    this.handleModeler();
   },
   methods: {
     handleModeler() {
-      this.modeler.on('root.added', (e) => {
-        if (e.element.type === 'bpmn:Process') {
-          this.element = null
+      this.modeler.on("root.added", (e) => {
+        if (e.element.type === "bpmn:Process") {
+          this.element = null;
           this.$nextTick().then(() => {
-            this.element = e.element
-          })
+            this.element = e.element;
+          });
         }
-      })
-      this.modeler.on('element.click', (e) => {
-        const { element } = e
-        console.log(element)
-        if (element.type === 'bpmn:Process') {
-          this.element = element
+      });
+      this.modeler.on("element.click", (e) => {
+        const { element } = e;
+        console.log(element);
+        if (element.type === "bpmn:Process") {
+          this.element = element;
         }
-      })
-      this.modeler.on('selection.changed', (e) => {
+      });
+      this.modeler.on("selection.changed", (e) => {
         // hack 同类型面板不刷新
-        this.element = null
-        const element = e.newSelection[0]
+        this.element = null;
+        const element = e.newSelection[0];
         if (element) {
           this.$nextTick().then(() => {
-            this.element = element
-          })
+            this.element = element;
+          });
         }
-      })
+      });
     },
     /** 获取数据类型 */
     dataType(data) {
-      $emit(this, 'dataType', data)
+      $emit(this, "dataType", data);
     },
   },
-  emits: ['dataType'],
-}
+  emits: ["dataType"],
+};
 </script>
 
 <style lang="scss">
