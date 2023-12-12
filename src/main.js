@@ -34,8 +34,9 @@ import 'mavon-editor/dist/css/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import formCreate from '@form-create/element-ui'
 import FcDesigner from '@form-create/designer'
+import AiForm from "ai-form"
 
-import zhCn from "element-plus/lib/locale/lang/zh-cn";
+import zhCn from "element-plus/es/locale/lang/zh-cn";
 // 修改分页器默认文字
 zhCn.el.pagination.total = '共 {total} 条';
 zhCn.el.pagination.goto = '跳至';
@@ -79,6 +80,7 @@ app.use(VueParticles)
 app.use(mavonEditor)
 app.use(formCreate)
 app.use(FcDesigner)
+app.use(AiForm)
 
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

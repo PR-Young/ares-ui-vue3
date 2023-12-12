@@ -32,15 +32,17 @@ const components = {
   },
 }
 const layouts = {
-  colFormItem(h, currentItem, index, list) {
-    const activeItem = this.$attrs.onActiveItem
+  colFormItem(h, currentItem, index, list) {debugger
+    currentItem = Vue.toRaw(currentItem);
+    list = Vue.toRaw(list);
+    const activeItem = Vue.toRaw(this).$attrs.onActiveItem
     const config = currentItem.__config__
-    const child = renderChildren.apply(this, arguments)
+    const child = renderChildren.apply(Vue.toRaw(this), Vue.toRaw(arguments))
     let className =
-      this.activeId === config.formId
+    Vue.toRaw(this).activeId === config.formId
         ? 'drawing-item active-from-item'
         : 'drawing-item'
-    if (this.formConf.unFocusedComponentBorder) className += ' unfocus-bordered'
+    if (Vue.toRaw(this).formConf.unFocusedComponentBorder) className += ' unfocus-bordered'
     let labelWidth = config.labelWidth ? `${config.labelWidth}px` : null
     if (config.showLabel === false) labelWidth = '0'
     return (
@@ -67,11 +69,11 @@ const layouts = {
             {child}
           </render>
         </el-form-item>
-        {components.itemBtns.apply(this, arguments)}
+        {components.itemBtns.apply(Vue.toRaw(this), Vue.toRaw(arguments))}
       </el-col>
     )
   },
-  rowFormItem(h, currentItem, index, list) {
+  rowFormItem(h, currentItem, index, list) {debugger
     const activeItem = this.$attrs.onActiveItem
     const config = currentItem.__config__
     const className =
@@ -131,7 +133,8 @@ const layouts = {
   },
 }
 
-function renderChildren(h, currentItem, index, list) {
+function renderChildren(h, currentItem, index, list) {debugger
+  currentItem = Vue.toRaw(currentItem)
   const config = currentItem.__config__
   if (!Array.isArray(config.children)) return null
   return config.children.map((el, i) => {

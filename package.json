@@ -47,6 +47,7 @@
     "@tinymce/tinymce-vue": "^5.1.0",
     "@vueup/vue-quill": "^1.2.0",
     "@vueuse/core": "^10.6.1",
+    "ai-form": "^0.9.8",
     "axios": "1.4.0",
     "bpmn-js": "^15.2.2",
     "bpmn-js-properties-panel": "^5.6.1",
@@ -93,7 +94,7 @@
     "vue3-ace-editor": "^2.2.2",
     "vue3-count-to": "^1.1.2",
     "vue3-treeselect": "^0.1.10",
-    "vuedraggable": "^2.24.3",
+    "vuedraggable": "^4.1.0",
     "workflow-bpmn-modeler": "^0.2.8",
     "xcrud-vue3": "^0.0.12"
   },

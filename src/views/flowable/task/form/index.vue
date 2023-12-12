@@ -165,7 +165,8 @@
       append-to-body
     >
       <div class="test-form">
-        <form-create :rule="formConf"></form-create>
+        <!-- <form-create :rule="formConf"></form-create> -->
+        <ai-form-designer :show-header="true" />
       </div>
     </el-dialog>
   </div>

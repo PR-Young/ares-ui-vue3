@@ -106,55 +106,56 @@ import {
   Download as ElIconDownload,
   DocumentCopy as ElIconDocumentCopy,
   CircleClose as ElIconCircleClose,
-} from '@element-plus/icons'
-import { parse } from '@babel/parser'
-import ClipboardJS from 'clipboard'
-import { saveAs } from 'file-saver'
+} from "@element-plus/icons";
+import { parse } from "@babel/parser";
+import ClipboardJS from "clipboard";
+import { saveAs } from "file-saver";
 import {
   makeUpHtml,
   vueTemplate,
   vueScript,
   cssStyle,
-} from '@/utils/generator/html'
-import { makeUpJs } from '@/utils/generator/js'
-import { makeUpCss } from '@/utils/generator/css'
-import { exportDefault, beautifierConf, titleCase } from '@/utils/index'
-import ResourceDialog from './ResourceDialog.vue'
-import loadMonaco from '@/utils/loadMonaco'
-import loadBeautifier from '@/utils/loadBeautifier'
+} from "@/utils/generator/html";
+import { makeUpJs } from "@/utils/generator/js";
+import { makeUpCss } from "@/utils/generator/css";
+import { exportDefault, beautifierConf, titleCase } from "@/utils/index";
+import ResourceDialog from "./ResourceDialog.vue";
+import loadMonaco from "@/utils/loadMonaco";
+import loadBeautifier from "@/utils/loadBeautifier";
+import { markRaw } from "vue";
 
 const editorObj = {
   html: null,
   js: null,
   css: null,
-}
+};
 const mode = {
-  html: 'html',
-  js: 'javascript',
-  css: 'css',
-}
-let beautifier
-let monaco
+  html: "html",
+  js: "javascript",
+  css: "css",
+};
+let beautifier;
+let monaco;
 
 export default {
   components: {
     ResourceDialog,
-    ElIconSetting,
-    ElIconEdit,
-    ElIconDocument,
-    ElIconRefresh,
-    ElIconDownload,
-    ElIconDocumentCopy,
-    ElIconCircleClose,
+    ElIconSetting: markRaw(ElIconSetting),
+    ElIconEdit: markRaw(ElIconEdit),
+    ElIconDocument: markRaw(ElIconDocument),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconDownload: markRaw(ElIconDownload),
+    ElIconDocumentCopy: markRaw(ElIconDocumentCopy),
+    ElIconCircleClose: markRaw(ElIconCircleClose),
   },
-  props: ['formData', 'generateConf'],
+  props: ["formData", "generateConf"],
   data() {
     return {
-      activeTab: 'html',
-      htmlCode: '',
-      jsCode: '',
-      cssCode: '',
-      codeFrame: '',
+      activeTab: "html",
+      htmlCode: "",
+      jsCode: "",
+      cssCode: "",
+      codeFrame: "",
       isIframeLoaded: false,
       isInitcode: false, // 保证open后两个异步只执行一次runcode
       isRefreshCode: false, // 每次打开都需要重新刷新代码
@@ -162,179 +163,179 @@ export default {
       scripts: [],
       links: [],
       monaco: null,
-    }
+    };
   },
   computed: {
     resources() {
-      return this.scripts.concat(this.links)
+      return this.scripts.concat(this.links);
     },
   },
   watch: {},
   created() {},
   mounted() {
-    window.addEventListener('keydown', this.preventDefaultSave)
-    const clipboard = new ClipboardJS('.copy-btn', {
+    window.addEventListener("keydown", this.preventDefaultSave);
+    const clipboard = new ClipboardJS(".copy-btn", {
       text: (trigger) => {
-        const codeStr = this.generateCode()
+        const codeStr = this.generateCode();
         this.$notify({
-          title: '成功',
-          message: '代码已复制到剪切板，可粘贴。',
-          type: 'success',
-        })
-        return codeStr
+          title: "成功",
+          message: "代码已复制到剪切板，可粘贴。",
+          type: "success",
+        });
+        return codeStr;
       },
-    })
-    clipboard.on('error', (e) => {
-      this.$message.error('代码复制失败')
-    })
+    });
+    clipboard.on("error", (e) => {
+      this.$message.error("代码复制失败");
+    });
   },
   beforeUnmount() {
-    window.removeEventListener('keydown', this.preventDefaultSave)
+    window.removeEventListener("keydown", this.preventDefaultSave);
   },
   methods: {
     preventDefaultSave(e) {
-      if (e.key === 's' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
+      if (e.key === "s" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
       }
     },
     onOpen() {
-      const { type } = this.generateConf
-      this.htmlCode = makeUpHtml(this.formData, type)
-      this.jsCode = makeUpJs(this.formData, type)
-      this.cssCode = makeUpCss(this.formData)
+      const { type } = this.generateConf;
+      this.htmlCode = makeUpHtml(this.formData, type);
+      this.jsCode = makeUpJs(this.formData, type);
+      this.cssCode = makeUpCss(this.formData);
 
       loadBeautifier((btf) => {
-        beautifier = btf
-        this.htmlCode = beautifier.html(this.htmlCode, beautifierConf.html)
-        this.jsCode = beautifier.js(this.jsCode, beautifierConf.js)
-        this.cssCode = beautifier.css(this.cssCode, beautifierConf.html)
+        beautifier = btf;
+        this.htmlCode = beautifier.html(this.htmlCode, beautifierConf.html);
+        this.jsCode = beautifier.js(this.jsCode, beautifierConf.js);
+        this.cssCode = beautifier.css(this.cssCode, beautifierConf.html);
 
         loadMonaco((val) => {
-          monaco = val
-          this.setEditorValue('editorHtml', 'html', this.htmlCode)
-          this.setEditorValue('editorJs', 'js', this.jsCode)
-          this.setEditorValue('editorCss', 'css', this.cssCode)
+          monaco = val;
+          this.setEditorValue("editorHtml", "html", this.htmlCode);
+          this.setEditorValue("editorJs", "js", this.jsCode);
+          this.setEditorValue("editorCss", "css", this.cssCode);
           if (!this.isInitcode) {
-            this.isRefreshCode = true
-            this.isIframeLoaded && (this.isInitcode = true) && this.runCode()
+            this.isRefreshCode = true;
+            this.isIframeLoaded && (this.isInitcode = true) && this.runCode();
           }
-        })
-      })
+        });
+      });
     },
     onClose() {
-      this.isInitcode = false
-      this.isRefreshCode = false
+      this.isInitcode = false;
+      this.isRefreshCode = false;
     },
     iframeLoad() {
       if (!this.isInitcode) {
-        this.isIframeLoaded = true
-        this.isRefreshCode && (this.isInitcode = true) && this.runCode()
+        this.isIframeLoaded = true;
+        this.isRefreshCode && (this.isInitcode = true) && this.runCode();
       }
     },
     setEditorValue(id, type, codeStr) {
       if (editorObj[type]) {
-        editorObj[type].setValue(codeStr)
+        editorObj[type].setValue(codeStr);
       } else {
         editorObj[type] = monaco.editor.create(document.getElementById(id), {
           value: codeStr,
-          theme: 'vs-dark',
+          theme: "vs-dark",
           language: mode[type],
           automaticLayout: true,
-        })
+        });
       }
       // ctrl + s 刷新
       editorObj[type].onKeyDown((e) => {
         if (e.keyCode === 49 && (e.metaKey || e.ctrlKey)) {
-          this.runCode()
+          this.runCode();
         }
-      })
+      });
     },
     runCode() {
-      const jsCodeStr = editorObj.js.getValue()
+      const jsCodeStr = editorObj.js.getValue();
       try {
-        const ast = parse(jsCodeStr, { sourceType: 'module' })
-        const astBody = ast.program.body
+        const ast = parse(jsCodeStr, { sourceType: "module" });
+        const astBody = ast.program.body;
         if (astBody.length > 1) {
           this.$confirm(
-            'js格式不能识别，仅支持修改export default的对象内容',
-            '提示',
+            "js格式不能识别，仅支持修改export default的对象内容",
+            "提示",
             {
-              type: 'warning',
+              type: "warning",
             }
-          )
-          return
+          );
+          return;
         }
-        if (astBody[0].type === 'ExportDefaultDeclaration') {
+        if (astBody[0].type === "ExportDefaultDeclaration") {
           const postData = {
-            type: 'refreshFrame',
+            type: "refreshFrame",
             data: {
               generateConf: this.generateConf,
               html: editorObj.html.getValue(),
-              js: jsCodeStr.replace(exportDefault, ''),
+              js: jsCodeStr.replace(exportDefault, ""),
               css: editorObj.css.getValue(),
               scripts: this.scripts,
               links: this.links,
             },
-          }
+          };
 
           this.$refs.previewPage.contentWindow.postMessage(
             postData,
             location.origin
-          )
+          );
         } else {
-          this.$message.error('请使用export default')
+          this.$message.error("请使用export default");
         }
       } catch (err) {
-        this.$message.error(`js错误：${err}`)
-        console.error(err)
+        this.$message.error(`js错误：${err}`);
+        console.error(err);
       }
     },
     generateCode() {
-      const html = vueTemplate(editorObj.html.getValue())
-      const script = vueScript(editorObj.js.getValue())
-      const css = cssStyle(editorObj.css.getValue())
-      return beautifier.html(html + script + css, beautifierConf.html)
+      const html = vueTemplate(editorObj.html.getValue());
+      const script = vueScript(editorObj.js.getValue());
+      const css = cssStyle(editorObj.css.getValue());
+      return beautifier.html(html + script + css, beautifierConf.html);
     },
     exportFile() {
-      this.$prompt('文件名:', '导出文件', {
+      this.$prompt("文件名:", "导出文件", {
         inputValue: `${+new Date()}.vue`,
         closeOnClickModal: false,
-        inputPlaceholder: '请输入文件名',
+        inputPlaceholder: "请输入文件名",
       }).then(({ value }) => {
-        if (!value) value = `${+new Date()}.vue`
-        const codeStr = this.generateCode()
-        const blob = new Blob([codeStr], { type: 'text/plain;charset=utf-8' })
-        saveAs(blob, value)
-      })
+        if (!value) value = `${+new Date()}.vue`;
+        const codeStr = this.generateCode();
+        const blob = new Blob([codeStr], { type: "text/plain;charset=utf-8" });
+        saveAs(blob, value);
+      });
     },
     showResource() {
-      this.resourceVisible = true
+      this.resourceVisible = true;
     },
     setResource(arr) {
-      const scripts = []
-      const links = []
+      const scripts = [];
+      const links = [];
       if (Array.isArray(arr)) {
         arr.forEach((item) => {
-          if (item.endsWith('.css')) {
-            links.push(item)
+          if (item.endsWith(".css")) {
+            links.push(item);
           } else {
-            scripts.push(item)
+            scripts.push(item);
           }
-        })
-        this.scripts = scripts
-        this.links = links
+        });
+        this.scripts = scripts;
+        this.links = links;
       } else {
-        this.scripts = []
-        this.links = []
+        this.scripts = [];
+        this.links = [];
       }
     },
   },
-  emits: ['update:visible'],
-}
+  emits: ["update:visible"],
+};
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/mixin.scss';
+@import "@/styles/mixin.scss";
 .tab-editor {
   position: absolute;
   top: 33px;

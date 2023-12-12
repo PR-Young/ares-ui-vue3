@@ -1,6 +1,8 @@
 import { deepClone } from '@/utils/index'
 import * as Vue from 'vue'
 import { $emit } from '../../utils/gogocodeTransfer'
+import { toRaw } from 'vue'
+import { h } from 'vue'
 
 const componentChild = {}
 /**
@@ -51,7 +53,7 @@ function buildDataObject(confClone, dataObject) {
   Object.keys(confClone).forEach(key => {
     const val = confClone[key]
     if (key === '__vModel__') {
-      vModel.call(this, dataObject, confClone.__config__.defaultValue)
+      vModel.call(toRaw(this), dataObject, confClone.__config__.defaultValue)
     } else if (dataObject[key] !== undefined) {
       if (dataObject[key] === null
         || dataObject[key] instanceof RegExp
@@ -105,19 +107,20 @@ export default {
     }
   },
   render() {
-    const dataObject = makeDataObject()
-    const confClone = deepClone(Vue.toRaw(this.conf))
-    const children = this.$slots.default || []
+    debugger
+    const dataObject = toRaw(makeDataObject())
+    const confClone = deepClone(toRaw(this.conf))
+    const children = toRaw(this.$slots).default || []
 
     // 如果slots文件夹存在与当前tag同名的文件，则执行文件中的代码
-    mountSlotFiles.call(this, Vue.h, confClone, children)
+    mountSlotFiles.call(toRaw(this), Vue.h, confClone, children)
 
     // 将字符串类型的事件，发送为消息
-    emitEvents.call(this, confClone)
+    emitEvents.call(toRaw(this), confClone)
 
     // 将json表单配置转化为vue render可以识别的 “数据对象（dataObject）”
-    buildDataObject.call(this, confClone, dataObject)
+    buildDataObject.call(toRaw(this), confClone, dataObject)
 
-    return Vue.h(Vue.toRaw(this.conf).__config__.tag, dataObject, children)
+    return h(toRaw(this.conf).__config__.tag, dataObject, children)
   }
 }
