@@ -319,16 +319,10 @@
             />
           </el-form-item>
           <el-form-item v-if="isShowMin" label="最小值">
-            <el-input-number
-              v-model="activeData.min"
-              placeholder="最小值"
-            />
+            <el-input-number v-model="activeData.min" placeholder="最小值" />
           </el-form-item>
           <el-form-item v-if="isShowMax" label="最大值">
-            <el-input-number
-              v-model="activeData.max"
-              placeholder="最大值"
-            />
+            <el-input-number v-model="activeData.max" placeholder="最大值" />
           </el-form-item>
           <el-form-item v-if="activeData.height !== undefined" label="组件高度">
             <el-input-number
@@ -338,10 +332,7 @@
             />
           </el-form-item>
           <el-form-item v-if="isShowStep" label="步长">
-            <el-input-number
-              v-model="activeData.step"
-              placeholder="步数"
-            />
+            <el-input-number v-model="activeData.step" placeholder="步数" />
           </el-form-item>
           <el-form-item
             v-if="activeData.__config__.tag === 'el-input-number'"
@@ -485,10 +476,7 @@
             v-if="activeData['list-type'] !== undefined"
             label="列表类型"
           >
-            <el-radio-group
-              v-model="activeData['list-type']"
-              size="default"
-            >
+            <el-radio-group v-model="activeData['list-type']" size="default">
               <el-radio-button label="text"> text </el-radio-button>
               <el-radio-button label="picture"> picture </el-radio-button>
               <el-radio-button label="picture-card">
@@ -503,10 +491,7 @@
             "
             label="按钮类型"
           >
-            <el-select
-              v-model="activeData.type"
-              :style="{ width: '100%' }"
-            >
+            <el-select v-model="activeData.type" :style="{ width: '100%' }">
               <el-option label="primary" value="primary" />
               <el-option label="success" value="success" />
               <el-option label="warning" value="warning" />
@@ -745,10 +730,7 @@
             v-if="activeData.branding !== undefined"
             label="品牌烙印"
           >
-            <el-switch
-              v-model="activeData.branding"
-              @input="changeRenderKey"
-            />
+            <el-switch v-model="activeData.branding" @input="changeRenderKey" />
           </el-form-item>
           <el-form-item
             v-if="activeData['allow-half'] !== undefined"
@@ -909,10 +891,7 @@
             v-if="activeData.__config__.tag === 'el-select'"
             label="是否多选"
           >
-            <el-switch
-              v-model="activeData.multiple"
-              @change="multipleChange"
-            />
+            <el-switch v-model="activeData.multiple" @change="multipleChange" />
           </el-form-item>
           <el-form-item
             v-if="activeData.__config__.required !== undefined"
@@ -957,34 +936,28 @@
                 class="close-btn"
                 @click="activeData.__config__.regList.splice(index, 1)"
               >
-                <el-icon ><Close /></el-icon>
+                <el-icon><Close /></el-icon>
               </span>
               <el-form-item label="表达式">
-                <el-input
-                  v-model="item.pattern"
-                  placeholder="请输入正则"
-                />
+                <el-input v-model="item.pattern" placeholder="请输入正则" />
               </el-form-item>
               <el-form-item label="错误提示" style="margin-bottom: 0">
-                <el-input
-                  v-model="item.message"
-                  placeholder="请输入错误提示"
-                />
+                <el-input v-model="item.message" placeholder="请输入错误提示" />
               </el-form-item>
             </div>
             <div style="margin-left: 20px">
-              <el-button
-                :icon="ElIconCirclePlusOutline"
-                link
-                @click="addReg"
-              >
+              <el-button :icon="ElIconCirclePlusOutline" link @click="addReg">
                 添加规则
               </el-button>
             </div>
           </template>
         </el-form>
         <!-- 表单属性 -->
-        <el-form v-show="currentTab === 'form'" size="default" label-width="90px">
+        <el-form
+          v-show="currentTab === 'form'"
+          size="default"
+          label-width="90px"
+        >
           <el-form-item label="表单名">
             <el-input
               v-model="formConf.formRef"
@@ -1074,6 +1047,7 @@ import {
 } from '@/utils/generator/config'
 import { saveFormConf } from '@/utils/db'
 import {VueDraggableNext, VueDraggableNext as draggable} from 'vue-draggable-next'
+import { markRaw } from "vue";
 
 const dateTimeFormat = {
   date: 'yyyy-MM-dd',
@@ -1190,8 +1164,10 @@ export default {
   components: {
     TreeNodeDialog,
     IconsDialog,
-    Close,
-    draggable: VueDraggableNext
+    Close:markRaw(Close),
+    draggable: VueDraggableNext,
+    ElIconThumb:markRaw(ElIconThumb),
+    ElIconCirclePlusOutline:markRaw(ElIconCirclePlusOutline),
 },
   props: ['showField', 'activeData', 'formConf'],
   computed: {

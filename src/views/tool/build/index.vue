@@ -125,7 +125,7 @@
     <input id="copyNode" type="hidden" />
     <!--表单配置详情-->
     <el-dialog
-      :header="formTitle"
+      :title="formTitle"
       v-model="formOpen"
       width="500px"
       append-to-body
@@ -203,6 +203,7 @@ import loadBeautifier from "@/utils/loadBeautifier";
 import { getForm, addForm, updateForm } from "@/api/flowable/form";
 import store from "@/store";
 import useTagsViewStore from "@/store/modules/tagsView";
+import { markRaw } from "vue";
 const tagsView = useTagsViewStore(store);
 
 let beautifier;
@@ -269,13 +270,13 @@ export default {
     };
   },
   components: {
-    draggable,
-    render,
-    FormDrawer,
-    JsonDrawer,
-    RightPanel,
-    CodeTypeDialog,
-    DraggableItem,
+    draggable: markRaw(draggable),
+    render: markRaw(render),
+    FormDrawer: markRaw(FormDrawer),
+    JsonDrawer: markRaw(JsonDrawer),
+    RightPanel: markRaw(RightPanel),
+    CodeTypeDialog: markRaw(CodeTypeDialog),
+    DraggableItem: markRaw(DraggableItem),
   },
   computed: {},
   watch: {

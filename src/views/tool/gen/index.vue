@@ -68,14 +68,14 @@
         align="center"
         prop="TABLE_NAME"
         :show-overflow-tooltip="true"
-        width="400"
+        width="300"
       />
       <el-table-column
         label="表描述"
         align="center"
         prop="TABLE_COMMENT"
         :show-overflow-tooltip="true"
-        width="400"
+        width="300"
       />
       <el-table-column
         label="创建时间"
@@ -107,6 +107,7 @@
           <el-button
             link
             size="default"
+            type="primary"
             :icon="ElIconView"
             @click="handlePreview(scope.row)"
             v-hasPermi="['tool:gen:preview']"
@@ -115,6 +116,7 @@
           <el-button
             link
             size="default"
+            type="primary"
             :icon="ElIconDownload"
             @click="handleGenTable(scope.row)"
             >生成代码</el-button
@@ -131,7 +133,7 @@
     />
     <!-- 预览界面 -->
     <el-dialog
-      :header="preview.title"
+      :title="preview.title"
       v-model="preview.open"
       width="80%"
       top="5vh"
@@ -162,6 +164,7 @@ import {
 import { listDbTable, previewTable, delTable } from "@/api/tool/gen";
 import importTable from "./importTable.vue";
 import { downLoadZip } from "@/utils/zipdownload";
+import { markRaw } from "vue";
 export default {
   data() {
     return {
@@ -204,7 +207,13 @@ export default {
     };
   },
   name: "Gen",
-  components: { importTable },
+  components: {
+    importTable,
+    ElIconSearch: markRaw(ElIconSearch),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconView: markRaw(ElIconView),
+    ElIconDownload: markRaw(ElIconDownload),
+  },
   created() {
     this.getList();
   },

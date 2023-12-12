@@ -92,6 +92,7 @@ import "vue-cropper/dist/index.css";
 import { VueCropper } from "vue-cropper";
 import { uploadAvatar } from "@/api/system/user";
 import useUserStore from "@/store/modules/user";
+import { markRaw } from "vue";
 const user = useUserStore(store);
 
 export default {
@@ -117,7 +118,11 @@ export default {
   },
   components: {
     VueCropper,
-    ElIconUpload,
+    ElIconUpload: markRaw(ElIconUpload),
+    ElIconPlus: markRaw(ElIconPlus),
+    ElIconMinus: markRaw(ElIconMinus),
+    ElIconRefreshLeft: markRaw(ElIconRefreshLeft),
+    ElIconRefreshRight: markRaw(ElIconRefreshRight),
   },
   props: {
     user: {

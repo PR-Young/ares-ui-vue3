@@ -2,7 +2,7 @@
   <div>
     <el-dialog
       v-bind="$attrs"
-      header="外部资源引用"
+      title="外部资源引用"
       width="600px"
       :close-on-click-modal="false"
       @open="onOpen"
@@ -50,8 +50,9 @@ import {
   Link as ElIconLink,
   Delete as ElIconDelete,
   CirclePlus as ElIconCirclePlusoutline,
-} from '@element-plus/icons'
-import { deepClone } from '@/utils/index'
+} from "@element-plus/icons";
+import { deepClone } from "@/utils/index";
+import { markRaw } from "vue";
 
 export default {
   data() {
@@ -60,11 +61,15 @@ export default {
       ElIconLink,
       ElIconDelete,
       ElIconCirclePlusoutline,
-    }
+    };
   },
-  components: {},
+  components: {
+    ElIconLink: markRaw(ElIconLink),
+    ElIconDelete: markRaw(ElIconDelete),
+    ElIconCirclePlusoutline: markRaw(ElIconCirclePlusoutline),
+  },
   inheritAttrs: false,
-  props: ['originResource'],
+  props: ["originResource"],
   computed: {},
   watch: {},
   created() {},
@@ -72,33 +77,33 @@ export default {
     onOpen() {
       this.resources = this.originResource.length
         ? deepClone(this.originResource)
-        : ['']
+        : [""];
     },
     onClose() {},
     close() {
-      $emit(this, 'update:visible', false)
+      $emit(this, "update:visible", false);
     },
     handelConfirm() {
-      const results = this.resources.filter((item) => !!item) || []
-      $emit(this, 'save', results)
-      this.close()
+      const results = this.resources.filter((item) => !!item) || [];
+      $emit(this, "save", results);
+      this.close();
       if (results.length) {
-        this.resources = results
+        this.resources = results;
       }
     },
     deleteOne(index) {
-      this.resources.splice(index, 1)
+      this.resources.splice(index, 1);
     },
     addOne(url) {
       if (this.resources.indexOf(url) > -1) {
-        this.$message('资源已存在')
+        this.$message("资源已存在");
       } else {
-        this.resources.push(url)
+        this.resources.push(url);
       }
     },
   },
-  emits: ['update:visible', 'save'],
-}
+  emits: ["update:visible", "save"],
+};
 </script>
 
 <style lang="scss" scoped>

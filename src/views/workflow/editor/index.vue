@@ -154,7 +154,7 @@
     </el-row>
 
     <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :header="title" v-model="open" width="600px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
@@ -197,7 +197,7 @@
 
     <el-dialog
       id="flowEditor"
-      header="流程定义"
+      title="流程定义"
       v-model="show"
       fullscreen
       top="2"

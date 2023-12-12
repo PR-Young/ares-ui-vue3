@@ -253,6 +253,7 @@ import {
   exportArticles,
 } from "@/api/articles";
 import Editor from "@/components/Editor/index.vue";
+import { markRaw } from "vue";
 
 export default {
   data() {
@@ -311,7 +312,13 @@ export default {
   },
   name: "Articles",
   components: {
-    Editor,
+    Editor: markRaw(Editor),
+    ElIconSearch: markRaw(ElIconSearch),
+    ElIconRefresh: markRaw(ElIconRefresh),
+    ElIconPlus: markRaw(ElIconPlus),
+    ElIconEdit: markRaw(ElIconEdit),
+    ElIconDelete: markRaw(ElIconDelete),
+    ElIconDownload: markRaw(ElIconDownload),
   },
   created() {
     this.getDicts("article_status").then((response) => {

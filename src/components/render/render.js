@@ -1,5 +1,6 @@
 import { deepClone } from '@/utils/index'
 import * as Vue from 'vue'
+import { $emit } from '../../utils/gogocodeTransfer'
 
 const componentChild = {}
 /**
@@ -18,7 +19,7 @@ function vModel(dataObject, defaultValue) {
   dataObject.props.value = defaultValue
 
   dataObject.on.input = val => {
-    this.$emit('input', val)
+    $emit('input', val)
   }
 }
 
@@ -40,7 +41,7 @@ function emitEvents(confClone) {
     eventKeyList.forEach(key => {
       const val = confClone[attr][key]
       if (typeof val === 'string') {
-        confClone[attr][key] = event => this.$emit(val, event)
+        confClone[attr][key] = event => $emit(val, event)
       }
     })
   })
