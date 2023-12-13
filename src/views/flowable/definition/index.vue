@@ -314,7 +314,8 @@
       append-to-body
     >
       <div class="test-form">
-        <parser :key="new Date().getTime()" :form-conf="formConf" />
+        <!-- <parser :key="new Date().getTime()" :form-conf="formConf" /> -->
+        <form-parser :conf="formConf" ref="formRef"></form-parser>
       </div>
     </el-dialog>
 
@@ -403,6 +404,7 @@ import { getForm, addDeployForm, listForm } from "@/api/flowable/form";
 import Parser from "@/components/parser/Parser.vue";
 import flow from "@/views/flowable/task/record/flow.vue";
 import { markRaw } from "vue";
+import FormParser from "@/views/aiform/AiFormParser/index.vue";
 
 export default {
   data() {
@@ -508,6 +510,7 @@ export default {
     ElIconConnection: markRaw(ElIconConnection),
     ElIconVideoPause: markRaw(ElIconVideoPause),
     ElIconVideoPlay: markRaw(ElIconVideoPlay),
+    FormParser,
   },
   name: "Definition",
   created() {
@@ -594,7 +597,14 @@ export default {
       getForm(formId).then((res) => {
         this.formTitle = "表单详情";
         this.formConfOpen = true;
-        this.formConf = JSON.parse(res.data.formContent);
+        this.formConf = {
+          id: formId,
+          data: JSON.parse(res.data.formContent).fields,
+          model: {
+            //    "field2": "选项二", "field1": [ "2023-01-03", "2023-01-17" ], "field1673928917578": 49, "field1673928939297": 4, "field1673928918984": true, "field1673928936079": 16, "field1673928921016": 1, "field1673928930234": "gdfg郭德纲"
+          },
+          activity: {},
+        };
       });
     },
     /** 启动流程 */

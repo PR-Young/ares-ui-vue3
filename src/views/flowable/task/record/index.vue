@@ -13,7 +13,8 @@
       <!--流程处理表单模块-->
       <el-col :span="16" :offset="4" v-if="variableOpen">
         <div>
-          <form-create :rule="variablesData"></form-create>
+          <!-- <form-create :rule="variablesData"></form-create> -->
+          <form-parser :conf="variablesData" ref="formHandleRef"></form-parser>
         </div>
         <div
           style="margin-left: 20%; margin-bottom: 20px; font-size: 14px"
@@ -74,7 +75,11 @@
       <!--初始化流程加载表单信息-->
       <el-col :span="16" :offset="4" v-if="formConfOpen">
         <div class="test-form">
-          <form-create :rule="formConf" @submit="submitForm"></form-create>
+          <!-- <form-create :rule="formConf" @submit="submitForm"></form-create> -->
+          <form-parser :conf="formConf" ref="formRef"></form-parser>
+          <div style="text-align: center">
+            <el-button type="primary" @click="submitForm">提交</el-button>
+          </div>
         </div>
       </el-col>
     </el-card>
@@ -312,6 +317,7 @@ import "vue3-treeselect/dist/vue3-treeselect.css";
 import Treeselect from "vue3-treeselect";
 import { listUser } from "@/api/system/user";
 import formCreate from "@form-create/element-ui";
+import FormParser from "@/views/aiform/AiFormParser/index.vue";
 import store from "@/store";
 import useTagsViewStore from "@/store/modules/tagsView";
 import { markRaw } from "vue";
@@ -402,6 +408,7 @@ export default {
     ElIconEditOutline: markRaw(ElIconEditOutline),
     ElIconRefreshLeft: markRaw(ElIconRefreshLeft),
     ElIconCircleClose: markRaw(ElIconCircleClose),
+    FormParser,
   },
   props: {},
   created() {
@@ -528,13 +535,21 @@ export default {
           this.flowRecordList = res.data.flowList;
           // 流程过程中不存在初始化表单 直接读取的流程变量中存储的表单值
           if (res.data.formData) {
-            this.formConf = res.data.formData.config;
             this.formConfOpen = true;
             this.fields = res.data.formData.fields;
-            this.formCreateData.formData = res.data.formData.data;
+
+            this.formConf = {
+              id: null,
+              data: res.data.formData.fields,
+              model: {
+                //    "field2": "选项二", "field1": [ "2023-01-03", "2023-01-17" ], "field1673928917578": 49, "field1673928939297": 4, "field1673928918984": true, "field1673928936079": 16, "field1673928921016": 1, "field1673928930234": "gdfg郭德纲"
+              },
+              activity: {},
+            };
           }
         })
         .catch((res) => {
+          console.log(res);
           this.goBack();
         });
     },
@@ -552,8 +567,13 @@ export default {
         // 提交流程申请时填写的表单存入了流程变量中后续任务处理时需要展示
         getProcessVariables(taskId).then((res) => {
           debugger;
-          // this.variables = res.data.variables;
-          this.variablesData = res.data.variables;
+          this.variablesData = {
+            id: null,
+            data: res.data.fields,
+            model: res.data.data,
+            activity: {},
+          };
+
           this.variableOpen = true;
         });
       }
@@ -640,16 +660,15 @@ export default {
     /** 申请流程表单数据提交 */
     submitForm(data) {
       debugger;
-      if (data) {
+      this.$refs["formRef"].submitForm((model) => {
+        console.log(model);
         const variables = {
           fields: this.fields,
           INITIATOR: "",
-          data: data,
-          ...data,
+          data: model,
+          ...model,
         };
-        const formData = this.formConf;
-        formData.disabled = true;
-        formData.formBtns = false;
+        const formData = model;
         if (this.taskForm.procDefId) {
           variables.variables = formData;
           // 启动流程并将表单数据加入流程变量
@@ -661,7 +680,29 @@ export default {
             this.goBack();
           });
         }
-      }
+      });
+      // if (data) {
+      //   const variables = {
+      //     // fields: this.fields,
+      //     INITIATOR: "",
+      //     data: data,
+      //     ...data,
+      //   };
+      //   const formData = this.formConf;
+      //   formData.disabled = true;
+      //   formData.formBtns = false;
+      //   if (this.taskForm.procDefId) {
+      //     variables.variables = formData;
+      //     // 启动流程并将表单数据加入流程变量
+      //     definitionStart(
+      //       this.taskForm.procDefId,
+      //       JSON.stringify(variables)
+      //     ).then((res) => {
+      //       this.msgSuccess(res.msg);
+      //       this.goBack();
+      //     });
+      //   }
+      // }
     },
     /** 驳回任务 */
     handleReject() {

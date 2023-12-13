@@ -94,7 +94,6 @@
                     title="手机"
                     >手机
                   </el-button>
-
                   <el-button @click="setMode('pc')" icon="Monitor" title="电脑"
                     >电脑</el-button
                   >
@@ -104,6 +103,9 @@
                   <el-button icon="Delete" plain @click="empty" title="清空"
                     >清空</el-button
                   >
+                  <el-button icon="Plus" plain @click="handleForm" title="保存">
+                    保存
+                  </el-button>
                 </el-button-group>
               </el-header>
               <el-main :class="['device', state.deviceMode]">
@@ -173,6 +175,37 @@
       </template>
     </el-dialog>
     <PreviewPanel ref="previewPanelRef"></PreviewPanel>
+
+    <!--表单配置详情-->
+    <el-dialog
+      :title="state.formTitle"
+      v-model="state.formOpen"
+      width="500px"
+      append-to-body
+    >
+      <el-form
+        ref="formRef"
+        :model="state.form"
+        :rules="state.rules"
+        label-width="80px"
+      >
+        <el-form-item label="表单名称" prop="formName">
+          <el-input
+            v-model="state.form.formName"
+            placeholder="请输入表单名称"
+          />
+        </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="state.form.remark" placeholder="请输入备注" />
+        </el-form-item>
+      </el-form>
+      <template v-slot:footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="cancel">取 消</el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -206,8 +239,15 @@ import {
   defineAsyncComponent,
   provide,
 } from "vue";
+import { getForm, addForm, updateForm } from "@/api/flowable/form";
 
 import { debounce } from "../utils/index.js";
+import { useRoute, useRouter } from "vue-router";
+
+import store from "@/store";
+import useTagsViewStore from "@/store/modules/tagsView";
+const tagsView = useTagsViewStore(store);
+
 const RenderPanel = defineAsyncComponent(() =>
   import("../Render/RenderPanel.vue")
 );
@@ -222,6 +262,9 @@ const formConfInDB = getFormConf();
 // const idGlobal = getIdGlobal();
 const props = defineProps(["conf", "showHeader", "custom"]);
 
+const { query, path } = useRoute();
+const router = useRouter();
+
 const { proxy } = getCurrentInstance();
 ///是否被外部使用
 const isInUsed =
@@ -229,8 +272,8 @@ const isInUsed =
   function () {
     return false;
   };
-debugger;
 const previewPanelRef = ref();
+const formRef = ref();
 //const storageList = getDrawingList()
 //    const drawingList = [] // Array.isArray(storageList) && storageList.length ? storageList : drawingDefalut
 const state = reactive({
@@ -298,6 +341,17 @@ const state = reactive({
   flowConditions: [],
   tempActiveData: {},
   deviceMode: "pc",
+  formTitle: "",
+  formOpen: false,
+  // 表单参数
+  form: {
+    id: null,
+    formName: null,
+    formContent: null,
+    remark: null,
+  },
+  // 表单校验
+  rules: {},
 });
 
 const created = () => {
@@ -319,6 +373,14 @@ const setMode = (mode) => {
   state.deviceMode = mode;
 };
 onMounted(() => {
+  debugger;
+  const formId = query && query.formId;
+  if (formId) {
+    getForm(formId).then((res) => {
+      state.drawingList = JSON.parse(res.data.formContent).fields;
+    });
+  } else {
+  }
   if (props.custom) state.comTabs = state.comTabs.concat(props.custom);
   //Object.assign(state.comTabs,props.custom)
 });
@@ -591,6 +653,54 @@ const empty = () => {
       clearPCondition();
     });
 };
+
+/** 表单基本信息 */
+const handleForm = () => {
+  state.formData = {
+    fields: deepClone(state.drawingList),
+    ...state.formConf,
+  };
+  state.form.formContent = JSON.stringify(state.formData);
+  state.formOpen = true;
+  state.formTitle = "添加表单";
+};
+// 表单重置
+const reset = () => {
+  state.form = {
+    id: null,
+    formName: null,
+    formContent: null,
+    remark: null,
+  };
+};
+// 取消按钮
+const cancel = () => {
+  state.formOpen = false;
+  reset();
+};
+/** 保存表单信息 */
+const submitForm = () => {
+  formRef.value.validate((valid) => {
+    if (valid) {
+      if (state.form.id != null) {
+        updateForm(state.form).then((response) => {
+          msgSuccess("修改成功");
+        });
+      } else {
+        addForm(state.form).then((response) => {
+          msgSuccess("新增成功");
+        });
+      }
+      state.drawingList = [];
+      state.idGlobal = 100;
+      state.open = false;
+      // 关闭当前标签页并返回上个页面
+      tagsView.delView(path);
+      router.go(-1);
+    }
+  });
+};
+
 const createIdAndKey = (item) => {
   item.formId = getNextId();
 

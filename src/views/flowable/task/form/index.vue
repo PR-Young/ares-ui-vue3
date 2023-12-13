@@ -166,7 +166,7 @@
     >
       <div class="test-form">
         <!-- <form-create :rule="formConf"></form-create> -->
-        <ai-form-designer :show-header="true" />
+        <form-parser :conf="formConf" ref="formRef"></form-parser>
       </div>
     </el-dialog>
   </div>
@@ -192,6 +192,7 @@ import {
 } from "@/api/flowable/form";
 import Editor from "@/components/Editor/index.vue";
 import Parser from "@/components/parser/Parser.vue";
+import FormParser from "@/views/aiform/AiFormParser/index.vue";
 import formCreate from "@form-create/element-ui";
 import { markRaw } from "vue";
 export default {
@@ -251,6 +252,7 @@ export default {
     ElIconDelete: markRaw(ElIconDelete),
     ElIconDownload: markRaw(ElIconDownload),
     ElIconView: markRaw(ElIconView),
+    FormParser,
   },
   created() {
     this.getList();
@@ -302,9 +304,17 @@ export default {
     },
     /** 表单配置信息 */
     handleDetail(row) {
+      debugger;
       this.formConfOpen = true;
       this.formTitle = "流程表单配置详细";
-      this.formConf = JSON.parse(row.formContent).fields;
+      this.formConf = {
+        id: row.id,
+        data: JSON.parse(row.formContent).fields,
+        model: {
+          //    "field2": "选项二", "field1": [ "2023-01-03", "2023-01-17" ], "field1673928917578": 49, "field1673928939297": 4, "field1673928918984": true, "field1673928936079": 16, "field1673928921016": 1, "field1673928930234": "gdfg郭德纲"
+        },
+        activity: {},
+      };
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -312,7 +322,7 @@ export default {
       // this.open = true;
       // this.title = "添加流程表单";
       this.$router.push({
-        path: "/tool/formcreate/index",
+        path: "/aiform/build/index",
         query: { formId: null },
       });
     },
@@ -326,7 +336,7 @@ export default {
       //   this.title = "修改流程表单";
       // });
       this.$router.push({
-        path: "/tool/formcreate/index",
+        path: "/aiform/build/index",
         query: { formId: row.id },
       });
     },
