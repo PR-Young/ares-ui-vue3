@@ -258,6 +258,24 @@ export const constantRoutes = [
       },
     ],
   },
+  {
+    name: "表单管理(新)",
+    redirect: "noRedirect",
+    path: '/aiform',
+    component: Layout,
+    meta: { title: '表单管理(新)', icon: 'table', },
+    alwaysShow: true,
+    hidden: false,
+    children: [
+      {
+        path: 'build/index',
+        component: () => import('@/views/aiform/AiFormDesigner/index.vue'),
+        name: 'AresForm',
+        meta: { title: '表单设计', icon: 'component' },
+        hidden: false
+      },
+    ],
+  },
 ]
 
 export default VueRouter.createRouter({
