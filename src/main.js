@@ -80,7 +80,7 @@ app.use(VueParticles)
 app.use(mavonEditor)
 app.use(formCreate)
 app.use(FcDesigner)
-app.use(AiForm)
+// app.use(AiForm)
 
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

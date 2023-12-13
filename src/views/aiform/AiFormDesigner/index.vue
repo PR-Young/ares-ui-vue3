@@ -68,7 +68,7 @@
                           @click="addComponent(element)"
                         >
                           <div class="components-body">
-                            <ai-svg-icon
+                            <svg-icon
                               :icon-class="element.tagIcon"
                               class="svg-icon"
                               size="18"
