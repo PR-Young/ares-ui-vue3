@@ -67,7 +67,7 @@ import { UploadFile, UploadFiles, UploadInstance } from "element-plus";
 //import { getToken } from '/@/api/admin/http-client'
 import eventBus from "../../../../utils/mitt";
 const getToken = inject("getToken");
-const uploadRef = ref<UploadInstance>();
+const uploadRef = ref();
 
 defineProps({
   title: {
@@ -81,7 +81,7 @@ const state = reactive({
   sureLoading: false,
   fileDirectory: "bpm",
   fileReName: true,
-  fileList: [] as UploadFile[],
+  fileList: [],
 });
 
 const uploadAction = computed(() => {
@@ -93,16 +93,12 @@ const uploadHeaders = computed(() => {
 });
 
 // 打开对话框
-const open = async (row: any = {}) => {
+const open = async (row) => {
   state.showDialog = true;
 };
 
 // 上传成功
-const onSuccess = (
-  response: any,
-  uploadFile: UploadFile,
-  uploadFiles: UploadFiles
-) => {
+const onSuccess = (response, uploadFile, uploadFiles) => {
   if (response?.success) {
     eventBus.emit("refreshFile", response.data);
   }
@@ -110,7 +106,7 @@ const onSuccess = (
 
 // 清空已上传
 const onClear = async () => {
-  uploadRef.value!.clearFiles(["success", "fail"]);
+  uploadRef.value.clearFiles(["success", "fail"]);
 };
 
 // 取消
@@ -120,7 +116,7 @@ const onCancel = () => {
 
 // 确定
 const onSure = async () => {
-  uploadRef.value!.submit();
+  uploadRef.value.submit();
   state.showDialog = false;
 };
 
@@ -129,7 +125,7 @@ defineExpose({
 });
 </script>
 
-<script lang="ts">
+<script>
 import { defineComponent } from "vue";
 
 export default defineComponent({

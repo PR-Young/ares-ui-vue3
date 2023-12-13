@@ -20,14 +20,9 @@ import {
   debounce,
 } from "../utils/index.js";
 
-import {
-  reactive,
-  watch,
-  computed,
-  getCurrentInstance,
-} from "vue";
+import { reactive, watch, computed, getCurrentInstance } from "vue";
 const emits = defineEmits(["change", "update:modelValue"]);
-const { proxy } = getCurrentInstance() as any;
+const { proxy } = getCurrentInstance();
 const props = defineProps([
   "modelValue",
   "tag",
@@ -63,7 +58,6 @@ const getFormData = () => {
  */
 const getFormVal = (vModel) => {
   try {
-    
     if (vModel.indexOf(".") > -1) {
       let [tabelVModel, cmpVModel] = vModel.split(".");
       if (typeof props.rowIndex === "number") {
@@ -74,7 +68,7 @@ const getFormVal = (vModel) => {
           0
         );
       }
-    } 
+    }
     return rootFormData.value[vModel] || 0;
   } catch (error) {
     console.warn("计算公式出错, 可能包含无效的组件值", error);
@@ -85,10 +79,9 @@ const getFormVal = (vModel) => {
  * 计算表达式
  */
 const execRPN = () => {
-   
   const temp = state.RPN_EXP.map((t) =>
     typeof t === "object" ? getFormVal(t.vModel) : t
-  ); 
+  );
   state.innerValue = calcRPN(temp);
   emits("change", state.innerValue);
 

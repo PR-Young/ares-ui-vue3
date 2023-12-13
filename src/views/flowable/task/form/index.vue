@@ -165,7 +165,6 @@
       append-to-body
     >
       <div class="test-form">
-        <!-- <form-create :rule="formConf"></form-create> -->
         <form-parser :conf="formConf" ref="formRef"></form-parser>
       </div>
     </el-dialog>
@@ -193,7 +192,6 @@ import {
 import Editor from "@/components/Editor/index.vue";
 import Parser from "@/components/parser/Parser.vue";
 import FormParser from "@/views/aiform/AiFormParser/index.vue";
-import formCreate from "@form-create/element-ui";
 import { markRaw } from "vue";
 export default {
   data() {
@@ -244,7 +242,6 @@ export default {
   components: {
     Editor,
     Parser,
-    formCreate: formCreate.$form(),
     ElIconSearch: markRaw(ElIconSearch),
     ElIconRefresh: markRaw(ElIconRefresh),
     ElIconPlus: markRaw(ElIconPlus),

@@ -32,8 +32,6 @@ import VueParticles from 'particles.vue3'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import formCreate from '@form-create/element-ui'
-import FcDesigner from '@form-create/designer'
 import AiForm from "ai-form"
 
 import zhCn from "element-plus/es/locale/lang/zh-cn";
@@ -78,8 +76,6 @@ app.component('svg-icon', SvgIcon)
 app.use(permission)
 app.use(VueParticles)
 app.use(mavonEditor)
-app.use(formCreate)
-app.use(FcDesigner)
 // app.use(AiForm)
 
 

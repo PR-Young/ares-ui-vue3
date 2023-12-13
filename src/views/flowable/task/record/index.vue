@@ -13,7 +13,6 @@
       <!--流程处理表单模块-->
       <el-col :span="16" :offset="4" v-if="variableOpen">
         <div>
-          <!-- <form-create :rule="variablesData"></form-create> -->
           <form-parser :conf="variablesData" ref="formHandleRef"></form-parser>
         </div>
         <div
@@ -75,7 +74,6 @@
       <!--初始化流程加载表单信息-->
       <el-col :span="16" :offset="4" v-if="formConfOpen">
         <div class="test-form">
-          <!-- <form-create :rule="formConf" @submit="submitForm"></form-create> -->
           <form-parser :conf="formConf" ref="formRef"></form-parser>
           <div style="text-align: center">
             <el-button type="primary" @click="submitForm">提交</el-button>
@@ -316,7 +314,6 @@ import { treeselect } from "@/api/system/dept";
 import "vue3-treeselect/dist/vue3-treeselect.css";
 import Treeselect from "vue3-treeselect";
 import { listUser } from "@/api/system/user";
-import formCreate from "@form-create/element-ui";
 import FormParser from "@/views/aiform/AiFormParser/index.vue";
 import store from "@/store";
 import useTagsViewStore from "@/store/modules/tagsView";
@@ -404,7 +401,6 @@ export default {
     Parser,
     flow,
     Treeselect,
-    formCreate: formCreate.$form(),
     ElIconEditOutline: markRaw(ElIconEditOutline),
     ElIconRefreshLeft: markRaw(ElIconRefreshLeft),
     ElIconCircleClose: markRaw(ElIconCircleClose),

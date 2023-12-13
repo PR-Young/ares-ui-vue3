@@ -120,9 +120,7 @@
           class="list-row"
         >
           <el-tooltip content="删除">
-            <el-icon @click="removeRow(rindex)"
-              ><Delete></Delete
-            ></el-icon>
+            <el-icon @click="removeRow(rindex)"><Delete></Delete></el-icon>
           </el-tooltip>
           <div
             v-for="(conf, cindex) in props.config.children"
@@ -185,11 +183,7 @@
   </div>
 </template>
   <script setup name="AiSubForm" >
-import {
-  reactive,
-  onMounted,
-  nextTick,
-} from "vue";
+import { reactive, onMounted, nextTick } from "vue";
 import { useableProps } from "./config";
 import RenderPanel from "./render.jsx";
 const emits = defineEmits(["update:modelValue"]);
@@ -304,9 +298,9 @@ const submit = () => {
   let res = true;
   const checkCol = (col) =>
     col.required && !checkData(col) && (res = col.valid = false);
-  state.tableFormData.forEach((row: Array<any>) => row.forEach(checkCol));
+  state.tableFormData.forEach((row) => row.forEach(checkCol));
   return res
-    ? state.tableFormData.map((row: Array<any>) =>
+    ? state.tableFormData.map((row) =>
         row.reduce((p, c) => ((p[c.vModel] = c.value), p), {})
       )
     : false;
@@ -429,9 +423,9 @@ const reset = () => {
 };
 
 defineExpose({
- submit,
-  reset
-})
+  submit,
+  reset,
+});
 </script>
 <style lang="scss" scoped>
 .ai-table-box {
