@@ -94,7 +94,7 @@
     "vue3-ace-editor": "^2.2.2",
     "vue3-count-to": "^1.1.2",
     "vue3-treeselect": "^0.1.10",
-    "vuedraggable": "^4.1.0",
+    "vuedraggable": "^2.24.3",
     "workflow-bpmn-modeler": "^0.2.8",
     "xcrud-vue3": "^0.0.12"
   },
