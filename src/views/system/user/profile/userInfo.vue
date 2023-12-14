@@ -75,7 +75,6 @@ export default {
       });
     },
     close() {
-      debugger;
       tagsView.delView(this.$route);
       this.$router.push({ path: "/index" });
     },

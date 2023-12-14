@@ -172,7 +172,6 @@ export default {
           userStore
             .Login(this.loginForm)
             .then(() => {
-              debugger;
               //router.push({ path: this.redirect || "/" });
               //this.$router.push({ path: this.redirect || "/" });
               this.$router.push({ path: "/" });

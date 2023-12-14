@@ -473,7 +473,6 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      debugger;
       const ids = row.procInsId || this.ids;
       this.$confirm(
         '是否确认删除流程定义编号为"' + ids + '"的数据项?',

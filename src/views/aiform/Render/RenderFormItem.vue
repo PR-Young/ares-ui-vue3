@@ -1,9 +1,8 @@
 <template>
   <el-form-item
-    
     :label-width="item.showLabel ? `${item.labelWidth || 100}px` : '0px'"
     :label="item.showLabel ? item.label : ''"
-    :prop="conf.mode==='designer'?undefined:item.vModel"
+    :prop="conf.mode === 'designer' ? undefined : item.vModel"
     :required="item.required"
   >
     <render-component
@@ -16,24 +15,26 @@
       class="item-tool-box"
     >
     </render-component>
-  </el-form-item> 
+  </el-form-item>
 </template>
 
-<script setup name="render-form-item">
-import { computed, ref, inject, provide, defineAsyncComponent } from 'vue'
+<script setup>
+import { computed, ref, inject, provide, defineAsyncComponent } from "vue";
 
-const RenderComponent = defineAsyncComponent(() => import('./RenderComponent.vue'))
+const RenderComponent = defineAsyncComponent(() =>
+  import("./RenderComponent.vue")
+);
 
-const changeValue=()=>{}
+const changeValue = () => {};
 const props = defineProps({
   activeId: String || Number,
   item: Object,
   conf: Object,
-})
+});
 const group = {
-  name: 'componentsGroup',
+  name: "componentsGroup",
   // put:(...arg) =>{ return  put(...arg, element)}
-}
-const activeFormItem = inject('activeFormItem')
-provide('activeFormItem', activeFormItem)
+};
+const activeFormItem = inject("activeFormItem");
+provide("activeFormItem", activeFormItem);
 </script>

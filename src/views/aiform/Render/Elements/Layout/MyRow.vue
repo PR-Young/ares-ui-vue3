@@ -1,6 +1,6 @@
 <template>
-  <div :class="  className">
-    <span  class="component-name" v-if="item.showLabel">{{ item.label }} </span>
+  <div :class="className">
+    <span class="component-name" v-if="item.showLabel">{{ item.label }} </span>
     <render-panel
       :active-id="activeId"
       :list="item.children"
@@ -13,31 +13,29 @@
   </div>
 </template>
 
-<script setup name="my-row">
-import { inject, provide, defineAsyncComponent } from 'vue'
+<script setup>
+import { inject, provide, defineAsyncComponent } from "vue";
 
-const RenderPanel = defineAsyncComponent(() => import('../../RenderPanel.vue'))
+const RenderPanel = defineAsyncComponent(() => import("../../RenderPanel.vue"));
 
 const props = defineProps({
   activeId: String || Number,
   item: Object,
-  conf: Object
+  conf: Object,
 });
-const className='drawing-layout-item';
- 
-const activeFormItem = inject('activeFormItem')
-provide('activeFormItem', activeFormItem)
+const className = "drawing-layout-item";
+
+const activeFormItem = inject("activeFormItem");
+provide("activeFormItem", activeFormItem);
 </script>
 <style scoped>
-
-
 .drawing-layout-item {
-    position: relative;
-    cursor: move;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    outline: 1px dashed #ccc;
-    border-radius: 3px;
-    margin-bottom: 15px;
+  position: relative;
+  cursor: move;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  outline: 1px dashed #ccc;
+  border-radius: 3px;
+  margin-bottom: 15px;
 }
 </style>

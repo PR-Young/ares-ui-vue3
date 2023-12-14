@@ -9,6 +9,7 @@
   <div style="height: 100%; background-color: white">
     <el-container style="height: 100%">
       <el-header
+        v-if="props.showHeader"
         style="
           height: 50px;
           display: flex;
@@ -354,6 +355,22 @@ const state = reactive({
   rules: {},
 });
 
+const msgSuccess = function (msg) {
+  proxy.$message({ showClose: true, message: msg, type: "success" });
+};
+
+const msgError = function (msg) {
+  proxy.$message({ showClose: true, message: msg, type: "error" });
+};
+
+const msgWarning = function (msg) {
+  proxy.$message({ showClose: true, message: msg, type: "warning" });
+};
+
+const msgInfo = function (msg) {
+  proxy.$message.info(msg);
+};
+
 const created = () => {
   if (typeof props.conf === "object" && props.conf !== null) {
     state.drawingList = props.conf.formItems || [];
@@ -373,7 +390,6 @@ const setMode = (mode) => {
   state.deviceMode = mode;
 };
 onMounted(() => {
-  debugger;
   const formId = query && query.formId;
   if (formId) {
     getForm(formId).then((res) => {
@@ -517,7 +533,6 @@ const activeFormItem = (element) => {
 };
 //组件拖放结束，激活新预算为当前元素
 const onEnd = (obj, a) => {
-  debugger;
   if (obj.from !== obj.to) {
     state.activeId = state.tempActiveData.formId;
     state.activeData = state.tempActiveData;
@@ -580,7 +595,6 @@ const getNextId = () => {
 };
 //克隆组件
 const cloneComponent = (origin) => {
-  debugger;
   const clone = JSON.parse(JSON.stringify(origin));
   clone.formId = `${getNextId()}`;
   // clone.span = formConf.span;
@@ -642,11 +656,11 @@ const preview = () => {
 
 const empty = () => {
   if (isFilledPCon(state.flowConditions.map((item) => item.formId))) {
-    proxy.$modal.msgWarning("尚有组件已作为流程判断条件，无法删除");
+    msgWarning("尚有组件已作为流程判断条件，无法删除");
     return;
   }
-  proxy.$modal
-    .confirm("确定要清空所有组件吗？", "提示", { type: "warning" })
+  proxy
+    .$confirm("确定要清空所有组件吗？", "提示", { type: "warning" })
     .then(() => {
       state.drawingList = [];
       // this.idGlobal = 100;
@@ -757,7 +771,7 @@ const drawingItemCopy = (item, parent) => {
 const drawingItemDelete = (index, parent) => {
   // 首先判断是否是流程条件 再判断是否有节点使用过
   if (isProCondition(parent[index])) {
-    proxy.$modal.msgWarning("该组件已作为流程判断条件，无法删除");
+    msgWarning("该组件已作为流程判断条件，无法删除");
     return;
   }
   delPCondition(parent[index].formId);

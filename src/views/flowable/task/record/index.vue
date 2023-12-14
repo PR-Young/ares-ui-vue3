@@ -408,7 +408,6 @@ export default {
   },
   props: {},
   created() {
-    debugger;
     this.taskForm.deployId = this.$route.query && this.$route.query.deployId;
     this.taskForm.taskId = this.$route.query && this.$route.query.taskId;
     this.taskForm.procInsId = this.$route.query && this.$route.query.procInsId;
@@ -527,7 +526,6 @@ export default {
       const params = { procInsId: procInsId, deployId: deployId };
       flowRecord(params)
         .then((res) => {
-          debugger;
           this.flowRecordList = res.data.flowList;
           // 流程过程中不存在初始化表单 直接读取的流程变量中存储的表单值
           if (res.data.formData) {
@@ -562,7 +560,6 @@ export default {
       if (taskId) {
         // 提交流程申请时填写的表单存入了流程变量中后续任务处理时需要展示
         getProcessVariables(taskId).then((res) => {
-          debugger;
           this.variablesData = {
             id: null,
             data: res.data.fields,
@@ -655,7 +652,6 @@ export default {
     },
     /** 申请流程表单数据提交 */
     submitForm(data) {
-      debugger;
       this.$refs["formRef"].submitForm((model) => {
         console.log(model);
         const variables = {
@@ -725,7 +721,6 @@ export default {
     taskRejectNew() {
       this.$refs["taskForm"].validate((valid) => {
         if (valid) {
-          debugger;
           this.taskForm.values = { approve: "拒绝" };
           rejectTaskNew(this.taskForm).then((res) => {
             this.msgSuccess(res.msg);

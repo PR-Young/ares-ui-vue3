@@ -301,7 +301,6 @@ export default {
     },
     /** 表单配置信息 */
     handleDetail(row) {
-      debugger;
       this.formConfOpen = true;
       this.formTitle = "流程表单配置详细";
       this.formConf = {

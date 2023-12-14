@@ -65,6 +65,10 @@ app.config.globalProperties.msgError = function (msg) {
   this.$message({ showClose: true, message: msg, type: 'error' })
 }
 
+app.config.globalProperties.msgWarning = function (msg) {
+  this.$message({ showClose: true, message: msg, type: 'warning' })
+}
+
 app.config.globalProperties.msgInfo = function (msg) {
   this.$message.info(msg)
 }

@@ -61,7 +61,7 @@
 
 
  
-<script lang="ts"  setup >
+<script  setup >
 import { ElIcon } from "element-plus";
 
 import { reactive, resolveComponent } from "vue";

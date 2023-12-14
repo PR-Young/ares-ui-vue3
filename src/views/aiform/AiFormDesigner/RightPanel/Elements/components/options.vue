@@ -12,6 +12,7 @@
       :animation="340"
       group="selectItem"
       handle=".option-drag"
+      item-key="index-options"
       ><template #item="{ element, index }">
         <div :key="index" class="select-item">
           <el-radio :label="element.value">
@@ -37,6 +38,7 @@
       :animation="340"
       group="selectItem"
       handle=".option-drag"
+      item-key="index-check"
       ><template #item="{ element, index }">
         <div :key="index" class="select-item">
           <el-checkbox :label="element.value">

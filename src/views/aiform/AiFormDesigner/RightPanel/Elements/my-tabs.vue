@@ -16,6 +16,7 @@
       :animation="340"
       group="selectItem"
       handle=".option-drag"
+      item-key="index-tabs"
       ><template #item="{ element, index }">
         <el-radio :label="element.value">
           <div :key="index" class="select-item">
