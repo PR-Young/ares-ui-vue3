@@ -10,6 +10,11 @@
     <div class="explain-text" v-if="props.showChinese">大写：{{ chinese }}</div>
   </div>
 </template>
+<script>
+export default {
+  name: "ai-calculate",
+};
+</script>
 <script setup name="AiCalculate">
 import {
   getAmountChinese,

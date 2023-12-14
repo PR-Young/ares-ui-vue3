@@ -16,8 +16,12 @@
     </template>
   </el-table>
 </template>
-
-<script setup>
+<script>
+export default {
+  name: "my-data-table",
+};
+</script>
+<script setup >
 import { inject, provide, defineAsyncComponent } from "vue";
 import dayjs from "dayjs";
 import numeral from "numeral";

@@ -88,6 +88,11 @@
     </div>
   </td>
 </template>
+<script>
+export default {
+  name: "my-table-cell",
+};
+</script>
 <script setup>
 import { inject, provide, defineAsyncComponent, computed, reactive } from "vue";
 

@@ -3,6 +3,12 @@
     <el-button type="danger" @click="test"><slot></slot></el-button>
   </section>
 </template>
+
+<script>
+export default {
+  name: "ai-button",
+};
+</script>
  
 <script setup  name="AiButton">
 import { reactive } from "vue";

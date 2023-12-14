@@ -22,7 +22,11 @@
     </el-tab-pane>
   </el-tabs>
 </template>
-
+<script>
+export default {
+  name: "my-tabs",
+};
+</script>
 <script setup>
 import { defineAsyncComponent, computed } from "vue";
 

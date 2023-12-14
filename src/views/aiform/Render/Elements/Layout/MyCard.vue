@@ -15,7 +15,11 @@
     </render-panel>
   </el-card>
 </template>
-
+<script>
+export default {
+  name: "my-card",
+};
+</script>
 <script setup>
 import { inject, provide, defineAsyncComponent } from "vue";
 

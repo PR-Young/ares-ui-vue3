@@ -75,7 +75,6 @@
     ></file-upload>
   </div>
 </template>
-
 <script setup>
 import {
   ref,
@@ -180,7 +179,7 @@ const onUpload = () => {
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "admin/file",
+  name: "my-upload",
 });
 </script>
 

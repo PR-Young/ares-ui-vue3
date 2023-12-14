@@ -1,26 +1,33 @@
 
 <template>
   <div>
-    <el-time-picker v-model="state.timeRange" v-bind="$attrs" is-range ></el-time-picker>
-    <div v-if="props.showDuration" class="explain-text">时长: {{state.duration}}</div>
+    <el-time-picker
+      v-model="state.timeRange"
+      v-bind="$attrs"
+      is-range
+    ></el-time-picker>
+    <div v-if="props.showDuration" class="explain-text">
+      时长: {{ state.duration }}
+    </div>
   </div>
 </template>
-<script setup name="AiTimeDuration">
+<script>
+export default {
+  name: "ai-time-duration",
+};
+</script>
+<script setup>
 import { reactive, watch } from "vue";
 import { timeCalculate } from "../utils/index.js";
- 
+
 const emits = defineEmits(["update:modelValue", "change"]);
 
-const props = defineProps([
-  "modelValue",
-  "showDuration",
-  "defaultValue"
-]);
+const props = defineProps(["modelValue", "showDuration", "defaultValue"]);
 const state = reactive({
   timeRange: props.modelValue || props.defaultValue || ["", ""],
   duration: "",
 });
-  
+
 watch(
   () => props.modelValue,
   (val) => {
@@ -35,11 +42,13 @@ watch(
   () => state.timeRange,
   (val) => {
     let res = "";
-        if (Array.isArray(state.timeRange)) {
-          const [start, end] = state.timeRange.slice(0, 2).map( c => new Date('2020/01/01 ' + c).getTime())
-          res = timeCalculate(start, end)
-        }
-        state.duration = res
+    if (Array.isArray(state.timeRange)) {
+      const [start, end] = state.timeRange
+        .slice(0, 2)
+        .map((c) => new Date("2020/01/01 " + c).getTime());
+      res = timeCalculate(start, end);
+    }
+    state.duration = res;
     emits("change", val);
     emits("update:modelValue", val);
   },
@@ -47,8 +56,6 @@ watch(
     immediate: true,
   }
 );
-   
- 
 </script>
 <style lang="scss" scoped>
 .explain-text {

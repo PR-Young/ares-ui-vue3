@@ -12,7 +12,11 @@
     </render-panel>
   </div>
 </template>
-
+<script>
+export default {
+  name: "my-row",
+};
+</script>
 <script setup>
 import { inject, provide, defineAsyncComponent } from "vue";
 

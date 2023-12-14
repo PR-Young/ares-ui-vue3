@@ -182,7 +182,12 @@
     </div>
   </div>
 </template>
-  <script setup name="AiSubForm" >
+<script>
+export default {
+  name: "ai-sub-form",
+};
+</script>
+<script setup name="AiSubForm" >
 import { reactive, onMounted, nextTick } from "vue";
 import { useableProps } from "./config";
 import RenderPanel from "./render.jsx";

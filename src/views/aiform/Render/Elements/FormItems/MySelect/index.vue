@@ -1,23 +1,19 @@
 <template>
-    <el-select v-bind="$attrs">
-        <el-option 
+  <el-select v-bind="$attrs">
+    <el-option
       v-for="item in $attrs.options"
       :key="item.value"
       :label="item.label"
       :value="item.value"
     />
-    </el-select>
+  </el-select>
 </template>
-<script setup name="my-select">  
-import {reactive} from 'vue' 
 
-
-const props = defineProps({
-    
-})
-const state = reactive({
-    options1:[{label:'A',value:'A'}]
-})
-
-     
+<script>
+import { reactive } from "vue";
+export default {
+  name: "my-select",
+  props: {},
+  state: reactive({ options1: [{ label: "A", value: "A" }] }),
+};
 </script>

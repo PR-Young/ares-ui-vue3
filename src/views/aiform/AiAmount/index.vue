@@ -1,44 +1,44 @@
 <template>
   <div class="ai-amount">
-     <el-input-number
+    <el-input-number
       style="width: 100%"
       v-model="state.innerValue"
       v-bind="$attrs"
       @input="handleInput"
-    ></el-input-number> 
+    ></el-input-number>
     <div class="explain-text" v-if="props.showChinese">大写：{{ chinese }}</div>
   </div>
 </template>
+<script>
+export default {
+  name: "ai-amount",
+};
+</script>
 <script setup name="AiAmount">
-import { reactive ,watch,computed } from 'vue'
-import {getAmountChinese} from '../utils/index.js'
-  const emits=defineEmits(["update:modelValue"])
-  const props=defineProps( ["modelValue","showChinese"  ])
- 
-  const state=reactive(
-      {
-      innerValue: props&&props.modelValue
-    })
-  
-  
-  const    chinese =computed(()=>{
-      return props.showChinese ? getAmountChinese(state.innerValue) : ''
-    }) 
- const    handleInput =(val) =>{
-      emits('update:modelValue', val)   
-    } 
+import { reactive, watch, computed } from "vue";
+import { getAmountChinese } from "../utils/index.js";
+const emits = defineEmits(["update:modelValue"]);
+const props = defineProps(["modelValue", "showChinese"]);
 
-  watch(
-    () => props.modelValue,
+const state = reactive({
+  innerValue: props && props.modelValue,
+});
+
+const chinese = computed(() => {
+  return props.showChinese ? getAmountChinese(state.innerValue) : "";
+});
+const handleInput = (val) => {
+  emits("update:modelValue", val);
+};
+
+watch(
+  () => props.modelValue,
   (val) => {
     if (val !== state.innerValue) {
-      state.innerValue = val
-      }
-    
+      state.innerValue = val;
+    }
   }
-
-  )
-     
+);
 </script>
 <style lang="scss" scoped>
 .explain-text {

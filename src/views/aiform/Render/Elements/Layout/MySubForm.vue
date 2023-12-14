@@ -34,6 +34,11 @@
     v-model="conf.model[item.vModel]"
   ></ai-sub-form>
 </template>
+<script>
+export default {
+  name: "my-sub-form",
+};
+</script>
 <script setup>
 import { inject, provide, defineAsyncComponent } from "vue";
 

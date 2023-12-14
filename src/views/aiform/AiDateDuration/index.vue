@@ -6,14 +6,15 @@
     </div>
   </div>
 </template>
+<script>
+export default {
+  name: "ai-date-duration",
+};
+</script>
 <script setup name="AiDateDuration">
 import { reactive, watch } from "vue";
 import { timeCalculate } from "../utils/index.js";
-const props = defineProps([
-  "modelValue",
-  "showDuration",
-  "defaultValue"
-]);
+const props = defineProps(["modelValue", "showDuration", "defaultValue"]);
 
 const emits = defineEmits(["update:modelValue", "change"]);
 const state = reactive({

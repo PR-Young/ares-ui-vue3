@@ -250,4 +250,6 @@ const addReg = () => {
     message: "",
   });
 };
+
+const requireChange = (required) => {};
 </script>

@@ -58,10 +58,10 @@ for (const path in elModules) {
 
 const props = defineProps({
   parent: Object,
-  activeId: String || Number,
+  activeId: Number || String,
   item: Object,
   conf: Object,
-  index: String || Number,
+  index: Number || String,
 });
 
 const activeFormItem = inject("activeFormItem");

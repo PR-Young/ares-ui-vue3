@@ -27,6 +27,11 @@
     </tbody>
   </table>
 </template>
+<script>
+export default {
+  name: "my-table",
+};
+</script>
 <script setup>
 import { inject, provide, defineAsyncComponent, reactive } from "vue";
 

@@ -15,18 +15,23 @@ Modified by Leo 2023.9.24
   />
 </template>
 
-<script   lang="ts"  setup name="AiEditor">
+<script>
+export default {
+  name: "ai-editor",
+};
+</script>
+<script setup name="AiEditor">
+import { useAttrs } from "vue";
 import loadTinymce from "../utils/loadTinymce.js";
 import { plugins, toolbar } from "./config";
 //import { debounce } from 'throttle-debounce'
 import { debounce } from "../utils/index.js";
-import { onMounted, onUnmounted, reactive,watch } from "vue";
+import { onMounted, onUnmounted, reactive, watch } from "vue";
 const emits = defineEmits(["update:modelValue"]);
-import { useAttrs } from 'vue'
-const attrs = useAttrs()
+
+const attrs = useAttrs();
 let num = 1;
 const props = defineProps({
- 
   modelValue: {
     type: String,
     default: "",
@@ -39,13 +44,13 @@ const state = reactive({
 });
 onMounted(() => {
   if (props.disabled) return;
-  var that = this;     
-  
-  loadTinymce((tinymce) => { 
-  //window.tinymce=tinymce
+  var that = this;
+
+  loadTinymce((tinymce) => {
+    //window.tinymce=tinymce
     // eslint-disable-next-line global-require
     //var res =import.meta.glob("./zh_CN.js");
-     
+
     let conf = {
       selector: `#${state.tinymceId}`,
       language: "zh_CN",
@@ -79,9 +84,7 @@ onUnmounted(() => {
   destroyTinymce();
 });
 
- 
 const vModel = (editor) => {
-  
   // 控制连续写入时setContent的触发频率
   const debounceSetContent = debounce(editor.setContent, 250); //(250, editor.setContent)
 
