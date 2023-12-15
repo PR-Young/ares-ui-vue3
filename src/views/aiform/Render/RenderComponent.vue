@@ -38,7 +38,7 @@ import {
 } from "vue";
 
 let components = {};
-debugger;
+
 const elModules = import.meta.globEager("./Elements/FormItems/My*/index.vue");
 const aiModules = import.meta.globEager("@/views/aiform/Ai*/index.vue");
 for (const path in elModules) {

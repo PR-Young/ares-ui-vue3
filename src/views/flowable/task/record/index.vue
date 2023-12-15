@@ -430,13 +430,15 @@ export default {
     //表单数据回填，模拟异步请求场景
     // setTimeout(() => {
     //   // 请求回来的表单数据
-    //   getFormData(this.taskForm.instanceId).then((res) => {
-    //     const data = JSON.parse(res.data.formData);
-    //     // 回填数据
-    //     this.fillFormData(this.formConf, data);
-    //   });
-    //   // 更新表单
-    //   this.key = +new Date().getTime();
+    //   if (this.taskForm.instanceId) {
+    //     getFormData(this.taskForm.instanceId).then((res) => {
+    //       const data = JSON.parse(res.data.formData);
+    //       // 回填数据
+    //       this.fillFormData(this.formConf, data);
+    //     });
+    //     // 更新表单
+    //     this.key = +new Date().getTime();
+    //   }
     // }, 500);
   },
   methods: {
@@ -523,6 +525,7 @@ export default {
     },
     /** 流程流转记录 */
     getFlowRecordList(procInsId, deployId) {
+      debugger;
       const params = { procInsId: procInsId, deployId: deployId };
       flowRecord(params)
         .then((res) => {
@@ -535,9 +538,7 @@ export default {
             this.formConf = {
               id: null,
               data: res.data.formData.fields,
-              model: {
-                //    "field2": "选项二", "field1": [ "2023-01-03", "2023-01-17" ], "field1673928917578": 49, "field1673928939297": 4, "field1673928918984": true, "field1673928936079": 16, "field1673928921016": 1, "field1673928930234": "gdfg郭德纲"
-              },
+              model: res.data.formData.formData || {},
               activity: {},
             };
           }
@@ -548,12 +549,14 @@ export default {
         });
     },
     fillFormData(form, data) {
-      form.fields.forEach((item) => {
-        const val = data[item.__vModel__];
-        if (val) {
-          item.__config__.defaultValue = val;
-        }
-      });
+      debugger;
+      form.model = data.data;
+      // form.model.forEach((item) => {
+      //   const val = data[item.__vModel__];
+      //   if (val) {
+      //     item.__config__.defaultValue = val;
+      //   }
+      // });
     },
     /** 获取流程变量内容 */
     processVariables(taskId) {
@@ -673,28 +676,6 @@ export default {
           });
         }
       });
-      // if (data) {
-      //   const variables = {
-      //     // fields: this.fields,
-      //     INITIATOR: "",
-      //     data: data,
-      //     ...data,
-      //   };
-      //   const formData = this.formConf;
-      //   formData.disabled = true;
-      //   formData.formBtns = false;
-      //   if (this.taskForm.procDefId) {
-      //     variables.variables = formData;
-      //     // 启动流程并将表单数据加入流程变量
-      //     definitionStart(
-      //       this.taskForm.procDefId,
-      //       JSON.stringify(variables)
-      //     ).then((res) => {
-      //       this.msgSuccess(res.msg);
-      //       this.goBack();
-      //     });
-      //   }
-      // }
     },
     /** 驳回任务 */
     handleReject() {

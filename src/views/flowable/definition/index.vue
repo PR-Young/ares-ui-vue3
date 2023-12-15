@@ -703,7 +703,7 @@ export default {
     handleDelete(row) {
       //const ids = row.deploymentId || this.ids;
       const params = {
-        deployId: row.id || this.ids,
+        deployId: row.deploymentId || this.ids,
       };
       this.$confirm(
         '是否确认删除流程定义编号为"' + params.deployId + '"的数据项?',

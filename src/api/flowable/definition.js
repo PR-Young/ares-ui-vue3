@@ -106,7 +106,7 @@ export function updateDeployment(data) {
 // 删除流程定义
 export function delDeployment(query) {
   return request({
-    url: '/ares/flowable/definition/delete/',
+    url: '/ares/flowable/definition/delete',
     method: 'delete',
     params: query,
   })
