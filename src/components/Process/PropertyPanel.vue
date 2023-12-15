@@ -22,15 +22,16 @@ import processPanel from "./components/nodePanel/process.vue";
 import sequenceFlowPanel from "./components/nodePanel/sequenceFlow.vue";
 import gatewayPanel from "./components/nodePanel/gateway.vue";
 import { NodeName } from "./lang/zh";
+import { markRaw } from "vue";
 
 export default {
   name: "PropertyPanel",
   components: {
-    processPanel,
-    taskPanel,
-    startEndPanel,
-    sequenceFlowPanel,
-    gatewayPanel,
+    processPanel: markRaw(processPanel),
+    taskPanel: markRaw(taskPanel),
+    startEndPanel: markRaw(startEndPanel),
+    sequenceFlowPanel: markRaw(sequenceFlowPanel),
+    gatewayPanel: markRaw(gatewayPanel),
   },
   props: {
     users: {

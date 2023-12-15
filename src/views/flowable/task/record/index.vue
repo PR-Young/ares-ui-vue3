@@ -525,7 +525,6 @@ export default {
     },
     /** 流程流转记录 */
     getFlowRecordList(procInsId, deployId) {
-      debugger;
       const params = { procInsId: procInsId, deployId: deployId };
       flowRecord(params)
         .then((res) => {
@@ -549,7 +548,6 @@ export default {
         });
     },
     fillFormData(form, data) {
-      debugger;
       form.model = data.data;
       // form.model.forEach((item) => {
       //   const val = data[item.__vModel__];
