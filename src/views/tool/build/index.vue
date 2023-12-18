@@ -203,7 +203,7 @@ import loadBeautifier from "@/utils/loadBeautifier";
 import { getForm, addForm, updateForm } from "@/api/flowable/form";
 import store from "@/store";
 import useTagsViewStore from "@/store/modules/tagsView";
-import { markRaw } from "vue";
+import { markRaw, nextTick } from "vue";
 const tagsView = useTagsViewStore(store);
 
 let beautifier;
@@ -490,9 +490,9 @@ export default {
       list.push(clone);
       this.activeFormItem(clone);
     },
-    drawingItemDelete(index, list) {
+    async drawingItemDelete(index, list) {
       list.splice(index, 1);
-      this.$nextTick(() => {
+      await nextTick(() => {
         const len = this.drawingList.length;
         if (len) {
           this.activeFormItem(this.drawingList[len - 1]);

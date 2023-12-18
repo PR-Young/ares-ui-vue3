@@ -44,6 +44,7 @@ import { Close } from "@element-plus/icons";
 import store from "@/store";
 import useTagsViewStore from "@/store/modules/tagsView";
 import usePermissionStore from "@/store/modules/permission";
+import { nextTick } from "vue";
 
 const tagsView = useTagsViewStore(store);
 const permission = usePermissionStore(store);
@@ -132,9 +133,9 @@ export default {
       }
       return false;
     },
-    moveToCurrentTag() {
+    async moveToCurrentTag() {
       const tags = this.$arrRefs.tag;
-      this.$nextTick(() => {
+      await nextTick(() => {
         for (const tag of tags) {
           if (tag.to.path === this.$route.path) {
             this.$refs.scrollPane.moveToTarget(tag);
@@ -147,10 +148,10 @@ export default {
         }
       });
     },
-    refreshSelectedTag(view) {
-      tagsView.delCachedView(view).then(() => {
+    async refreshSelectedTag(view) {
+      tagsView.delCachedView(view).then(async () => {
         const { fullPath } = view;
-        this.$nextTick(() => {
+        await nextTick(() => {
           this.$router.replace({
             path: "/redirect" + fullPath,
           });

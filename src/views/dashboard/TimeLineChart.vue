@@ -3,26 +3,27 @@
 </template>
 
 <script>
-import * as echarts from 'echarts'
-require('echarts/theme/macarons') // echarts theme
-import resize from './mixins/resize'
-import { getLineChart } from '@/api/home'
+import * as echarts from "echarts";
+require("echarts/theme/macarons"); // echarts theme
+import resize from "./mixins/resize";
+import { getLineChart } from "@/api/home";
+import { nextTick } from "vue";
 
 export default {
-  name: 'timeLineChart',
+  name: "timeLineChart",
   mixins: [resize],
   props: {
     className: {
       type: String,
-      default: 'chart',
+      default: "chart",
     },
     width: {
       type: String,
-      default: '100%',
+      default: "100%",
     },
     height: {
       type: String,
-      default: '350px',
+      default: "350px",
     },
     autoResize: {
       type: Boolean,
@@ -36,37 +37,37 @@ export default {
   data() {
     return {
       chart: null,
-    }
+    };
   },
   watch: {
     chartData: {
       deep: true,
       handler(val) {
-        this.setOptions(val)
+        this.setOptions(val);
       },
     },
   },
   mounted() {
-    this.$nextTick(() => {
-      this.initChart()
-    })
+    nextTick(() => {
+      this.initChart();
+    });
   },
   beforeUnmount() {
     if (!this.chart) {
-      return
+      return;
     }
-    this.chart.dispose()
-    this.chart = null
+    this.chart.dispose();
+    this.chart = null;
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
+      this.chart = echarts.init(this.$el, "macarons");
       if (this.chartData.length > 0) {
-        this.setOptions(this.chartData)
+        this.setOptions(this.chartData);
       } else {
         getLineChart().then((res) => {
-          this.setOptions(res.data)
-        })
+          this.setOptions(res.data);
+        });
       }
     },
     setOptions({ legend, series, xaxis } = {}) {
@@ -80,9 +81,9 @@ export default {
           containLabel: true,
         },
         tooltip: {
-          trigger: 'axis',
+          trigger: "axis",
           axisPointer: {
-            type: 'cross',
+            type: "cross",
           },
           padding: [5, 10],
         },
@@ -93,8 +94,8 @@ export default {
         },
         legend: legend,
         series: series,
-      })
+      });
     },
   },
-}
+};
 </script>

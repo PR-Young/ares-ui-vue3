@@ -33,6 +33,7 @@ import Fuse from "fuse.js";
 import path from "path-browserify";
 import store from "@/store";
 import usePermissionStore from "@/store/modules/permission";
+import { nextTick } from "vue";
 const permission = usePermissionStore(store);
 
 export default {
@@ -81,11 +82,11 @@ export default {
       this.options = [];
       this.show = false;
     },
-    change(val) {
+    async change(val) {
       this.$router.push(val.path);
       this.search = "";
       this.options = [];
-      this.$nextTick(() => {
+      await nextTick(() => {
         this.show = false;
       });
     },

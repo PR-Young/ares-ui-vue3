@@ -276,7 +276,7 @@ import {
   treeselect as deptTreeselect,
   roleDeptTreeselect,
 } from "@/api/system/dept";
-import { markRaw } from "vue";
+import { markRaw, nextTick } from "vue";
 
 export default {
   data() {
@@ -534,10 +534,10 @@ export default {
       this.title = "添加角色";
     },
     /** 修改按钮操作 */
-    handleUpdate(row) {
+    async handleUpdate(row) {
       this.reset();
       const roleId = row.id || this.ids;
-      this.$nextTick(() => {
+      await nextTick(() => {
         this.getRoleMenuTreeselect(roleId);
       });
       getRole(roleId).then((response) => {
@@ -547,12 +547,12 @@ export default {
       });
     },
     /** 分配数据权限操作 */
-    handleDataScope(row) {
+    async handleDataScope(row) {
       this.reset();
-      // this.$nextTick(() => {
+      // await nextTick(() => {
       //   this.getRoleDeptTreeselect(row.id);
       // });
-      this.$nextTick(() => {
+      await nextTick(() => {
         this.getRoleUserselect(row.id);
       });
       getRole(row.id).then((response) => {

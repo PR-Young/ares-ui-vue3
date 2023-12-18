@@ -31,8 +31,11 @@ export function documentationParse(obj) {
 }
 
 export function conditionExpressionParse(obj) {
+  console.log(obj)
   if ('conditionExpression' in obj) {
-    obj.conditionExpression = obj.conditionExpression.body
+    if (obj.conditionExpression) {
+      obj.conditionExpression = obj.conditionExpression.body
+    }
   }
   return obj
 }

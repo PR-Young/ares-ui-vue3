@@ -22,7 +22,7 @@ import processPanel from "./components/nodePanel/process.vue";
 import sequenceFlowPanel from "./components/nodePanel/sequenceFlow.vue";
 import gatewayPanel from "./components/nodePanel/gateway.vue";
 import { NodeName } from "./lang/zh";
-import { markRaw } from "vue";
+import { markRaw, nextTick } from "vue";
 
 export default {
   name: "PropertyPanel",
@@ -129,27 +129,27 @@ export default {
   },
   methods: {
     handleModeler() {
-      this.modeler.on("root.added", (e) => {
+      this.modeler.on("root.added", async (e) => {
         if (e.element.type === "bpmn:Process") {
           this.element = null;
-          this.$nextTick().then(() => {
+          await nextTick().then(() => {
             this.element = e.element;
           });
         }
       });
-      this.modeler.on("element.click", (e) => {
+      this.modeler.on("element.click", async (e) => {
         const { element } = e;
         console.log(element);
         if (element.type === "bpmn:Process") {
           this.element = element;
         }
       });
-      this.modeler.on("selection.changed", (e) => {
+      this.modeler.on("selection.changed", async (e) => {
         // hack 同类型面板不刷新
         this.element = null;
         const element = e.newSelection[0];
         if (element) {
-          this.$nextTick().then(() => {
+          await nextTick().then(() => {
             this.element = element;
           });
         }

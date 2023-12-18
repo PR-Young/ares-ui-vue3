@@ -22,6 +22,7 @@
 import store from "@/store";
 import useAppStore from "@/store/modules/app";
 import useTagsViewStore from "@/store/modules/tagsView";
+import { nextTick } from "vue";
 const app = useAppStore(store);
 const tagsView = useTagsViewStore(store);
 export default {
@@ -50,13 +51,13 @@ export default {
         type: "success",
       });
     },
-    refreshView() {
+    async refreshView() {
       // In order to make the cached page re-rendered
       tagsView.delAllCachedViews(this.$route);
 
       const { fullPath } = this.$route;
 
-      this.$nextTick(() => {
+      await nextTick(() => {
         this.$router.replace({
           path: "/redirect" + fullPath,
         });

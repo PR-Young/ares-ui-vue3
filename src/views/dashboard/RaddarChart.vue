@@ -6,6 +6,7 @@
 import * as echarts from "echarts";
 require("echarts/theme/macarons"); // echarts theme
 import resize from "./mixins/resize";
+import { nextTick } from "vue";
 
 const animationDuration = 3000;
 
@@ -31,7 +32,7 @@ export default {
     };
   },
   mounted() {
-    this.$nextTick(() => {
+    nextTick(() => {
       this.initChart();
     });
   },
