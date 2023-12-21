@@ -615,6 +615,7 @@ export default {
       complete(this.taskForm).then((response) => {
         this.msgSuccess(response.msg);
         this.goBack();
+        this.completeOpen = false;
       });
     },
     /** 委派任务 */
@@ -687,6 +688,7 @@ export default {
           rejectTask(this.taskForm).then((res) => {
             this.msgSuccess(res.msg);
             this.goBack();
+            this.rejectOpen = false;
           });
         }
       });
@@ -704,6 +706,7 @@ export default {
           rejectTaskNew(this.taskForm).then((res) => {
             this.msgSuccess(res.msg);
             this.goBack();
+            this.rejectOpenNew = false;
           });
         }
       });
@@ -724,6 +727,7 @@ export default {
           returnTask(this.taskForm).then((res) => {
             this.msgSuccess(res.msg);
             this.goBack();
+            this.returnOpen = false;
           });
         }
       });
