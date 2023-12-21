@@ -232,12 +232,6 @@ export const constantRoutes = [
         name: 'FormBuild',
         meta: { title: '表单配置', icon: '' },
       },
-      {
-        path: 'formcreate/index',
-        component: () => import('@/views/tool/formcreate/index.vue'),
-        name: 'FormCreate',
-        meta: { title: '表单配置', icon: '' },
-      },
     ],
   },
   {
@@ -246,8 +240,8 @@ export const constantRoutes = [
     path: '/aresflow',
     component: Layout,
     meta: { title: '流程管理(新)', icon: 'table', },
-    alwaysShow: true,
-    hidden: false,
+    alwaysShow: false,
+    hidden: true,
     children: [
       {
         path: 'build/index',
