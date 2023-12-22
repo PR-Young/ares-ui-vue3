@@ -178,9 +178,7 @@
         <template v-slot="scope">
           <el-dropdown>
             <span class="el-dropdown-link">
-              更多操作<el-icon class="el-icon--right"
-                ><el-icon-arrow-down
-              /></el-icon>
+              更多操作<el-icon class="el-icon--right"><ArrowDown /></el-icon>
             </span>
             <template v-slot:dropdown>
               <el-dropdown-menu>
@@ -377,7 +375,7 @@
 
 <script>
 import {
-  ArrowDown as ElIconArrowDown,
+  ArrowDown,
   Upload as ElIconUpload,
   Search as ElIconSearch,
   Refresh as ElIconRefresh,
@@ -499,7 +497,7 @@ export default {
   components: {
     Parser: markRaw(Parser),
     flow: markRaw(flow),
-    ElIconArrowDown: markRaw(ElIconArrowDown),
+    ArrowDown,
     ElIconUpload: markRaw(ElIconUpload),
     ElIconSearch: markRaw(ElIconSearch),
     ElIconRefresh: markRaw(ElIconRefresh),

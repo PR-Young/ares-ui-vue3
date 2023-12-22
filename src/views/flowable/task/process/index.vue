@@ -158,26 +158,21 @@
         align="center"
         class-name="small-padding fixed-width"
         fixed="right"
+        width="100"
       >
         <template v-slot="scope">
           <el-dropdown>
             <span class="el-dropdown-link">
-              更多操作<el-icon class="el-icon--right"
-                ><el-icon-arrow-down
-              /></el-icon>
+              更多操作<el-icon class="el-icon--right"><ArrowDown /></el-icon>
             </span>
             <template v-slot:dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item
-                  :icon="ElIconTickets"
-                  @click="handleFlowRecord(scope.row)"
-                >
+                <el-dropdown-item @click="handleFlowRecord(scope.row)">
+                  <el-icon><Tickets /></el-icon>
                   详情
                 </el-dropdown-item>
-                <el-dropdown-item
-                  :icon="ElIconCircleClose"
-                  @click="handleStop(scope.row)"
-                >
+                <el-dropdown-item @click="handleStop(scope.row)">
+                  <el-icon><CircleClose /></el-icon>
                   取消申请
                 </el-dropdown-item>
                 <el-dropdown-item
@@ -248,7 +243,7 @@
 
 <script>
 import {
-  ArrowDown as ElIconArrowDown,
+  ArrowDown,
   Search as ElIconSearch,
   Refresh as ElIconRefresh,
   Plus as ElIconPlus,
@@ -328,7 +323,7 @@ export default {
     };
   },
   components: {
-    ElIconArrowDown: markRaw(ElIconArrowDown),
+    ArrowDown,
     ElIconSearch: markRaw(ElIconSearch),
     ElIconRefresh: markRaw(ElIconRefresh),
     ElIconPlus: markRaw(ElIconPlus),
