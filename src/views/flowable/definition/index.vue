@@ -212,10 +212,10 @@
                   激活
                 </el-dropdown-item>
                 <el-dropdown-item
-                  :icon="ElIconDelete"
                   @click="handleDelete(scope.row)"
                   v-hasPermi="['system:deployment:remove']"
                 >
+                  <el-icon><Delete /></el-icon>
                   删除
                 </el-dropdown-item>
               </el-dropdown-menu>
