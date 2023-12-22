@@ -35,9 +35,9 @@
 </template>
 
 <script>
-import { activeFlowList } from '@/api/flowable/process'
+import { activeFlowList } from "@/api/flowable/process";
 export default {
-  name: 'Workbench',
+  name: "Workbench",
   components: {},
   data() {
     return {
@@ -46,56 +46,57 @@ export default {
       flowList: [],
       flowData: [],
       categorys: [],
-      activeNames: ['1'],
-    }
+      activeNames: ["1"],
+    };
   },
   created() {
-    this.getDicts('sys_process_category').then((res) => {
-      this.categorys = res.data
-    })
-    this.getList()
+    this.getDicts("sys_process_category").then((res) => {
+      this.categorys = res.data;
+    });
+    this.getList();
   },
   methods: {
     categoryFormat(row, column) {
-      return this.selectDictLabel(this.categorys, row.category)
+      return this.selectDictLabel(this.categorys, row.category);
     },
     /** 查询流程定义列表 */
     getList() {
-      this.loading = true
-      this.flowList = []
+      this.loading = true;
+      this.flowList = [];
       activeFlowList().then((response) => {
-        this.flowData = response.data
+        this.flowData = response.data;
         this.flowData.forEach((data) => {
           if (this.activeNames.includes(data.category)) {
-            this.flowList.push(data)
+            this.flowList.push(data);
           }
-        })
-        console.log(this.flowList)
-        this.loading = false
-      })
+        });
+        console.log(this.flowList);
+        this.loading = false;
+      });
     },
     /**  发起流程申请 */
     handleStartProcess(row) {
       this.$router.push({
-        path: '/flowable/task/record/index',
+        path: "/flowable/task/record/index",
         query: {
           deployId: row.deploymentId,
           procDefId: row.id,
           finished: true,
+          handleType: "start",
         },
-      })
+      });
     },
     handleChange(val) {
-      console.log(val)
-      this.flowList = []
+      console.log(val);
+      this.flowList = [];
       this.flowData.forEach((data) => {
         if (val.includes(data.category)) {
-          this.flowList.push(data)
+          this.flowList.push(data);
         }
-      })
+      });
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

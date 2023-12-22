@@ -75,7 +75,7 @@
       <el-col :span="16" :offset="4" v-if="formConfOpen">
         <div class="test-form">
           <form-parser :conf="formConf" ref="formRef"></form-parser>
-          <div style="text-align: center">
+          <div style="text-align: center" v-if="handleType === 'start'">
             <el-button type="primary" @click="submitForm">提交</el-button>
           </div>
         </div>
@@ -381,6 +381,7 @@ export default {
       // 回退列表数据
       returnTaskList: [],
       finished: "false",
+      handleType: null,
       completeTitle: null,
       completeOpen: false,
       returnTitle: null,
@@ -425,6 +426,7 @@ export default {
     }
     this.getFlowRecordList(this.taskForm.procInsId, this.taskForm.deployId);
     this.finished = this.$route.query && this.$route.query.finished;
+    this.handleType = this.$route.query && this.$route.query.handleType;
   },
   mounted() {
     //表单数据回填，模拟异步请求场景

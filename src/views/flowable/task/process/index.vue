@@ -433,6 +433,7 @@ export default {
           deployId: row.deployId,
           taskId: row.taskId,
           finished: false,
+          handleType: "",
         },
       });
     },
