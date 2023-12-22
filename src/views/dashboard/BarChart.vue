@@ -6,7 +6,7 @@
 import * as echarts from "echarts";
 require("echarts/theme/macarons"); // echarts theme
 import resize from "./mixins/resize";
-import { nextTick } from "vue";
+import { nextTick, markRaw } from "vue";
 
 const animationDuration = 6000;
 
@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, "macarons");
+      this.chart = markRaw(echarts.init(this.$el, "macarons"));
 
       this.chart.setOption({
         tooltip: {

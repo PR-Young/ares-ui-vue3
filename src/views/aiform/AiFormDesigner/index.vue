@@ -269,7 +269,7 @@ const router = useRouter();
 const { proxy } = getCurrentInstance();
 ///是否被外部使用
 const isInUsed =
-  inject("isInUsed") ||
+  // inject("isInUsed") ||
   function () {
     return false;
   };

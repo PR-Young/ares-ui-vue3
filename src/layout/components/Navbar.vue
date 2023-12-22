@@ -152,7 +152,7 @@ export default {
           protocol = "wss";
         }
 
-        url = `${protocol}://localhost:8080/ares/ws/` + userAccount;
+        url = `${protocol}://10.211.55.4:8080/ares/ws/` + userAccount;
 
         // 打开一个websocket
         websocket = new WebSocket(url);
