@@ -83,6 +83,18 @@
   box-sizing: content-box;
 }
 
+.el-menu--collapse
+  > div
+  > .el-submenu
+  > .el-submenu__title
+  .el-submenu__icon-arrow {
+  display: none;
+}
+
+.el-dropdown .el-dropdown-link{
+  color: var(--el-color-primary) !important;
+}
+
 .el-badge__content.is-fixed {
   position: absolute;
   top: 10px;

@@ -7,6 +7,7 @@
 
 body {
   height: 100%;
+  margin: 0;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -188,4 +189,39 @@ aside {
 
 .multiselect--active {
   z-index: 1000 !important;
+}
+
+
+.table_link_btn {
+    margin: 0 5px;
+    padding: 0 1px 0 1px
+}
+
+.table_link_text {
+    margin-left: 2px;
+}
+
+.el-link-spacing {
+    margin-right: 10px;
+}
+
+/* 动画 */
+.fade-enter-active,
+.fade-leave-active {
+	transition: all 0.5s;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+	transition: all 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+	opacity: 0.1;
+	transform: translateY(-20px);
+}
+
+.item-search .el-button--primary {
+    margin-left: 22px;
 }
