@@ -12,16 +12,16 @@
 
 <script>
 export default {
-  name: 'Knife4j',
+  name: "Knife4j",
   data() {
     return {
-      src: process.env.VUE_APP_BASE_API + '/ares/doc.html',
-      height: document.documentElement.clientHeight - 94.5 + 'px;',
+      src: import.meta.env.VITE_APP_BASE_API + "/ares/doc.html",
+      height: document.documentElement.clientHeight - 94.5 + "px;",
       loading: false,
-    }
+    };
   },
   mounted: function () {
-    window.open(this.src)
+    window.open(this.src);
     // setTimeout(() => {
     //   this.loading = false;
     // }, 230);
@@ -30,5 +30,5 @@ export default {
     //   that.height = document.documentElement.clientHeight - 94.5 + "px;";
     // };
   },
-}
+};
 </script>

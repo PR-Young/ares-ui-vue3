@@ -450,7 +450,7 @@ export default {
         // 设置上传的请求头部
         headers: { Authorization: "Bearer " + getToken() },
         // 上传的地址
-        url: process.env.VUE_APP_BASE_API + "/flowable/definition/import",
+        url: import.meta.env.VITE_APP_BASE_API + "/flowable/definition/import",
       },
       // 查询参数
       queryParams: {
@@ -584,7 +584,7 @@ export default {
     handleReadImage(deploymentId) {
       this.readImage.title = "流程图";
       this.readImage.open = true;
-      // this.readImage.src = process.env.VUE_APP_BASE_API + "/flowable/definition/readImage/" + deploymentId;
+      // this.readImage.src = import.meta.env.VITE_APP_BASE_API + "/flowable/definition/readImage/" + deploymentId;
       // 发送请求，获取xml
       readXml(deploymentId).then((res) => {
         this.xmlData = res.data;

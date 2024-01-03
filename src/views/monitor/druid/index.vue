@@ -11,22 +11,22 @@
 
 <script>
 export default {
-  name: 'Druid',
+  name: "Druid",
   data() {
     return {
-      src: process.env.VUE_APP_BASE_API + '/ares/druid/index.html',
-      height: document.documentElement.clientHeight - 94.5 + 'px;',
+      src: import.meta.env.VITE_APP_BASE_API + "/ares/druid/index.html",
+      height: document.documentElement.clientHeight - 94.5 + "px;",
       loading: true,
-    }
+    };
   },
   mounted: function () {
     setTimeout(() => {
-      this.loading = false
-    }, 230)
-    const that = this
+      this.loading = false;
+    }, 230);
+    const that = this;
     window.onresize = function temp() {
-      that.height = document.documentElement.clientHeight - 94.5 + 'px;'
-    }
+      that.height = document.documentElement.clientHeight - 94.5 + "px;";
+    };
   },
-}
+};
 </script>

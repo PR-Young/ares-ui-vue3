@@ -170,7 +170,7 @@ export default {
           if (response.code === 200) {
             this.open = false;
             this.options.img =
-              process.env.VUE_APP_BASE_API +
+              import.meta.env.VITE_APP_BASE_API +
               "/ares/system/user/profile/" +
               response.imgUrl;
             this.msgSuccess("修改成功");

@@ -1,8 +1,13 @@
 
 
 <template>
-  <div v-loading="loading" :style="'height:'+ height">
-    <iframe :src="src" frameborder="no" style="width: 100%;height: 100%" scrolling="auto" />
+  <div v-loading="loading" :style="'height:' + height">
+    <iframe
+      :src="src"
+      frameborder="no"
+      style="width: 100%; height: 100%"
+      scrolling="auto"
+    />
   </div>
 </template>
 <script>
@@ -10,7 +15,7 @@ export default {
   name: "Report",
   data() {
     return {
-      src: process.env.VUE_APP_BASE_API + "/ares/tool/report/index",
+      src: import.meta.env.VITE_APP_BASE_API + "/ares/tool/report/index",
       height: document.documentElement.clientHeight - 94.5 + "px;",
       loading: true,
     };
