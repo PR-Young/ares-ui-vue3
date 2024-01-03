@@ -1,4 +1,4 @@
-import JSEncrypt from 'jsencrypt/bin/jsencrypt'
+import JSEncrypt from 'JSEncrypt'
 
 // 密钥对生成 http://web.chacuo.net/netrsakeypair
 
