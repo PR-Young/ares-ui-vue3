@@ -45,6 +45,8 @@
     "@tinymce/tinymce-vue": "^5.1.0",
     "@vueup/vue-quill": "^1.2.0",
     "@vueuse/core": "^10.6.1",
+    "@wangeditor/editor": "^5.1.23",
+    "@wangeditor/editor-for-vue": "^5.1.12",
     "ai-form": "^0.9.8",
     "axios": "1.4.0",
     "bpmn-js": "^15.2.2",
