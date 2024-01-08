@@ -29,7 +29,7 @@ import {
   CamundaPlatformPropertiesProviderModule,
 } from "bpmn-js-properties-panel";
 import CamundaBpmnModdle from "camunda-bpmn-moddle/resources/camunda.json";
-import flowableModdleExtension from "./components/flowableExtension.js";
+//import flowableModdleExtension from "./components/flowableExtension.js";
 import flowableModdle from "./components/flowable.json";
 
 export default {
@@ -58,7 +58,7 @@ export default {
         CamundaPlatformPropertiesProviderModule,
         //  汉化模块
         customTranslateModule,
-        flowableModdleExtension,
+        //flowableModdleExtension,
       ],
       moddleExtensions: {
         camunda: CamundaBpmnModdle,
