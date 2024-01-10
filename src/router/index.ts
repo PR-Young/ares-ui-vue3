@@ -143,19 +143,6 @@ export const constantRoutes = [
     ],
   },
   {
-    path: '/mq',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: 'bindings/:vhost/:queueName',
-        component: () => import('@/views/monitor/mq/bindings.vue'),
-        name: 'Bindings',
-        meta: { title: '绑定关系' },
-      },
-    ],
-  },
-  {
     path: '/genedit',
     component: Layout,
     hidden: true,
@@ -218,19 +205,6 @@ export const constantRoutes = [
         component: () => import('@/views/flowable/task/record/index.vue'),
         name: 'Record',
         meta: { title: '流程处理', icon: '' },
-      },
-    ],
-  },
-  {
-    path: '/tool',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: 'build/index',
-        component: () => import('@/views/tool/build/index.vue'),
-        name: 'FormBuild',
-        meta: { title: '表单配置', icon: '' },
       },
     ],
   },
