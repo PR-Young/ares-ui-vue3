@@ -190,7 +190,6 @@ import {
   exportForm,
 } from "@/api/flowable/form";
 import Editor from "@/components/Editor/index.vue";
-import Parser from "@/components/parser/Parser.vue";
 import FormParser from "@/views/aiform/AiFormParser/index.vue";
 import { markRaw } from "vue";
 export default {
@@ -241,7 +240,6 @@ export default {
   name: "Form",
   components: {
     Editor,
-    Parser,
     ElIconSearch: markRaw(ElIconSearch),
     ElIconRefresh: markRaw(ElIconRefresh),
     ElIconPlus: markRaw(ElIconPlus),

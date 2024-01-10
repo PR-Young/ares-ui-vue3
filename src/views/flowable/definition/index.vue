@@ -399,7 +399,6 @@ import {
 } from "@/api/flowable/definition";
 import { getToken } from "@/utils/auth";
 import { getForm, addDeployForm, listForm } from "@/api/flowable/form";
-import Parser from "@/components/parser/Parser.vue";
 import flow from "@/views/flowable/task/record/flow.vue";
 import { markRaw } from "vue";
 import FormParser from "@/views/aiform/AiFormParser/index.vue";
@@ -495,7 +494,6 @@ export default {
     };
   },
   components: {
-    Parser: markRaw(Parser),
     flow: markRaw(flow),
     ArrowDown,
     ElIconUpload: markRaw(ElIconUpload),

@@ -292,7 +292,6 @@ import {
   CircleClose as ElIconCircleClose,
 } from "@element-plus/icons";
 import { flowRecord } from "@/api/flowable/finished";
-import Parser from "@/components/parser/Parser.vue";
 import {
   definitionStart,
   getProcessVariables,
@@ -399,7 +398,6 @@ export default {
   },
   name: "Record",
   components: {
-    Parser,
     flow,
     Treeselect,
     ElIconEditOutline: markRaw(ElIconEditOutline),
