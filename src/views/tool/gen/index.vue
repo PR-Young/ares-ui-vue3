@@ -36,6 +36,16 @@
           end-placeholder="结束日期"
         ></el-date-picker>
       </el-form-item>
+      <el-form-item label="数据源">
+        <el-radio-group
+          v-model="queryParams.flag"
+          class="ml-4"
+          @change="handleQuery"
+        >
+          <el-radio label="master">主库</el-radio>
+          <el-radio label="slave">从库</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item>
         <el-button
           type="primary"
@@ -192,6 +202,7 @@ export default {
         pageSize: 10,
         tableName: undefined,
         tableComment: undefined,
+        flag: "master",
       },
       // 预览参数
       preview: {
