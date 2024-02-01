@@ -259,7 +259,10 @@ export default {
         this.msgError("请选择要生成的数据");
         return;
       }
-      downLoadZip("ares/tool/gen/genCode/" + tableNames, "code");
+      downLoadZip(
+        "ares/tool/gen/genCode/" + this.queryParams.flag + "/" + tableNames,
+        "code"
+      );
     },
     /** 打开导入表弹窗 */
     openImportTable() {
