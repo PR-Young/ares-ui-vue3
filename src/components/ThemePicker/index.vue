@@ -17,8 +17,9 @@
 </template>
 
 <script>
+import config from "element-plus/package.json";
 import { $on, $off, $once, $emit } from "../../utils/gogocodeTransfer";
-const version = require("element-plus/package.json").version; // element-ui version from node_modules
+const version = config.version;
 const ORIGINAL_THEME = "#409EFF"; // default color
 import store from "@/store";
 import useSettingsStore from "@/store/modules/settings";

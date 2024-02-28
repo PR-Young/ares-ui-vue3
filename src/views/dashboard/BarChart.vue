@@ -4,7 +4,8 @@
 
 <script>
 import * as echarts from "echarts";
-require("echarts/theme/macarons"); // echarts theme
+import "echarts/theme/macarons";
+// require("echarts/theme/macarons"); // echarts theme
 import resize from "./mixins/resize";
 import { nextTick, markRaw } from "vue";
 

@@ -78,6 +78,7 @@ import useAppStore from "@/store/modules/app";
 import useUserStore from "@/store/modules/user";
 import useSettingsStore from "@/store/modules/settings";
 import store from "@/store";
+import url from "@/assets/image/profile.jpeg";
 
 const app = useAppStore(store);
 const user = useUserStore(store);
@@ -123,7 +124,7 @@ export default {
   },
   methods: {
     imgError(avatar) {
-      avatar.url = require("@/assets/image/profile.jpeg");
+      avatar.url = url;
     },
     toggleSideBar() {
       app.toggleSideBar();
