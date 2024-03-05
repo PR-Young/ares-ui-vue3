@@ -115,6 +115,7 @@ export function uploadAvatar(data: any) {
   return request({
     url: '/ares/system/user/profile/avatar',
     method: 'post',
+    transformRequest: [data => data],
     data: data,
   })
 }
