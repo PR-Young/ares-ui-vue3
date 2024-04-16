@@ -141,7 +141,7 @@ export default {
       });
     },
     connectWebsocket() {
-      let userAccount = user.userAccount;
+      let userAccount = user.getUserAccount;
       let websocket;
       if (typeof WebSocket === "undefined") {
         console.log("您的浏览器不支持WebSocket");
