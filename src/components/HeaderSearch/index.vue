@@ -17,10 +17,10 @@
       @change="change"
     >
       <el-option
-        v-for="item in options"
-        :key="item.path"
-        :value="item"
-        :label="item.title.join(' > ')"
+        v-for="option in options"
+        :key="option.item.path"
+        :value="option.item"
+        :label="option.item.title.join(' > ')"
       />
     </el-select>
   </div>
