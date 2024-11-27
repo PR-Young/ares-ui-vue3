@@ -141,6 +141,9 @@
     "vite-plugin-env-compatible": "^1.1.1",
     "vite-plugin-html": "3.2.0"
   },
+  "overrides": {
+    "quill": "2.0.2"
+  },
   "engines": {
     "node": ">=8.9",
     "npm": ">= 3.0.0"

@@ -222,7 +222,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="文章内容" prop="content">
-          <Editor v-model="form.content" />
+          <Editor v-model:value="form.content" />
         </el-form-item>
       </el-form>
       <template v-slot:footer>

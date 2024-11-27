@@ -16,8 +16,9 @@
     <!-- 富文本组件 -->
     <quill-editor
       class="editor"
-      v-model="content"
+      v-model:content="content"
       ref="quillEditor"
+      content-type="html"
       :options="editorOption"
       @blur="onEditorBlur($event)"
       @focus="onEditorFocus($event)"
@@ -27,7 +28,7 @@
 </template>
 
 <script>
-import { $on, $off, $once, $emit } from "../../utils/gogocodeTransfer";
+import { $emit } from "../../utils/gogocodeTransfer";
 import { getToken } from "@/utils/auth";
 
 // 工具栏配置
