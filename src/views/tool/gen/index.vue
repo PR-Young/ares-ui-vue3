@@ -120,7 +120,6 @@
             type="primary"
             :icon="ElIconView"
             @click="handlePreview(scope.row)"
-            v-hasPermi="['tool:gen:preview']"
             >预览</el-button
           >
           <el-button
@@ -152,8 +151,8 @@
       <el-tabs v-model="preview.activeName">
         <el-tab-pane
           v-for="(value, key) in preview.data"
-          :label="key.substring(key.lastIndexOf('/') + 1, key.indexOf('.vm'))"
-          :name="key.substring(key.lastIndexOf('/') + 1, key.indexOf('.vm'))"
+          :label="key.substring(0, key.indexOf('.ftl'))"
+          :name="key.substring(0, key.indexOf('.ftl'))"
           :key="key"
         >
           <pre>{{ value }}</pre>
@@ -209,7 +208,7 @@ export default {
         open: false,
         title: "代码预览",
         data: {},
-        activeName: "domain.java",
+        activeName: "Entity.ftl",
       },
       ElIconSearch,
       ElIconRefresh,
@@ -276,7 +275,7 @@ export default {
     },
     /** 预览按钮 */
     handlePreview(row) {
-      previewTable(row.tableId).then((response) => {
+      previewTable(this.queryParams.flag, row.TABLE_NAME).then((response) => {
         this.preview.data = response.data;
         this.preview.open = true;
       });

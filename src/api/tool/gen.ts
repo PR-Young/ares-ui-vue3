@@ -45,9 +45,9 @@ export function importTable(data: any) {
 }
 
 // 预览生成代码
-export function previewTable(tableId: string) {
+export function previewTable(flag: string, tableName: string) {
   return request({
-    url: '/ares/tool/gen/preview/' + tableId,
+    url: '/ares/tool/gen/preview/' + flag + '/' + tableName,
     method: 'get',
   })
 }
