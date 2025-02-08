@@ -60,17 +60,17 @@
       </el-form-item>
     </el-form>
 
-    <!-- <el-row :gutter="10" class="mb8">
-            <el-col :span="1.5">
-              <el-button
-                type="primary"
-                icon="el-icon-download"
-                size="default"
-                @click="handleGenTable"
-
-              >生成</el-button>
-            </el-col>
-          </el-row>-->
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          :icon="ElIconOperation"
+          size="default"
+          @click="handleGenBasicInfo"
+          >生成配置</el-button
+        >
+      </el-col>
+    </el-row>
 
     <el-table v-loading="loading" :data="tableList">
       <el-table-column
@@ -169,6 +169,7 @@ import {
   Refresh as ElIconRefresh,
   View as ElIconView,
   Download as ElIconDownload,
+  Operation as ElIconOperation,
 } from "@element-plus/icons";
 import { listDbTable, previewTable, delTable } from "@/api/tool/gen";
 import importTable from "./importTable.vue";
@@ -214,6 +215,7 @@ export default {
       ElIconRefresh,
       ElIconView,
       ElIconDownload,
+      ElIconOperation,
     };
   },
   name: "Gen",
@@ -262,6 +264,9 @@ export default {
         "ares/tool/gen/genCode/" + this.queryParams.flag + "/" + tableNames,
         "code"
       );
+    },
+    handleGenBasicInfo() {
+      this.$router.push("/genbasicinfo/basicinfo");
     },
     /** 打开导入表弹窗 */
     openImportTable() {

@@ -156,6 +156,19 @@ export const constantRoutes = [
     ],
   },
   {
+    path: '/genbasicinfo',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'basicinfo',
+        component: () => import('@/views/tool/gen/basicInfoForm.vue'),
+        name: 'BasicInfo',
+        meta: { title: '生成信息配置' },
+      },
+    ],
+  },
+  {
     path: '/notify',
     component: Layout,
     hidden: true,

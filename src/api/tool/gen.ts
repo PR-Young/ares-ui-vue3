@@ -59,3 +59,18 @@ export function delTable(tableId: string) {
     method: 'delete',
   })
 }
+
+export function getBasicInfo() {
+  return request({
+    url: '/ares/genProperties/basicInfo',
+    method: 'get',
+  })
+}
+
+export function updateBasicInfo(data: any) {
+  return request({
+    url: '/ares/genProperties/edit',
+    method: 'post',
+    data: data,
+  })
+}
