@@ -25,7 +25,8 @@
             "vite/client",
             "element-plus/global"
         ],
-        "allowJs": true
+        "allowJs": true,
+        "outDir": "./dist"
     },
     "include": [
         "src/**/*.ts",
