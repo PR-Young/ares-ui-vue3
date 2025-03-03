@@ -1,6 +1,6 @@
 {
   "name": "ares",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Ares管理系统",
   "author": "ares",
   "license": "MIT",
@@ -47,6 +47,7 @@
     "@vueuse/core": "^10.6.1",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
+    "@vue/compiler-sfc": "^3.5.13",
     "ai-form": "^0.9.8",
     "axios": "1.7.4",
     "bpmn-js": "^15.2.2",
@@ -76,7 +77,7 @@
     "screenfull": "6.0.2",
     "sortablejs": "1.15.0",
     "tiny-emitter": "^2.1.0",
-    "tinymce": "^6.4.2",
+    "tinymce": "^6.8.5",
     "vite": "^4.3.9",
     "vite-plugin-lang-jsx": "^1.4.2",
     "vite-plugin-style-import": "^2.0.0",
@@ -90,7 +91,6 @@
     "vue-particles": "^1.0.9",
     "vue-router": "^4.2.2",
     "vue-splitpane": "1.0.6",
-    "vue-template-compiler": "^2.7.14",
     "vue3-ace-editor": "^2.2.2",
     "vue3-count-to": "^1.1.2",
     "vue3-treeselect": "^0.1.10",
@@ -145,8 +145,8 @@
     "quill": "2.0.2"
   },
   "engines": {
-    "node": ">=8.9",
-    "npm": ">= 3.0.0"
+    "node": ">=18",
+    "npm": ">= 9.0.0"
   },
   "browserslist": [
     "> 1%",

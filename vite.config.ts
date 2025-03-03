@@ -57,7 +57,7 @@ export default (({ command, mode }: ConfigEnv): UserConfig => {
     base: '/',
     server: {
       strictPort: false,
-      port: env.VITE_VUE_APP_PORT,
+      port: Number(env.VITE_VUE_APP_PORT),
       host: '0.0.0.0',
       proxy: {
         '/api': {
