@@ -24,7 +24,7 @@
               <div>{{ generateElementIconCode(item) }}</div>
             </template>
             <div class="icon-item">
-              <i :class="'el-icon-' + item" />
+              <el-icon> {{ showIcons(item) }}</el-icon>
               <span>{{ item }}</span>
             </div>
           </el-tooltip>
@@ -35,26 +35,29 @@
 </template>
 
 <script>
-import svgIcons from './svg-icons'
-import elementIcons from './element-icons'
+import svgIcons from "./svg-icons";
+import elementIcons from "./element-icons";
 
 export default {
-  name: 'Icons',
+  name: "Icons",
   data() {
     return {
       svgIcons,
       elementIcons,
-    }
+    };
   },
   methods: {
     generateIconCode(symbol) {
-      return `<svg-icon icon-class="${symbol}" />`
+      return `<svg-icon icon-class="${symbol}" />`;
     },
     generateElementIconCode(symbol) {
-      return `<i class="el-icon-${symbol}" />`
+      return `<${symbol} />`;
+    },
+    showIcons(symbol) {
+      return `<${symbol} />`;
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

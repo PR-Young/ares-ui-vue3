@@ -77,10 +77,13 @@ Develped by Leo on 2023.9.24
 <script setup>
 let components = {};
 
-const elModules = import.meta.globEager("./Elements/*.vue");
+const elModules = import.meta.glob("./Elements/*.vue", {
+  eager: true,
+  import: "default",
+});
 for (const path in elModules) {
-  let cname = elModules[path].default.__name;
-  components[cname] = elModules[path].default;
+  let cname = elModules[path].__name;
+  components[cname] = elModules[path];
 
   //console.log('cname', elModules[path],cname, components[cname])
 }

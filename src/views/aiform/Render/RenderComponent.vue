@@ -39,15 +39,21 @@ import {
 
 let components = {};
 
-const elModules = import.meta.globEager("./Elements/FormItems/My*/index.vue");
-const aiModules = import.meta.globEager("@/views/aiform/Ai*/index.vue");
+const elModules = import.meta.glob("./Elements/FormItems/My*/index.vue", {
+  eager: true,
+  import: "default",
+});
+const aiModules = import.meta.glob("@/views/aiform/Ai*/index.vue", {
+  eager: true,
+  import: "default",
+});
 for (const path in elModules) {
-  let cname = elModules[path].default.name;
-  components[cname] = elModules[path].default;
+  let cname = elModules[path].name;
+  components[cname] = elModules[path];
 }
 for (const path in aiModules) {
-  let cname = aiModules[path].default.name;
-  components[cname] = aiModules[path].default;
+  let cname = aiModules[path].name;
+  components[cname] = aiModules[path];
 }
 
 const props = defineProps({

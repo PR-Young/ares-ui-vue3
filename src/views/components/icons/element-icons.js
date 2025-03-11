@@ -1,6 +1,6 @@
 const elementIcons = [
   'platform-eleme',
-  'eleme',
+  'Eleme',
   'delete-solid',
   'delete',
   's-tools',
@@ -105,7 +105,7 @@ const elementIcons = [
   'view',
   'c-scale-to-original',
   'date',
-  'edit',
+  'Edit',
   'edit-outline',
   'folder',
   'folder-opened',
