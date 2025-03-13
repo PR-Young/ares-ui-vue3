@@ -10,8 +10,12 @@
             <table cellspacing="0" style="width: 100%">
               <thead>
                 <tr>
-                  <th class="is-leaf"><div class="cell">属性</div></th>
-                  <th class="is-leaf"><div class="cell">值</div></th>
+                  <th class="is-leaf">
+                    <div class="cell" style="text-align: left">属性</div>
+                  </th>
+                  <th class="is-leaf">
+                    <div class="cell" style="text-align: left">值</div>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -62,9 +66,15 @@
             <table cellspacing="0" style="width: 100%">
               <thead>
                 <tr>
-                  <th class="is-leaf"><div class="cell">属性</div></th>
-                  <th class="is-leaf"><div class="cell">内存</div></th>
-                  <th class="is-leaf"><div class="cell">JVM</div></th>
+                  <th class="is-leaf">
+                    <div class="cell" style="text-align: left">属性</div>
+                  </th>
+                  <th class="is-leaf">
+                    <div class="cell" style="text-align: left">内存</div>
+                  </th>
+                  <th class="is-leaf">
+                    <div class="cell" style="text-align: left">JVM</div>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -249,13 +259,27 @@
             <table cellspacing="0" style="width: 100%">
               <thead>
                 <tr>
-                  <th class="is-leaf"><div class="cell">盘符路径</div></th>
-                  <th class="is-leaf"><div class="cell">文件系统</div></th>
-                  <th class="is-leaf"><div class="cell">盘符类型</div></th>
-                  <th class="is-leaf"><div class="cell">总大小</div></th>
-                  <th class="is-leaf"><div class="cell">可用大小</div></th>
-                  <th class="is-leaf"><div class="cell">已用大小</div></th>
-                  <th class="is-leaf"><div class="cell">已用百分比</div></th>
+                  <th class="is-leaf">
+                    <div class="cell" style="text-align: left">盘符路径</div>
+                  </th>
+                  <th class="is-leaf">
+                    <div class="cell" style="text-align: left">文件系统</div>
+                  </th>
+                  <th class="is-leaf">
+                    <div class="cell" style="text-align: left">盘符类型</div>
+                  </th>
+                  <th class="is-leaf">
+                    <div class="cell" style="text-align: left">总大小</div>
+                  </th>
+                  <th class="is-leaf">
+                    <div class="cell" style="text-align: left">可用大小</div>
+                  </th>
+                  <th class="is-leaf">
+                    <div class="cell" style="text-align: left">已用大小</div>
+                  </th>
+                  <th class="is-leaf">
+                    <div class="cell" style="text-align: left">已用百分比</div>
+                  </th>
                 </tr>
               </thead>
               <tbody v-if="server.sysFiles">
@@ -297,39 +321,39 @@
 </template>
 
 <script>
-import { getServer } from '@/api/monitor/server'
+import { getServer } from "@/api/monitor/server";
 
 export default {
-  name: 'Server',
+  name: "Server",
   data() {
     return {
       // 加载层信息
       loading: [],
       // 服务器信息
       server: [],
-    }
+    };
   },
   created() {
-    this.getList()
-    this.openLoading()
+    this.getList();
+    this.openLoading();
   },
   methods: {
     /** 查询服务器信息 */
     getList() {
       getServer().then((response) => {
-        this.server = response.data
-        this.loading.close()
-      })
+        this.server = response.data;
+        this.loading.close();
+      });
     },
     // 打开加载层
     openLoading() {
       this.loading = this.$loading({
         lock: true,
-        text: '拼命读取中',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)',
-      })
+        text: "拼命读取中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
     },
   },
-}
+};
 </script>
