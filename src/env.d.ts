@@ -6,6 +6,7 @@ interface ImportMetaEnv {
     VITE_VUE_APP_TITLE: string;
     VITE_VUE_APP_PORT: number;
     VITE_APP_BASE_API: string;
+    VITE_VUE_APP_ADDR: string
 }
 
 interface ImportMeta {

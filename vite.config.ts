@@ -61,7 +61,7 @@ export default (({ command, mode }: ConfigEnv): UserConfig => {
       host: '0.0.0.0',
       proxy: {
         '/api': {
-          target: 'http://localhost:8080',
+          target: 'http://' + env.VITE_VUE_APP_ADDR + ':8080',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')
         }

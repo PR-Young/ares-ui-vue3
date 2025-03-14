@@ -153,7 +153,11 @@ export default {
           protocol = "wss";
         }
 
-        url = `${protocol}://localhost:8080/ares/ws/` + userAccount;
+        url =
+          `${protocol}://` +
+          import.meta.env.VITE_VUE_APP_ADDR +
+          `:8080/ares/ws/` +
+          userAccount;
 
         // 打开一个websocket
         websocket = new WebSocket(url);
