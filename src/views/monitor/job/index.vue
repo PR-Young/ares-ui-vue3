@@ -12,6 +12,7 @@
           placeholder="请输入任务名称"
           clearable
           size="default"
+          style="width: 240px"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -21,6 +22,7 @@
           placeholder="请选择任务组名"
           clearable
           size="default"
+          style="width: 240px"
         >
           <el-option
             v-for="dict in jobGroupOptions"
@@ -36,6 +38,7 @@
           placeholder="请选择任务状态"
           clearable
           size="default"
+          style="width: 240px"
         >
           <el-option
             v-for="dict in statusOptions"
