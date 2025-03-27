@@ -11,7 +11,7 @@
           v-model="queryParams.tenantAlias"
           placeholder="请输入租户别称"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -20,7 +20,7 @@
           v-model="queryParams.tenantName"
           placeholder="请输入租户名"
           clearable
-          size="small"
+          size="default"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
