@@ -29,6 +29,7 @@
           v-model="queryParams.requestMethod"
           placeholder="请求方式"
           clearable
+          style="width: 120px"
           size="default"
         >
           <el-option
