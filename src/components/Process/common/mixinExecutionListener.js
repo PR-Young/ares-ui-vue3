@@ -1,4 +1,4 @@
-import executionListenerDialog from '../components/nodePanel/property/executionListener.vue'
+import executionListenerDialog from "../components/nodePanel/property/executionListener.vue";
 export default {
   components: {
     executionListenerDialog,
@@ -7,18 +7,18 @@ export default {
     return {
       executionListenerLength: 0,
       dialogName: null,
-    }
+    };
   },
   methods: {
     computedExecutionListenerLength() {
       this.executionListenerLength =
-        this.element.businessObject.extensionElements?.values?.length ?? 0
+        this.element.businessObject.extensionElements?.values?.length ?? 0;
     },
     finishExecutionListener() {
-      if (this.dialogName === 'executionListenerDialog') {
-        this.computedExecutionListenerLength()
+      if (this.dialogName === "executionListenerDialog") {
+        this.computedExecutionListenerLength();
       }
-      this.dialogName = ''
+      this.dialogName = "";
     },
   },
-}
+};

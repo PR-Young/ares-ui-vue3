@@ -1,10 +1,10 @@
 export default {
-  'bpmn:EndEvent': {},
-  'bpmn:StartEvent': {
+  "bpmn:EndEvent": {},
+  "bpmn:StartEvent": {
     initiator: true,
     formKey: true,
   },
-  'bpmn:UserTask': {
+  "bpmn:UserTask": {
     userType: true,
     dataType: true,
     assignee: true,
@@ -20,31 +20,31 @@ export default {
     dueDate: true,
     taskListener: true,
   },
-  'bpmn:ServiceTask': {
+  "bpmn:ServiceTask": {
     async: true,
     skipExpression: true,
     isForCompensation: true,
     triggerable: true,
     class: true,
   },
-  'bpmn:ScriptTask': {
+  "bpmn:ScriptTask": {
     async: true,
     isForCompensation: true,
     autoStoreVariables: true,
   },
-  'bpmn:ManualTask': {
+  "bpmn:ManualTask": {
     async: true,
     isForCompensation: true,
   },
-  'bpmn:ReceiveTask': {
+  "bpmn:ReceiveTask": {
     async: true,
     isForCompensation: true,
   },
-  'bpmn:SendTask': {
+  "bpmn:SendTask": {
     async: true,
     isForCompensation: true,
   },
-  'bpmn:BusinessRuleTask': {
+  "bpmn:BusinessRuleTask": {
     async: true,
     isForCompensation: true,
     ruleVariablesInput: true,
@@ -52,4 +52,4 @@ export default {
     resultVariable: true,
     exclude: true,
   },
-}
+};

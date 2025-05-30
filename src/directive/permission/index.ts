@@ -1,9 +1,9 @@
-import hasRole from './hasRole'
-import hasPermi from './hasPermi'
+import hasRole from "./hasRole";
+import hasPermi from "./hasPermi";
 
 const install = function (app: any) {
-  app.directive('hasRole', hasRole)
-  app.directive('hasPermi', hasPermi)
-}
+  app.directive("hasRole", hasRole);
+  app.directive("hasPermi", hasPermi);
+};
 
-export default install
+export default install;

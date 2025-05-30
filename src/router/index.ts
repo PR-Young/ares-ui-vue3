@@ -1,8 +1,8 @@
-import * as VueRouter from 'vue-router'
+import * as VueRouter from "vue-router";
 
 /* Layout */
-import Layout from '@/layout/index.vue'
-import BlogLayout from '@/layout-blog/index.vue'
+import Layout from "@/layout/index.vue";
+import BlogLayout from "@/layout-blog/index.vue";
 
 /**
  * Note: 路由配置项
@@ -25,239 +25,247 @@ import BlogLayout from '@/layout-blog/index.vue'
 // 公共路由
 export const constantRoutes = [
   {
-    path: '/redirect',
+    path: "/redirect",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect.vue')
-        ,
+        path: "/redirect/:path(.*)",
+        component: () => import("@/views/redirect.vue"),
       },
     ],
   },
   {
-    path: '/login',
-    component: () => import('@/views/login.vue'),
+    path: "/login",
+    component: () => import("@/views/login.vue"),
     hidden: true,
   },
   {
-    path: '/404',
-    component: () => import('@/views/error/404.vue'),
+    path: "/404",
+    component: () => import("@/views/error/404.vue"),
     hidden: true,
   },
   {
-    path: '/401',
-    component: () => import('@/views/error/401.vue'),
+    path: "/401",
+    component: () => import("@/views/error/401.vue"),
     hidden: true,
   },
   {
-    path: '/mypage',
+    path: "/mypage",
     component: BlogLayout,
-    redirect: 'blog',
+    redirect: "blog",
     hidden: true,
     children: [
       {
-        path: '/blog',
-        component: () => import('@/layout-blog/components/Index.vue')
-        ,
-        name: '主页',
+        path: "/blog",
+        component: () => import("@/layout-blog/components/Index.vue"),
+        name: "主页",
       },
       {
-        path: '/details/:contentId',
-        component: () => import('@/layout-blog/components/Details.vue')
-        ,
-        name: 'details',
+        path: "/details/:contentId",
+        component: () => import("@/layout-blog/components/Details.vue"),
+        name: "details",
       },
       {
-        path: '/archives',
-        component: () => import('@/layout-blog/components/Archives.vue')
-        ,
-        name: 'archives',
+        path: "/archives",
+        component: () => import("@/layout-blog/components/Archives.vue"),
+        name: "archives",
       },
       {
-        path: '/tag',
-        component: () => import('@/layout-blog/components/Tag.vue')
-        ,
-        name: 'tag',
+        path: "/tag",
+        component: () => import("@/layout-blog/components/Tag.vue"),
+        name: "tag",
       },
       {
-        path: '/updateinfo',
-        component: () => import('@/layout-blog/components/UpdateInfo.vue')
-        ,
-        name: 'updateinfo',
+        path: "/updateinfo",
+        component: () => import("@/layout-blog/components/UpdateInfo.vue"),
+        name: "updateinfo",
       },
     ],
   },
   {
-    path: '/',
+    path: "/",
     component: Layout,
-    redirect: 'index',
+    redirect: "index",
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/index.vue'),
-        name: '首页',
-        meta: { title: '首页', icon: 'dashboard', noCache: true, affix: true },
+        path: "index",
+        component: () => import("@/views/index.vue"),
+        name: "首页",
+        meta: { title: "首页", icon: "dashboard", noCache: true, affix: true },
       },
     ],
   },
   {
-    path: '/userfile',
+    path: "/userfile",
     component: Layout,
     hidden: true,
-    redirect: 'noredirect',
+    redirect: "noredirect",
     children: [
       {
-        path: 'profile',
-        component: () => import('@/views/system/user/profile/index.vue'),
-        name: 'Profile',
-        meta: { title: '个人中心', icon: 'user' },
+        path: "profile",
+        component: () => import("@/views/system/user/profile/index.vue"),
+        name: "Profile",
+        meta: { title: "个人中心", icon: "user" },
       },
     ],
   },
   {
-    path: '/dictdata',
+    path: "/dictdata",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: 'type/data/:dictId',
-        component: () => import('@/views/system/dict/data.vue'),
-        name: 'Data',
-        meta: { title: '字典数据', icon: '' },
+        path: "type/data/:dictId",
+        component: () => import("@/views/system/dict/data.vue"),
+        name: "Data",
+        meta: { title: "字典数据", icon: "" },
       },
     ],
   },
   {
-    path: '/joblog',
+    path: "/joblog",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: 'log',
-        component: () => import('@/views/monitor/job/log.vue'),
-        name: 'JobLog',
-        meta: { title: '调度日志' },
+        path: "log",
+        component: () => import("@/views/monitor/job/log.vue"),
+        name: "JobLog",
+        meta: { title: "调度日志" },
       },
     ],
   },
   {
-    path: '/genedit',
+    path: "/genedit",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: 'edit',
-        component: () => import('@/views/tool/gen/editTable.vue'),
-        name: 'GenEdit',
-        meta: { title: '修改生成配置' },
+        path: "edit",
+        component: () => import("@/views/tool/gen/editTable.vue"),
+        name: "GenEdit",
+        meta: { title: "修改生成配置" },
       },
     ],
   },
   {
-    path: '/genbasicinfo',
+    path: "/genbasicinfo",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: 'basicinfo',
-        component: () => import('@/views/tool/gen/basicInfoForm.vue'),
-        name: 'BasicInfo',
-        meta: { title: '生成信息配置' },
+        path: "basicinfo",
+        component: () => import("@/views/tool/gen/basicInfoForm.vue"),
+        name: "BasicInfo",
+        meta: { title: "生成信息配置" },
       },
     ],
   },
   {
-    path: '/notify',
+    path: "/notify",
     component: Layout,
     hidden: true,
-    redirect: 'noredirect',
+    redirect: "noredirect",
     children: [
       {
-        path: 'message',
-        component: () => import('@/views/notify/index.vue'),
-        name: 'Message',
-        meta: { title: '消息中心', icon: 'message' },
+        path: "message",
+        component: () => import("@/views/notify/index.vue"),
+        name: "Message",
+        meta: { title: "消息中心", icon: "message" },
       },
     ],
   },
   {
-    path: '/query',
+    path: "/query",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: 'result',
-        component: () => import('@/views/query.vue'),
-        name: 'Search',
-        meta: { title: '全文检索', icon: '' },
+        path: "result",
+        component: () => import("@/views/query.vue"),
+        name: "Search",
+        meta: { title: "全文检索", icon: "" },
       },
     ],
   },
   {
-    path: '/flowable',
+    path: "/flowable",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: 'definition/model',
-        component: () => import('@/views/flowable/definition/model.vue'),
-        name: 'Model',
-        meta: { title: '流程设计', icon: '' },
+        path: "definition/model",
+        component: () => import("@/views/flowable/definition/model.vue"),
+        name: "Model",
+        meta: { title: "流程设计", icon: "" },
       },
     ],
   },
   {
-    path: '/flowable',
+    path: "/flowable",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: 'task/record/index',
-        component: () => import('@/views/flowable/task/record/index.vue'),
-        name: 'Record',
-        meta: { title: '流程处理', icon: '' },
+        path: "task/record/index",
+        component: () => import("@/views/flowable/task/record/index.vue"),
+        name: "Record",
+        meta: { title: "流程处理", icon: "" },
       },
     ],
   },
   {
     name: "流程管理(新)",
     redirect: "noRedirect",
-    path: '/aresflow',
+    path: "/aresflow",
     component: Layout,
-    meta: { title: '流程管理(新)', icon: 'table', },
+    meta: { title: "流程管理(新)", icon: "table" },
     alwaysShow: false,
     hidden: true,
     children: [
       {
-        path: 'build/index',
-        component: () => import('@/views/aresflow/build/index.vue'),
-        name: 'AresModel',
-        meta: { title: '流程设计', icon: 'component' },
-        hidden: false
+        path: "build/index",
+        component: () => import("@/views/aresflow/build/index.vue"),
+        name: "AresModel",
+        meta: { title: "流程设计", icon: "component" },
+        hidden: false,
       },
     ],
   },
   {
     name: "表单管理(新)",
     redirect: "noRedirect",
-    path: '/aiform',
+    path: "/aiform",
     component: Layout,
-    meta: { title: '表单管理(新)', icon: 'table', },
+    meta: { title: "表单管理(新)", icon: "table" },
     alwaysShow: true,
     hidden: false,
     children: [
       {
-        path: 'build/index',
-        component: () => import('@/views/aiform/AiFormDesigner/index.vue'),
-        name: 'AresForm',
-        meta: { title: '表单设计', icon: 'component' },
-        hidden: false
+        path: "build/index",
+        component: () => import("@/views/aiform/AiFormDesigner/index.vue"),
+        name: "AresForm",
+        meta: { title: "表单设计", icon: "component" },
+        hidden: false,
       },
     ],
   },
-]
+  {
+    path: "/tinyflow",
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: "build",
+        component: () => import("@/views/tinyflow/build.vue"),
+        name: "AresModel",
+        meta: { title: "AI流程设计", icon: "" },
+        hidden: false,
+      },
+    ],
+  },
+];
 
 export default VueRouter.createRouter({
   history: VueRouter.createWebHashHistory(),
@@ -267,4 +275,4 @@ export default VueRouter.createRouter({
     left: 0,
     top: 0,
   }),
-})
+});

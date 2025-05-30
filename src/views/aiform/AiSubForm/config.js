@@ -1,22 +1,22 @@
 export const trigger = {
-  'el-input': 'blur',
-  'el-input-number': 'blur',
-  'el-select': 'change',
-  'el-radio-group': 'change',
-  'el-checkbox-group': 'change',
-  'el-cascader': 'change',
-  'el-time-picker': 'change',
-  'el-date-picker': 'change',
-  'el-rate': 'change',
-  'ai-amount': 'change',
-  'ai-time-duration': 'change',
-  'ai-date-duration': 'change',
-  'ai-ou-select': 'change'
-}
+  "el-input": "blur",
+  "el-input-number": "blur",
+  "el-select": "change",
+  "el-radio-group": "change",
+  "el-checkbox-group": "change",
+  "el-cascader": "change",
+  "el-time-picker": "change",
+  "el-date-picker": "change",
+  "el-rate": "change",
+  "ai-amount": "change",
+  "ai-time-duration": "change",
+  "ai-date-duration": "change",
+  "ai-ou-select": "change",
+};
 // forceProp 强制使用的属性 用于覆盖用户或者默认设置
 export const useableProps = [
   {
-    "props": [
+    props: [
       "label",
       "tag",
       "defaultValue",
@@ -25,15 +25,15 @@ export const useableProps = [
       "show-text",
       "show-score",
       "disabled",
-      "required"
+      "required",
     ],
-    "forceProp": {
-      "min-width": 160
+    forceProp: {
+      "min-width": 160,
     },
-    "tag": "AudioInput"
+    tag: "AudioInput",
   },
   {
-    "props": [
+    props: [
       "vModel",
       "defaultValue",
       "fieldId",
@@ -45,15 +45,15 @@ export const useableProps = [
       "readonly",
       "disabled",
       "required",
-      "regList"
+      "regList",
     ],
-    "forceProp": {
-      "min-width": 180
+    forceProp: {
+      "min-width": 180,
     },
-    "tag": "el-input"
+    tag: "el-input",
   },
   {
-    "props": [
+    props: [
       "label",
       "tag",
       "defaultValue",
@@ -62,15 +62,15 @@ export const useableProps = [
       "show-text",
       "show-score",
       "disabled",
-      "required"
+      "required",
     ],
-    "forceProp": {
-      "min-width": 160
+    forceProp: {
+      "min-width": 160,
     },
-    "tag": "el-rate"
+    tag: "el-rate",
   },
   {
-    "props": [
+    props: [
       "vModel",
       "defaultValue",
       "fieldId",
@@ -79,16 +79,16 @@ export const useableProps = [
       "step-strictly",
       "disabled",
       "required",
-      "regList"
+      "regList",
     ],
-    "forceProp": {
-      "controls": false,
-      "min-width": 180
+    forceProp: {
+      controls: false,
+      "min-width": 180,
     },
-    "tag": "el-input-number"
+    tag: "el-input-number",
   },
   {
-    "props": [
+    props: [
       "vModel",
       "defaultValue",
       "fieldId",
@@ -96,16 +96,16 @@ export const useableProps = [
       "tag",
       "disabled",
       "required",
-      "regList"
+      "regList",
     ],
-    "forceProp": {
-      "controls": false,
-      "min-width": 120
+    forceProp: {
+      controls: false,
+      "min-width": 120,
     },
-    "tag": "ai-amount"
+    tag: "ai-amount",
   },
   {
-    "props": [
+    props: [
       "vModel",
       "defaultValue",
       "fieldId",
@@ -117,15 +117,15 @@ export const useableProps = [
       "filterable",
       "multiple",
       "options",
-      "regList"
+      "regList",
     ],
-    "forceProp": {
-      "min-width": 140
+    forceProp: {
+      "min-width": 140,
     },
-    "tag": "el-select"
+    tag: "el-select",
   },
   {
-    "props": [
+    props: [
       "vModel",
       "defaultValue",
       "fieldId",
@@ -141,15 +141,15 @@ export const useableProps = [
       "options",
       "dataType",
       "separator",
-      "regList"
+      "regList",
     ],
-    "forceProp": {
-      "min-width": 170
+    forceProp: {
+      "min-width": 170,
     },
-    "tag": "el-cascader"
+    tag: "el-cascader",
   },
   {
-    "props": [
+    props: [
       "vModel",
       "defaultValue",
       "fieldId",
@@ -161,15 +161,15 @@ export const useableProps = [
       "disabled",
       "required",
       "options",
-      "regList"
+      "regList",
     ],
-    "forceProp": {
-      "min-width": 140
+    forceProp: {
+      "min-width": 140,
     },
-    "tag": "el-radio-group"
+    tag: "el-radio-group",
   },
   {
-    "props": [
+    props: [
       "vModel",
       "defaultValue",
       "fieldId",
@@ -182,15 +182,15 @@ export const useableProps = [
       "disabled",
       "required",
       "options",
-      "regList"
+      "regList",
     ],
-    "forceProp": {
-      "min-width": 140
+    forceProp: {
+      "min-width": 140,
     },
-    "tag": "el-checkbox-group"
+    tag: "el-checkbox-group",
   },
   {
-    "props": [
+    props: [
       "vModel",
       "defaultValue",
       "fieldId",
@@ -204,15 +204,15 @@ export const useableProps = [
       "step",
       "show-stops",
       "range",
-      "regList"
+      "regList",
     ],
-    "forceProp": {
-      "min-width": 160
+    forceProp: {
+      "min-width": 160,
     },
-    "tag": "el-slider"
+    tag: "el-slider",
   },
   {
-    "props": [
+    props: [
       "vModel",
       "defaultValue",
       "fieldId",
@@ -227,16 +227,16 @@ export const useableProps = [
       "tagConfig",
       "disabled",
       "required",
-      "regList"
+      "regList",
     ],
-    "forceProp": {
-      "buttonType": "input",
-      "min-width": 100
+    forceProp: {
+      buttonType: "input",
+      "min-width": 100,
     },
-    "tag": "ai-ou-select"
+    tag: "ai-ou-select",
   },
   {
-    "props": [
+    props: [
       "vModel",
       "defaultValue",
       "fieldId",
@@ -249,15 +249,15 @@ export const useableProps = [
       "picker-options",
       "format",
       "value-format",
-      "regList"
+      "regList",
     ],
-    "forceProp": {
-      "min-width": 120
+    forceProp: {
+      "min-width": 120,
     },
-    "tag": "el-time-picker"
+    tag: "el-time-picker",
   },
   {
-    "props": [
+    props: [
       "vModel",
       "defaultValue",
       "fieldId",
@@ -271,15 +271,15 @@ export const useableProps = [
       "range-separator",
       "format",
       "value-format",
-      "regList"
+      "regList",
     ],
-    "forceProp": {
-      "min-width": 200
+    forceProp: {
+      "min-width": 200,
     },
-    "tag": "ai-time-duration"
+    tag: "ai-time-duration",
   },
   {
-    "props": [
+    props: [
       "vModel",
       "defaultValue",
       "fieldId",
@@ -293,15 +293,15 @@ export const useableProps = [
       "format",
       "value-format",
       "readonly",
-      "regList"
+      "regList",
     ],
-    "forceProp": {
-      "min-width": 120
+    forceProp: {
+      "min-width": 120,
     },
-    "tag": "el-date-picker"
+    tag: "el-date-picker",
   },
   {
-    "props": [
+    props: [
       "vModel",
       "defaultValue",
       "fieldId",
@@ -316,15 +316,15 @@ export const useableProps = [
       "format",
       "value-format",
       "readonly",
-      "regList"
+      "regList",
     ],
-    "forceProp": {
-      "min-width": 210
+    forceProp: {
+      "min-width": 210,
     },
-    "tag": "ai-date-duration"
+    tag: "ai-date-duration",
   },
   {
-    "props": [
+    props: [
       "vModel",
       "defaultValue",
       "fieldId",
@@ -342,16 +342,17 @@ export const useableProps = [
       "sizeUnit",
       "list-type",
       "multiple",
-      "regList"
+      "regList",
     ],
-    "forceProp": {
+    forceProp: {
       "list-type": "text",
       "min-width": 80,
-      "defaultValue": [],
+      defaultValue: [],
     },
-    "tag": "el-upload"
-  },{
-    "props": [
+    tag: "el-upload",
+  },
+  {
+    props: [
       "vModel",
       "defaultValue",
       "fieldId",
@@ -369,17 +370,17 @@ export const useableProps = [
       "sizeUnit",
       "list-type",
       "multiple",
-      "regList"
+      "regList",
     ],
-    "forceProp": {
+    forceProp: {
       "list-type": "text",
       "min-width": 80,
-      "defaultValue": [],
+      defaultValue: [],
     },
-    "tag": "my-upload"
+    tag: "my-upload",
   },
   {
-    "props": [
+    props: [
       "label",
       "type",
       "tag",
@@ -393,13 +394,12 @@ export const useableProps = [
       "precision",
       "round",
       "fieldId",
-      "formData"
+      "formData",
     ],
-    "forceProp": {
+    forceProp: {
       "min-width": 120,
-      "showChinese": false
+      showChinese: false,
     },
-    "tag": "ai-calculate"
+    tag: "ai-calculate",
   },
-
-]
+];

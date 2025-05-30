@@ -1,5 +1,5 @@
 function randomStr() {
-  return Math.random().toString(36).slice(-8)
+  return Math.random().toString(36).slice(-8);
 }
 
 export default function () {
@@ -19,5 +19,5 @@ export default function () {
         </bpmndi:BPMNPlane>
       </bpmndi:BPMNDiagram>
     </definitions>
-    `
+    `;
 }

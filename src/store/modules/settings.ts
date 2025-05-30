@@ -1,11 +1,11 @@
-import { defineStore } from 'pinia'
-import variables from '@/assets/styles/element-variables.scss?inline'
-import defaultSettings from '@/settings'
+import { defineStore } from "pinia";
+import variables from "@/assets/styles/element-variables.scss?inline";
+import defaultSettings from "@/settings";
 
-const { showSettings, tagsView, fixedHeader, sidebarLogo } = defaultSettings
-const vars = variables as any
+const { showSettings, tagsView, fixedHeader, sidebarLogo } = defaultSettings;
+const vars = variables as any;
 
-const useSettingsStore = defineStore('settings', {
+const useSettingsStore = defineStore("settings", {
   state: () => {
     return {
       theme: vars.theme,
@@ -13,16 +13,16 @@ const useSettingsStore = defineStore('settings', {
       tagsView: tagsView,
       fixedHeader: fixedHeader,
       sidebarLogo: sidebarLogo,
-    }
+    };
   },
   actions: {
     changeSetting(data: { key: any; value: any }) {
-      const { key, value } = data
+      const { key, value } = data;
       if (this.hasOwnProperty(key)) {
-        this[key] = value
+        this[key] = value;
       }
     },
-  }
-})
+  },
+});
 
-export default useSettingsStore
+export default useSettingsStore;

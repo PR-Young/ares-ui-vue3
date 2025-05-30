@@ -1,6 +1,6 @@
-import store from '@/store'
-import useUserStore from '@/store/modules/user'
-const user = useUserStore(store)
+import store from "@/store";
+import useUserStore from "@/store/modules/user";
+const user = useUserStore(store);
 
 /**
  * 字符权限校验
@@ -9,22 +9,22 @@ const user = useUserStore(store)
  */
 export function checkPermi(value: string | any[]) {
   if (value && value instanceof Array && value.length > 0) {
-    const permissions = user.permissions
-    const permissionDatas = value
+    const permissions = user.permissions;
+    const permissionDatas = value;
 
     const hasPermission = permissions.some((permission) => {
-      return permissionDatas.includes(permission)
-    })
+      return permissionDatas.includes(permission);
+    });
 
     if (!hasPermission) {
-      return false
+      return false;
     }
-    return true
+    return true;
   } else {
     console.error(
-      `need roles! Like checkPermi="['system:user:add','system:user:edit']"`
-    )
-    return false
+      `need roles! Like checkPermi="['system:user:add','system:user:edit']"`,
+    );
+    return false;
   }
 }
 
@@ -35,19 +35,19 @@ export function checkPermi(value: string | any[]) {
  */
 export function checkRole(value: string | any[]) {
   if (value && value instanceof Array && value.length > 0) {
-    const roles = user.roles
-    const permissionRoles = value
+    const roles = user.roles;
+    const permissionRoles = value;
 
     const hasRole = roles.some((role) => {
-      return permissionRoles.includes(role)
-    })
+      return permissionRoles.includes(role);
+    });
 
     if (!hasRole) {
-      return false
+      return false;
     }
-    return true
+    return true;
   } else {
-    console.error(`need roles! Like checkRole="['admin','editor']"`)
-    return false
+    console.error(`need roles! Like checkRole="['admin','editor']"`);
+    return false;
   }
 }
