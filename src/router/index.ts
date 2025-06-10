@@ -216,20 +216,28 @@ export const constantRoutes = [
     ],
   },
   {
-    name: "流程管理(新)",
-    redirect: "noRedirect",
     path: "/aresflow",
     component: Layout,
-    meta: { title: "流程管理(新)", icon: "table" },
-    alwaysShow: false,
     hidden: true,
     children: [
       {
-        path: "build/index",
-        component: () => import("@/views/aresflow/build/index.vue"),
-        name: "AresModel",
-        meta: { title: "流程设计", icon: "component" },
-        hidden: false,
+        path: "definition/model",
+        component: () => import("@/views/aresflow/definition/model.vue"),
+        name: "Model",
+        meta: { title: "流程设计", icon: "" },
+      },
+    ],
+  },
+  {
+    path: "/aresflow",
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: "task/record/index",
+        component: () => import("@/views/aresflow/task/record/index.vue"),
+        name: "Record",
+        meta: { title: "流程处理", icon: "" },
       },
     ],
   },
