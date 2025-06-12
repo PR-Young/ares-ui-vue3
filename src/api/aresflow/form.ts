@@ -59,3 +59,10 @@ export function exportForm(query: any) {
     params: query,
   });
 }
+
+export function getBindForm(deployId: string) {
+  return request({
+    url: "/ares/sysDeployForm/getForm/" + deployId,
+    method: "get",
+  });
+}

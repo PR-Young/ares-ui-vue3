@@ -356,51 +356,50 @@
       width="60%"
       append-to-body
     >
-      <el-row :gutter="24">
-        <el-col :span="10" :xs="24">
-          <el-table
-            ref="singleTable"
-            :data="formList"
-            border
-            highlight-current-row
-            @current-change="handleCurrentChange"
-            style="width: 100%"
-          >
-            <el-table-column label="表单编号" align="center" prop="id" />
-            <el-table-column label="表单名称" align="center" prop="formName" />
-            <el-table-column
-              label="操作"
-              align="center"
-              class-name="small-padding fixed-width"
+      <el-table
+        ref="singleTable"
+        :data="formList"
+        border
+        highlight-current-row
+        style="width: 100%"
+      >
+        <el-table-column label="表单编号" align="center" prop="id" />
+        <el-table-column label="表单名称" align="center" prop="formName" />
+        <el-table-column label="是否绑定" align="center" prop="formName">
+          <template v-slot="scope">
+            <el-tag type="success" v-if="scope.row.id === bindFormId"
+              >是</el-tag
             >
-              <template v-slot="scope">
-                <el-button
-                  size="default"
-                  type="primary"
-                  link
-                  @click="submitFormDeploy(scope.row)"
-                  >确定</el-button
-                >
-              </template>
-            </el-table-column>
-          </el-table>
+            <el-tag type="info" v-if="scope.row.id !== bindFormId"
+              >否</el-tag
+            ></template
+          >
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          align="center"
+          class-name="small-padding fixed-width"
+        >
+          <template v-slot="scope">
+            <el-button
+              size="default"
+              type="primary"
+              link
+              @click="submitFormDeploy(scope.row)"
+              >确定</el-button
+            >
+          </template>
+        </el-table-column>
+      </el-table>
 
-          <pagination
-            small
-            layout="prev, pager, next"
-            v-show="formTotal > 0"
-            :total="formTotal"
-            v-model:page="formQueryParams.pageNum"
-            v-model:limit="formQueryParams.pageSize"
-            @pagination="ListFormDeploy"
-          />
-        </el-col>
-        <el-col :span="14" :xs="24">
-          <div v-if="currentRow">
-            <parser :key="new Date().getTime()" :form-conf="currentRow" />
-          </div>
-        </el-col>
-      </el-row>
+      <pagination
+        layout="prev, pager, next"
+        v-show="formTotal > 0"
+        :total="formTotal"
+        v-model:page="formQueryParams.pageNum"
+        v-model:limit="formQueryParams.pageSize"
+        @pagination="ListFormDeploy"
+      />
     </el-dialog>
   </div>
 </template>
@@ -426,12 +425,15 @@ import {
   copyFlow,
   delDefinition,
   addDefinition,
-  updateDeployment,
-  exportDeployment,
   readXml,
 } from "@/api/aresflow/definition";
 import { getToken } from "@/utils/auth";
-import { getForm, addDeployForm, listForm } from "@/api/aresflow/form";
+import {
+  getForm,
+  addDeployForm,
+  listForm,
+  getBindForm,
+} from "@/api/aresflow/form";
 import { getCurrentInstance, onMounted, reactive, ref } from "vue";
 import FormParser from "@/views/aiform/AiFormParser/index.vue";
 import { useRouter } from "vue-router";
@@ -498,34 +500,15 @@ const formDeployParam = reactive({
   formId: null,
   deployId: null,
 });
-const currentRow = ref();
 // xml
 const xmlData = ref();
 // 表单参数
 const form = ref({});
 // 表单校验
 const rules = ref({});
-const tableData = ref([]);
-const types = ref([
-  {
-    label: "开始",
-    value: "assignee",
-  },
-  {
-    label: "分派",
-    value: "candidateUsers",
-  },
-  {
-    label: "完成",
-    value: "candidateGroups",
-  },
-  {
-    label: "创建",
-    value: "candidateGroups",
-  },
-]);
 const categorys = ref([]);
 const addFormRef = ref();
+const bindFormId = ref();
 
 onMounted(() => {
   getList();
@@ -543,8 +526,8 @@ const categoryFormat = (row, column) => {
 const getList = () => {
   loading.value = true;
   listDefinition(queryParams).then((response) => {
-    definitionList.value = response.data;
-    total.value = response.total;
+    definitionList.value = response.data.list;
+    total.value = response.data.total;
     loading.value = false;
   });
 };
@@ -625,6 +608,9 @@ const handleForm = (formId) => {
 /** 挂载表单弹框 */
 const handleAddForm = (row) => {
   formDeployParam.deployId = row.id;
+  getBindForm(row.id).then((res) => {
+    bindFormId.value = res.data.id;
+  });
   ListFormDeploy();
 };
 /** 挂载表单列表 */
@@ -644,11 +630,6 @@ const submitFormDeploy = (row) => {
     formDeployOpen.value = false;
     getList();
   });
-};
-const handleCurrentChange = (data) => {
-  if (data) {
-    currentRow.value = JSON.parse(data.formContent);
-  }
 };
 const handleUpdatePublishState = (row) => {
   if (row.isPublish === 1) {
