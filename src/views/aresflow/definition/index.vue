@@ -1,3 +1,4 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="app-container">
     <el-form
@@ -370,10 +371,8 @@
             <el-tag type="success" v-if="scope.row.id === bindFormId"
               >是</el-tag
             >
-            <el-tag type="info" v-if="scope.row.id !== bindFormId"
-              >否</el-tag
-            ></template
-          >
+            <el-tag type="info" v-if="scope.row.id !== bindFormId">否</el-tag>
+          </template>
         </el-table-column>
         <el-table-column
           label="操作"
