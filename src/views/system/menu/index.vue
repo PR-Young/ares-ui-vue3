@@ -23,16 +23,12 @@
       <el-form-item>
         <el-button
           type="primary"
-          :icon="ElIconSearch"
+          :icon="Search"
           size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button
-          type="primary"
-          :icon="ElIconPlus"
-          size="default"
-          @click="handleAdd"
+        <el-button type="primary" :icon="Plus" size="default" @click="handleAdd"
           >新增</el-button
         >
       </el-form-item>
@@ -104,7 +100,7 @@
             size="default"
             type="primary"
             link
-            :icon="ElIconEdit"
+            :icon="Edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['menu:edit']"
             >修改</el-button
@@ -113,7 +109,7 @@
             size="default"
             type="primary"
             link
-            :icon="ElIconPlus"
+            :icon="Plus"
             @click="handleAdd(scope.row)"
             v-hasPermi="['menu:edit']"
             >新增</el-button
@@ -122,7 +118,7 @@
             size="default"
             type="primary"
             link
-            :icon="ElIconDelete"
+            :icon="Delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['menu:delete']"
             >删除</el-button
@@ -133,7 +129,7 @@
 
     <!-- 添加或修改菜单对话框 -->
     <el-dialog :title="title" v-model="open" width="600px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="addFormRef" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="24">
             <el-form-item label="上级菜单">
@@ -181,9 +177,7 @@
                       />
                     </template>
                     <template v-slot:prefix v-else>
-                      <el-icon class="el-input__icon"
-                        ><el-icon-search
-                      /></el-icon>
+                      <el-icon class="el-input__icon"><Search /></el-icon>
                     </template>
                   </el-input>
                 </template>
@@ -247,13 +241,8 @@
   </div>
 </template>
 
-<script>
-import {
-  Search as ElIconSearch,
-  Plus as ElIconPlus,
-  Edit as ElIconEdit,
-  Delete as ElIconDelete,
-} from "@element-plus/icons";
+<script setup name="Menu">
+import { Search, Plus, Edit, Delete } from "@element-plus/icons-vue";
 import {
   listMenu,
   getMenu,
@@ -264,208 +253,189 @@ import {
 import Treeselect from "vue3-treeselect";
 import "vue3-treeselect/dist/vue3-treeselect.css";
 import IconSelect from "@/components/IconSelect/index.vue";
-import { markRaw } from "vue";
+import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  data() {
-    return {
-      // 遮罩层
-      loading: true,
-      // 菜单表格树数据
-      menuList: [],
-      // 菜单树选项
-      menuOptions: [],
-      // 弹出层标题
-      title: "",
-      // 是否显示弹出层
-      open: false,
-      // 显示状态数据字典
-      visibleOptions: [
-        { dictValue: 0, dictLabel: "显示" },
-        { dictValue: 1, dictLabel: "隐藏" },
-      ],
-      // 菜单状态数据字典
-      statusOptions: [],
-      // 查询参数
-      queryParams: {
-        menuName: undefined,
-        visible: undefined,
-      },
-      typeOptions: [
-        // { id: 0, value: "目录" },
-        { id: 1, value: "菜单" },
-        { id: 2, value: "按钮" },
-      ],
-      // 表单参数
-      form: {},
-      // 表单校验
-      rules: {
-        name: [
-          { required: true, message: "菜单名称不能为空", trigger: "blur" },
-        ],
-        order: [
-          { required: true, message: "菜单顺序不能为空", trigger: "blur" },
-        ],
-        path: [
-          { required: true, message: "路由地址不能为空", trigger: "blur" },
-        ],
-      },
-      ElIconSearch,
-      ElIconPlus,
-      ElIconEdit,
-      ElIconDelete,
-    };
-  },
-  components: {
-    Treeselect: markRaw(Treeselect),
-    IconSelect: markRaw(IconSelect),
-    ElIconSearch: markRaw(ElIconSearch),
-    ElIconPlus: markRaw(ElIconPlus),
-    ElIconEdit: markRaw(ElIconEdit),
-    ElIconDelete: markRaw(ElIconDelete),
-  },
-  name: "Menu",
-  created() {
-    this.getList();
-    // this.getDicts("sys_show_hide").then(response => {
-    //   this.visibleOptions = response.data;
-    // });
-    // this.getDicts("sys_normal_disable").then(response => {
-    //   this.statusOptions = response.data;
-    // });
-  },
-  methods: {
-    // 选择图标
-    selected(name) {
-      this.form.icon = name;
-    },
-    /** 查询菜单列表 */
-    getList() {
-      this.loading = true;
-      listMenu(this.queryParams).then((response) => {
-        this.menuList = this.handleTree(response.data, "id");
-        this.loading = false;
-      });
-    },
-    /** 转换菜单数据结构 */
-    normalizer(node) {
-      if (node.children && !node.children.length) {
-        delete node.children;
-      }
-      return {
-        id: node.id,
-        label: node.name,
-        children: node.children,
-      };
-    },
-    /** 查询菜单下拉树结构 */
-    getTreeselect() {
-      listMenu().then((response) => {
-        this.menuOptions = [];
-        const menu = { id: "0", name: "主类目", children: [] };
-        menu.children = this.handleTree(response.data, "id");
-        this.menuOptions.push(menu);
-      });
-    },
-    // 显示状态字典翻译
-    visibleFormat(row, column) {
-      return this.selectDictLabel(this.visibleOptions, row.visible);
-    },
-    // 菜单状态字典翻译
-    statusFormat(row, column) {
-      if (row.type == 2) {
-        return "";
-      }
-      return this.selectDictLabel(this.statusOptions, row.status);
-    },
-    // 取消按钮
-    cancel() {
-      this.open = false;
-      this.reset();
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        id: undefined,
-        pId: "0",
-        name: undefined,
-        icon: undefined,
-        type: 1,
-        order: undefined,
-        visible: 0,
-        perms: "#",
-        url: "#",
-      };
-      this.resetForm("form");
-    },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      this.getList();
-    },
-    /** 新增按钮操作 */
-    handleAdd(row) {
-      this.reset();
-      this.getTreeselect();
-      if (row != null) {
-        this.form.pid = row.id;
-      }
-      this.open = true;
-      this.title = "添加菜单";
-    },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      this.getTreeselect();
-      getMenu(row.id).then((response) => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改菜单";
-      });
-    },
-    /** 提交按钮 */
-    submitForm: function () {
-      this.$refs["form"].validate((valid) => {
-        if (valid) {
-          if (this.form.id != undefined) {
-            updateMenu(this.form).then((response) => {
-              if (response.code === 200) {
-                this.msgSuccess("修改成功");
-                this.open = false;
-                this.getList();
-              } else {
-                this.msgError(response.msg);
-              }
-            });
+const { proxy } = getCurrentInstance();
+const addFormRef = ref();
+const router = useRouter();
+
+// 遮罩层
+const loading = ref(true);
+// 菜单表格树数据
+const menuList = ref([]);
+// 菜单树选项
+const menuOptions = ref([]);
+// 弹出层标题
+const title = ref();
+// 是否显示弹出层
+const open = ref(false);
+// 显示状态数据字典
+const visibleOptions = ref([
+  { dictValue: 0, dictLabel: "显示" },
+  { dictValue: 1, dictLabel: "隐藏" },
+]);
+// 菜单状态数据字典
+const statusOptions = ref([]);
+// 查询参数
+const queryParams = reactive({
+  menuName: undefined,
+  visible: undefined,
+});
+const typeOptions = ref([
+  // { id: 0, value: "目录"};
+  { id: 1, value: "菜单" },
+  { id: 2, value: "按钮" },
+]);
+// 表单参数
+const form = ref({});
+// 表单校验
+const rules = ref({
+  name: [{ required: true, message: "菜单名称不能为空", trigger: "blur" }],
+  order: [{ required: true, message: "菜单顺序不能为空", trigger: "blur" }],
+  path: [{ required: true, message: "路由地址不能为空", trigger: "blur" }],
+});
+
+onMounted(() => {
+  getList();
+  // proxy.getDicts("sys_show_hide").then(response => {
+  //   visibleOptions = response.data;
+  // });
+  // proxy.getDicts("sys_normal_disable").then(response => {
+  //   statusOptions = response.data;
+  // });
+});
+
+// 选择图标
+const selected = (name) => {
+  form.value.icon = name;
+};
+/** 查询菜单列表 */
+const getList = () => {
+  loading.value = true;
+  listMenu(queryParams).then((response) => {
+    menuList.value = proxy.handleTree(response.data, "id");
+    loading.value = false;
+  });
+};
+/** 转换菜单数据结构 */
+const normalizer = (node) => {
+  if (node.children && !node.children.length) {
+    delete node.children;
+  }
+  return {
+    id: node.id,
+    label: node.name,
+    children: node.children,
+  };
+};
+/** 查询菜单下拉树结构 */
+const getTreeselect = () => {
+  listMenu().then((response) => {
+    menuOptions.value = [];
+    const menu = { id: "0", name: "主类目", children: [] };
+    menu.children = proxy.handleTree(response.data, "id");
+    menuOptions.value.push(menu);
+  });
+};
+// 显示状态字典翻译
+const visibleFormat = (row, column) => {
+  return proxy.selectDictLabel(visibleOptions.value, row.visible);
+};
+// 菜单状态字典翻译
+const statusFormat = (row, column) => {
+  if (row.type == 2) {
+    return "";
+  }
+  return proxy.selectDictLabel(statusOptions.value, row.status);
+};
+// 取消按钮
+const cancel = () => {
+  open.value = false;
+  reset();
+};
+// 表单重置
+const reset = () => {
+  form.value = {
+    id: undefined,
+    pId: "0",
+    name: undefined,
+    icon: undefined,
+    type: 1,
+    order: undefined,
+    visible: 0,
+    perms: "#",
+    url: "#",
+  };
+  proxy.resetForm("form");
+};
+/** 搜索按钮操作 */
+const handleQuery = () => {
+  getList();
+};
+/** 新增按钮操作 */
+const handleAdd = (row) => {
+  reset();
+  getTreeselect();
+  if (row != null) {
+    form.value.pid = row.id;
+  }
+  open.value = true;
+  title.value = "添加菜单";
+};
+/** 修改按钮操作 */
+const handleUpdate = (row) => {
+  reset();
+  getTreeselect();
+  getMenu(row.id).then((response) => {
+    form.value = response.data;
+    open.value = true;
+    title.value = "修改菜单";
+  });
+};
+/** 提交按钮 */
+const submitForm = () => {
+  addFormRef.value.validate((valid) => {
+    if (valid) {
+      if (form.value.id != undefined) {
+        updateMenu(form).then((response) => {
+          if (response.code === 200) {
+            proxy.msgSuccess("修改成功");
+            open.value = false;
+            getList();
           } else {
-            addMenu(this.form).then((response) => {
-              if (response.code === 200) {
-                this.msgSuccess("新增成功");
-                this.open = false;
-                this.getList();
-              } else {
-                this.msgError(response.msg);
-              }
-            });
+            proxy.msgError(response.msg);
           }
-        }
-      });
-    },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      this.$confirm('是否确认删除名称为"' + row.name + '"的数据项?', "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(function () {
-          return delMenu(row.id);
-        })
-        .then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        })
-        .catch(function () {});
-    },
-  },
+        });
+      } else {
+        addMenu(form).then((response) => {
+          if (response.code === 200) {
+            proxy.msgSuccess("新增成功");
+            open.value = false;
+            getList();
+          } else {
+            proxy.msgError(response.msg);
+          }
+        });
+      }
+    }
+  });
+};
+/** 删除按钮操作 */
+const handleDelete = (row) => {
+  proxy
+    .$confirm('是否确认删除名称为"' + row.name + '"的数据项?', "警告", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+    .then(function () {
+      return delMenu(row.id);
+    })
+    .then(() => {
+      getList();
+      proxy.msgSuccess("删除成功");
+    })
+    .catch(function () {});
 };
 </script>

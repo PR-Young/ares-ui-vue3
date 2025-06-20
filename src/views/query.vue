@@ -15,7 +15,7 @@
         <el-form-item>
           <el-button
             type="primary"
-            :icon="ElIconSearch"
+            :icon="Search"
             size="default"
             @click="handleQuery"
           ></el-button>
@@ -35,39 +35,34 @@
   </div>
 </template>
 
-<script>
-import { Search as ElIconSearch } from "@element-plus/icons";
+<script setup name="QueryResult">
+import { Search } from "@element-plus/icons-vue";
 import { queryByKey } from "@/api/home";
+import { useRouter } from "vue-router";
+import { getCurrentInstance, onMounted, reactive, ref, watch } from "vue";
 
-export default {
-  data() {
-    return {
-      // 遮罩层
-      loading: true,
-      // 查询参数
-      queryParams: {
-        searchValue: undefined,
-      },
-      result: {
-        data: [],
-      },
-      ElIconSearch,
-    };
-  },
-  name: "QueryResult",
-  created() {
-    const data = this.$route.query && this.$route.query.data;
-    this.queryParams.searchValue =
-      this.$route.query && this.$route.query.searchValue;
-    this.result.data = data.data;
-  },
-  methods: {
-    /** 搜索按钮操作 */
-    handleQuery() {
-      queryByKey(this.queryParams).then((res) => {
-        this.result.data = res.data;
-      });
-    },
-  },
+const router = useRouter();
+
+// 遮罩层
+const loading = ref(true);
+// 查询参数
+const queryParams = reactive({
+  searchValue: undefined,
+});
+const result = ref({
+  data: [],
+});
+
+onMounted(() => {
+  const data = router.query && router.query.data;
+  queryParams.searchValue = router.query && router.query.searchValue;
+  result.value.data = data.data;
+});
+
+/** 搜索按钮操作 */
+const handleQuery = () => {
+  queryByKey(queryParams).then((res) => {
+    result.value.data = res.data;
+  });
 };
 </script>

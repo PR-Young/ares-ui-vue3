@@ -57,12 +57,12 @@
       <el-form-item>
         <el-button
           type="primary"
-          :icon="ElIconSearch"
+          :icon="Search"
           size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -72,7 +72,7 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-          :icon="ElIconPlus"
+          :icon="Plus"
           size="default"
           @click="handleAdd"
           v-hasPermi="['sysDictType:edit']"
@@ -82,7 +82,7 @@
       <el-col :span="1.5">
         <el-button
           type="success"
-          :icon="ElIconEdit"
+          :icon="Edit"
           size="default"
           :disabled="single"
           @click="handleUpdate"
@@ -93,7 +93,7 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          :icon="ElIconDelete"
+          :icon="Delete"
           size="default"
           :disabled="multiple"
           @click="handleDelete"
@@ -104,7 +104,7 @@
       <el-col :span="1.5">
         <el-button
           type="warning"
-          :icon="ElIconDownload"
+          :icon="Download"
           size="default"
           @click="handleExport"
           v-hasPermi="['system:dict:export']"
@@ -172,7 +172,7 @@
             size="default"
             type="primary"
             link
-            :icon="ElIconEdit"
+            :icon="Edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['sysDictType:edit']"
             >修改</el-button
@@ -181,7 +181,7 @@
             size="default"
             type="primary"
             link
-            :icon="ElIconDelete"
+            :icon="Delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['sysDictType:delete']"
             >删除</el-button
@@ -200,7 +200,7 @@
 
     <!-- 添加或修改参数配置对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="addFormRef" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="字典名称" prop="dictName">
           <el-input v-model="form.dictName" placeholder="请输入字典名称" />
         </el-form-item>
@@ -235,15 +235,15 @@
   </div>
 </template>
 
-<script>
+<script setup name="Dict">
 import {
-  Search as ElIconSearch,
-  Refresh as ElIconRefresh,
-  Plus as ElIconPlus,
-  Edit as ElIconEdit,
-  Delete as ElIconDelete,
-  Download as ElIconDownload,
-} from "@element-plus/icons";
+  Search,
+  Refresh,
+  Plus,
+  Edit,
+  Delete,
+  Download,
+} from "@element-plus/icons-vue";
 import {
   listType,
   getType,
@@ -251,199 +251,178 @@ import {
   editType,
   exportType,
 } from "@/api/system/dict/type";
-import { markRaw } from "vue";
+import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  data() {
-    return {
-      // 遮罩层
-      loading: true,
-      // 选中数组
-      ids: [],
-      // 非单个禁用
-      single: true,
-      // 非多个禁用
-      multiple: true,
-      // 总条数
-      total: 0,
-      // 字典表格数据
-      typeList: [],
-      // 弹出层标题
-      title: "",
-      // 是否显示弹出层
-      open: false,
-      // 状态数据字典
-      statusOptions: [],
-      // 日期范围
-      dateRange: [],
-      // 查询参数
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        dictName: undefined,
-        dictType: undefined,
-        status: undefined,
-      },
-      // 表单参数
-      form: {},
-      // 表单校验
-      rules: {
-        dictName: [
-          { required: true, message: "字典名称不能为空", trigger: "blur" },
-        ],
-        dictType: [
-          { required: true, message: "字典类型不能为空", trigger: "blur" },
-        ],
-      },
-      ElIconSearch,
-      ElIconRefresh,
-      ElIconPlus,
-      ElIconEdit,
-      ElIconDelete,
-      ElIconDownload,
-    };
-  },
-  name: "Dict",
-  components: {
-    ElIconSearch: markRaw(ElIconSearch),
-    ElIconRefresh: markRaw(ElIconRefresh),
-    ElIconPlus: markRaw(ElIconPlus),
-    ElIconEdit: markRaw(ElIconEdit),
-    ElIconDelete: markRaw(ElIconDelete),
-    ElIconDownload: markRaw(ElIconDownload),
-  },
-  created() {
-    this.getList();
-    this.getDicts("sys_normal_status").then((response) => {
-      this.statusOptions = response.data;
-    });
-  },
-  methods: {
-    /** 查询字典类型列表 */
-    getList() {
-      this.loading = true;
-      listType(this.addDateRange(this.queryParams, this.dateRange)).then(
-        (response) => {
-          this.typeList = response.rows;
-          this.total = response.total;
-          this.loading = false;
-        }
-      );
-    },
-    // 字典状态字典翻译
-    statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status);
-    },
-    // 取消按钮
-    cancel() {
-      this.open = false;
-      this.reset();
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        id: undefined,
-        dictName: undefined,
-        dictType: undefined,
-        status: "0",
-        remark: undefined,
-      };
-      this.resetForm("form");
-    },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
-    },
-    /** 重置按钮操作 */
-    resetQuery() {
-      this.dateRange = [];
-      this.resetForm("queryForm");
-      this.handleQuery();
-    },
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "添加字典类型";
-    },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id);
-      this.single = selection.length != 1;
-      this.multiple = !selection.length;
-    },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      const dictId = row.id || this.ids;
-      getType(dictId).then((response) => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改字典类型";
-      });
-    },
-    /** 提交按钮 */
-    submitForm: function () {
-      this.$refs["form"].validate((valid) => {
-        if (valid) {
-          if (this.form.id != undefined) {
-            editType(this.form).then((response) => {
-              if (response.code === 200) {
-                this.msgSuccess("修改成功");
-                this.open = false;
-                this.getList();
-              } else {
-                this.msgError(response.msg);
-              }
-            });
+const { proxy } = getCurrentInstance();
+const addFormRef = ref();
+const router = useRouter();
+// 遮罩层
+const loading = ref(true);
+// 选中数组
+const ids = ref([]);
+// 非单个禁用
+const single = ref(true);
+// 非多个禁用
+const multiple = ref(true);
+// 总条数
+const total = ref(0);
+// 字典表格数据
+const typeList = ref([]);
+// 弹出层标题
+const title = ref();
+// 是否显示弹出层
+const open = ref(false);
+// 状态数据字典
+const statusOptions = ref([]);
+// 日期范围
+const dateRange = ref([]);
+// 查询参数
+const queryParams = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  dictName: undefined,
+  dictType: undefined,
+  status: undefined,
+});
+// 表单参数
+const form = ref({});
+// 表单校验
+const rules = ref({
+  dictName: [{ required: true, message: "字典名称不能为空", trigger: "blur" }],
+  dictType: [{ required: true, message: "字典类型不能为空", trigger: "blur" }],
+});
+
+onMounted(() => {
+  getList();
+  proxy.getDicts("sys_normal_status").then((response) => {
+    statusOptions.value = response.data;
+  });
+});
+
+/** 查询字典类型列表 */
+const getList = () => {
+  loading.value = true;
+  listType(proxy.addDateRange(queryParams, dateRange)).then((response) => {
+    typeList.value = response.rows;
+    total.value = response.total;
+    loading.value = false;
+  });
+};
+// 字典状态字典翻译
+const statusFormat = (row, column) => {
+  return proxy.selectDictLabel(statusOptions.value, row.status);
+};
+// 取消按钮
+const cancel = () => {
+  open.value = false;
+  reset();
+};
+// 表单重置
+const reset = () => {
+  form.value = {
+    id: undefined,
+    dictName: undefined,
+    dictType: undefined,
+    status: "0",
+    remark: undefined,
+  };
+  proxy.resetForm("form");
+};
+/** 搜索按钮操作 */
+const handleQuery = () => {
+  queryParams.pageNum = 1;
+  getList();
+};
+/** 重置按钮操作 */
+const resetQuery = () => {
+  dateRange.value = [];
+  proxy.resetForm("queryForm");
+  handleQuery();
+};
+/** 新增按钮操作 */
+const handleAdd = () => {
+  reset();
+  open.value = true;
+  title.value = "添加字典类型";
+};
+// 多选框选中数据
+const handleSelectionChange = (selection) => {
+  ids.value = selection.map((item) => item.id);
+  single.value = selection.length != 1;
+  multiple.value = !selection.length;
+};
+/** 修改按钮操作 */
+const handleUpdate = (row) => {
+  reset();
+  const dictId = row.id || ids;
+  getType(dictId).then((response) => {
+    form.value = response.data;
+    open.value = true;
+    title.value = "修改字典类型";
+  });
+};
+/** 提交按钮 */
+const submitForm = () => {
+  addFormRef.value.validate((valid) => {
+    if (valid) {
+      if (form.value.id != undefined) {
+        editType(form).then((response) => {
+          if (response.code === 200) {
+            proxy.msgSuccess("修改成功");
+            open.value = false;
+            getList();
           } else {
-            editType(this.form).then((response) => {
-              if (response.code === 200) {
-                this.msgSuccess("新增成功");
-                this.open = false;
-                this.getList();
-              } else {
-                this.msgError(response.msg);
-              }
-            });
+            proxy.msgError(response.msg);
           }
-        }
-      });
-    },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      const dictIds = row.id || this.ids;
-      this.$confirm("是否确认删除字典?", "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(function () {
-          return delType(dictIds);
-        })
-        .then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        })
-        .catch(function () {});
-    },
-    /** 导出按钮操作 */
-    handleExport() {
-      const queryParams = this.queryParams;
-      this.$confirm("是否确认导出所有类型数据项?", "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(function () {
-          return exportType(queryParams);
-        })
-        .then((response) => {
-          this.download(response.msg);
-        })
-        .catch(function () {});
-    },
-  },
+        });
+      } else {
+        editType(form).then((response) => {
+          if (response.code === 200) {
+            proxy.msgSuccess("新增成功");
+            open.value = false;
+            getList();
+          } else {
+            proxy.msgError(response.msg);
+          }
+        });
+      }
+    }
+  });
+};
+/** 删除按钮操作 */
+const handleDelete = (row) => {
+  const dictIds = row.id || ids;
+  proxy
+    .$confirm("是否确认删除字典?", "警告", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+    .then(function () {
+      return delType(dictIds);
+    })
+    .then(() => {
+      getList();
+      proxy.msgSuccess("删除成功");
+    })
+    .catch(function () {});
+};
+/** 导出按钮操作 */
+const handleExport = () => {
+  const queryParams = queryParams;
+  proxy
+    .$confirm("是否确认导出所有类型数据项?", "警告", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+    .then(function () {
+      return exportType(queryParams);
+    })
+    .then((response) => {
+      proxy.download(response.msg);
+    })
+    .catch(function () {});
 };
 </script>

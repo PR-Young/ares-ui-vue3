@@ -453,8 +453,8 @@ export default {
       },
       // 查询参数
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
+        const pageNum=ref(1)
+        const pageSize=ref(10)
         name: null,
         category: null,
         key: null,
@@ -466,8 +466,8 @@ export default {
         engineVersion: null,
       },
       formQueryParams: {
-        pageNum: 1,
-        pageSize: 10,
+        const pageNum=ref(1)
+        const pageSize=ref(10)
       },
       // 挂载表单到流程实例
       formDeployParam: {
@@ -627,7 +627,7 @@ export default {
     // handleEditForm(row){
     //   this.formDeployParam.deployId = row.deploymentId
     //   const queryParams = {
-    //     pageNum: 1,
+    //     const pageNum=ref(1)
     //     pageSize: 10
     //   }
     //   listForm(queryParams).then(res =>{

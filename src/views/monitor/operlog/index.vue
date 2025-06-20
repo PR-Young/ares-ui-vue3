@@ -73,12 +73,12 @@
       <el-form-item>
         <el-button
           type="primary"
-          :icon="ElIconSearch"
+          :icon="Search"
           size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -88,7 +88,7 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          :icon="ElIconDelete"
+          :icon="Delete"
           size="default"
           :disabled="multiple"
           @click="handleDelete"
@@ -99,7 +99,7 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          :icon="ElIconDelete"
+          :icon="Delete"
           size="default"
           @click="handleClean"
           v-hasPermi="['monitor:operlog:remove']"
@@ -109,7 +109,7 @@
       <el-col :span="1.5">
         <el-button
           type="warning"
-          :icon="ElIconDownload"
+          :icon="Download"
           size="default"
           @click="handleExport"
           v-hasPermi="['system:config:export']"
@@ -120,7 +120,7 @@
 
     <el-table
       v-loading="loading"
-      :data="list"
+      :data="dataList"
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55" align="center" />
@@ -168,7 +168,7 @@
             size="default"
             type="primary"
             link
-            :icon="ElIconView"
+            :icon="View"
             @click="handleView(scope.row, scope.index)"
             v-hasPermi="['monitor:operlog:query']"
             >详细</el-button
@@ -187,7 +187,12 @@
 
     <!-- 操作日志详细 -->
     <el-dialog title="操作日志详细" v-model="open" width="700px" append-to-body>
-      <el-form ref="form" :model="form" label-width="100px" size="default">
+      <el-form
+        ref="addFormRef"
+        :model="form"
+        label-width="100px"
+        size="default"
+      >
         <el-row>
           <el-col :span="12">
             <el-form-item label="操作模块："
@@ -242,172 +247,151 @@
   </div>
 </template>
 
-<script>
+<script setup name="Operlog">
 import {
-  Search as ElIconSearch,
-  Refresh as ElIconRefresh,
-  Delete as ElIconDelete,
-  Download as ElIconDownload,
-  View as ElIconView,
-} from "@element-plus/icons";
+  Search,
+  Refresh,
+  Delete,
+  Download,
+  View,
+} from "@element-plus/icons-vue";
 import {
   list,
   delOperlog,
   cleanOperlog,
   exportOperlog,
 } from "@/api/monitor/operlog";
-import { markRaw } from "vue";
+import { getCurrentInstance, onMounted, reactive, ref } from "vue";
 
-export default {
-  data() {
-    return {
-      // 遮罩层
-      loading: true,
-      // 选中数组
-      ids: [],
-      // 非多个禁用
-      multiple: true,
-      // 总条数
-      total: 0,
-      // 表格数据
-      list: [],
-      // 是否显示弹出层
-      open: false,
-      // 类型数据字典
-      typeOptions: [],
-      // 类型数据字典
-      statusOptions: [],
-      // 日期范围
-      dateRange: [],
-      // 表单参数
-      form: {},
-      // 查询参数
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        title: undefined,
-        operName: undefined,
-        businessType: undefined,
-        status: undefined,
-      },
-      ElIconSearch,
-      ElIconRefresh,
-      ElIconDelete,
-      ElIconDownload,
-      ElIconView,
-    };
-  },
-  name: "Operlog",
-  components: {
-    ElIconSearch: markRaw(ElIconSearch),
-    ElIconRefresh: markRaw(ElIconRefresh),
-    ElIconView: markRaw(ElIconView),
-    ElIconDelete: markRaw(ElIconDelete),
-    ElIconDownload: markRaw(ElIconDownload),
-  },
-  created() {
-    this.getList();
-    this.getDicts("sys_oper_type").then((response) => {
-      this.typeOptions = response.data;
-    });
-    this.getDicts("sys_common_status").then((response) => {
-      this.statusOptions = response.data;
-    });
-  },
-  methods: {
-    /** 查询登录日志 */
-    getList() {
-      this.loading = true;
-      list(this.addDateRange(this.queryParams, this.dateRange)).then(
-        (response) => {
-          this.list = response.rows;
-          this.total = response.total;
-          this.loading = false;
-        }
-      );
-    },
-    // 操作日志状态字典翻译
-    statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status);
-    },
-    // 操作日志类型字典翻译
-    typeFormat(row, column) {
-      return this.selectDictLabel(this.typeOptions, row.businessType);
-    },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
-    },
-    /** 重置按钮操作 */
-    resetQuery() {
-      this.dateRange = [];
-      this.resetForm("queryForm");
-      this.handleQuery();
-    },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.operId);
-      this.multiple = !selection.length;
-    },
-    /** 详细按钮操作 */
-    handleView(row) {
-      this.open = true;
-      this.form = row;
-    },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      const operIds = row.operId || this.ids;
-      this.$confirm(
-        '是否确认删除日志编号为"' + operIds + '"的数据项?',
-        "警告",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        }
-      )
-        .then(function () {
-          return delOperlog(operIds);
-        })
-        .then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        })
-        .catch(function () {});
-    },
-    /** 清空按钮操作 */
-    handleClean() {
-      this.$confirm("是否确认清空所有操作日志数据项?", "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(function () {
-          return cleanOperlog();
-        })
-        .then(() => {
-          this.getList();
-          this.msgSuccess("清空成功");
-        })
-        .catch(function () {});
-    },
-    /** 导出按钮操作 */
-    handleExport() {
-      const queryParams = this.queryParams;
-      this.$confirm("是否确认导出所有操作日志数据项?", "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(function () {
-          return exportOperlog(queryParams);
-        })
-        .then((response) => {
-          this.download(response.msg);
-        })
-        .catch(function () {});
-    },
-  },
+const { proxy } = getCurrentInstance();
+// 遮罩层
+const loading = ref(true);
+// 选中数组
+const ids = ref([]);
+// 非多个禁用
+const multiple = ref(true);
+// 总条数
+const total = ref(0);
+// 表格数据
+const dataList = ref([]);
+// 是否显示弹出层
+const open = ref(false);
+// 类型数据字典
+const typeOptions = ref([]);
+// 类型数据字典
+const statusOptions = ref([]);
+// 日期范围
+const dateRange = ref([]);
+// 表单参数
+const form = ref({});
+// 查询参数
+const queryParams = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  title: undefined,
+  operName: undefined,
+  businessType: undefined,
+  status: undefined,
+});
+
+onMounted(() => {
+  getList();
+  proxy.getDicts("sys_oper_type").then((response) => {
+    typeOptions.value = response.data;
+  });
+  proxy.getDicts("sys_common_status").then((response) => {
+    statusOptions.value = response.data;
+  });
+});
+
+/** 查询登录日志 */
+const getList = () => {
+  loading.value = true;
+  list(proxy.addDateRange(queryParams, dateRange)).then((response) => {
+    dataList.value = response.rows;
+    total.value = response.total;
+    loading.value = false;
+  });
+};
+// 操作日志状态字典翻译
+const statusFormat = (row, column) => {
+  return proxy.selectDictLabel(statusOptions.value, row.status);
+};
+// 操作日志类型字典翻译
+const typeFormat = (row, column) => {
+  return proxy.selectDictLabel(typeOptions.value, row.businessType);
+};
+/** 搜索按钮操作 */
+const handleQuery = () => {
+  queryParams.pageNum = 1;
+  getList();
+};
+/** 重置按钮操作 */
+const resetQuery = () => {
+  dateRange.value = [];
+  proxy.resetForm("queryForm");
+  handleQuery();
+};
+// 多选框选中数据
+const handleSelectionChange = (selection) => {
+  ids.value = selection.map((item) => item.operId);
+  multiple.value = !selection.length;
+};
+/** 详细按钮操作 */
+const handleView = (row) => {
+  open.value = true;
+  form.value = row;
+};
+/** 删除按钮操作 */
+const handleDelete = (row) => {
+  const operIds = row.operId || ids;
+  proxy
+    .$confirm('是否确认删除日志编号为"' + operIds + '"的数据项?', "警告", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+    .then(function () {
+      return delOperlog(operIds);
+    })
+    .then(() => {
+      getList();
+      proxy.msgSuccess("删除成功");
+    })
+    .catch(function () {});
+};
+/** 清空按钮操作 */
+const handleClean = () => {
+  proxy
+    .$confirm("是否确认清空所有操作日志数据项?", "警告", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+    .then(function () {
+      return cleanOperlog();
+    })
+    .then(() => {
+      getList();
+      proxy.msgSuccess("清空成功");
+    })
+    .catch(function () {});
+};
+/** 导出按钮操作 */
+const handleExport = () => {
+  const queryParams = queryParams;
+  proxy
+    .$confirm("是否确认导出所有操作日志数据项?", "警告", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+    .then(function () {
+      return exportOperlog(queryParams);
+    })
+    .then((response) => {
+      proxy.download(response.msg);
+    })
+    .catch(function () {});
 };
 </script>

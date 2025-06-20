@@ -10,25 +10,21 @@
         </div> -->
 </template>
 
-<script>
-export default {
-  name: "Knife4j",
-  data() {
-    return {
-      src: import.meta.env.VITE_APP_BASE_API + "/ares/doc.html",
-      height: document.documentElement.clientHeight - 94.5 + "px;",
-      loading: false,
-    };
-  },
-  mounted: function () {
-    window.open(this.src);
-    // setTimeout(() => {
-    //   this.loading = false;
-    // }, 230);
-    // const that = this;
-    // window.onresize = function temp() {
-    //   that.height = document.documentElement.clientHeight - 94.5 + "px;";
-    // };
-  },
-};
+<script setup name="Knife4j">
+import { onMounted, ref } from "vue";
+
+const src = import.meta.env.VITE_APP_BASE_API + "/ares/doc.html";
+const height = document.documentElement.clientHeight - 94.5 + "px;";
+const loading = ref(false);
+
+onMounted(() => {
+  window.open(src);
+  // setTimeout(() => {
+  //   loading.value = false;
+  //}, 230);
+  // const that = this;
+  // window.onresize = function temp() {
+  //   that.height = document.documentElement.clientHeight - 94.5 + "px;";
+  // };
+});
 </script>

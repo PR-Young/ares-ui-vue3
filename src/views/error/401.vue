@@ -16,7 +16,7 @@
       </el-col>
       <el-col :span="12">
         <img
-          :src="errGif"
+          :src="errgif"
           width="313"
           height="428"
           alt="Girl has dropped her ice cream."
@@ -26,25 +26,19 @@
   </div>
 </template>
 
-<script>
+<script setup name="Page401">
 import errGif from "@/assets/401_images/401.gif";
+import { useRouter } from "vue-router";
 
-export default {
-  name: "Page401",
-  data() {
-    return {
-      errGif: errGif + "?" + +new Date(),
-    };
-  },
-  methods: {
-    back() {
-      if (this.$route.query.noGoBack) {
-        this.$router.push({ path: "/" });
-      } else {
-        this.$router.go(-1);
-      }
-    },
-  },
+const router = useRouter();
+const errgif = errGif + "?" + +new Date();
+
+const back = () => {
+  if (router.query.noGoBack) {
+    router.push({ path: "/" });
+  } else {
+    router.go(-1);
+  }
 };
 </script>
 

@@ -34,29 +34,18 @@
   </div>
 </template>
 
-<script>
+<script setup name="Icons">
 import svgIcons from "./svg-icons";
 import elementIcons from "./element-icons";
 
-export default {
-  name: "Icons",
-  data() {
-    return {
-      svgIcons,
-      elementIcons,
-    };
-  },
-  methods: {
-    generateIconCode(symbol) {
-      return `<svg-icon icon-class="${symbol}" />`;
-    },
-    generateElementIconCode(symbol) {
-      return `<${symbol} />`;
-    },
-    showIcons(symbol) {
-      return `<${symbol} />`;
-    },
-  },
+const generateIconCode = (symbol) => {
+  return `<svg-icon icon-class="${symbol}" />`;
+};
+const generateElementIconCode = (symbol) => {
+  return `<${symbol} />`;
+};
+const showIcons = (symbol) => {
+  return `<${symbol} />`;
 };
 </script>
 

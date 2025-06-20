@@ -59,5 +59,6 @@ module.exports = {
         "vue/multi-word-component-names": "off", //要求组件名称始终为'-'链接的单词
         "vue/no-mutating-props": "off", //不允许组件props的改成
         "vue/attribute-hyphenation": "off", //对模板中的自定义组件强制执行属性命名样式
+        "trailingComma": "none"
     },
 };

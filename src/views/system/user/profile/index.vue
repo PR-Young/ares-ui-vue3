@@ -66,36 +66,29 @@
   </div>
 </template>
 
-<script>
-import userAvatar from './userAvatar.vue'
-import userInfo from './userInfo.vue'
-import resetPwd from './resetPwd.vue'
-import { getUserProfile } from '@/api/system/user'
+<script setup name="Profile">
+import userAvatar from "./userAvatar.vue";
+import userInfo from "./userInfo.vue";
+import resetPwd from "./resetPwd.vue";
+import { getUserProfile } from "@/api/system/user";
+import { ref, onMounted } from "vue";
 
-export default {
-  name: 'Profile',
-  components: { userAvatar, userInfo, resetPwd },
-  data() {
-    return {
-      user: {},
-      roleGroup: {},
-      deptGroup: '',
-      postGroup: '',
-      activeTab: 'userinfo',
-    }
-  },
-  created() {
-    this.getUser()
-  },
-  methods: {
-    getUser() {
-      getUserProfile().then((response) => {
-        this.user = response.data
-        this.roleGroup = response.roleGroup
-        this.postGroup = response.postGroup
-        this.deptGroup = response.deptGroup
-      })
-    },
-  },
-}
+const user = ref({});
+const roleGroup = ref({});
+const deptGroup = ref();
+const postGroup = ref();
+const activeTab = ref("userinfo");
+
+onMounted(() => {
+  getUser();
+});
+
+const getUser = () => {
+  getUserProfile().then((response) => {
+    user.value = response.data;
+    roleGroup.value = response.roleGroup;
+    postGroup.value = response.postGroup;
+    deptGroup.value = response.deptGroup;
+  });
+};
 </script>

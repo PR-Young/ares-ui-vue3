@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <el-form
-      ref="loginForm"
+      ref="loginFormRef"
       :model="loginForm"
       :rules="loginRules"
       class="login-form"
@@ -77,113 +77,94 @@
   </div>
 </template>
 
-<script>
+<script setup name="Login">
 import { getCodeImg } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 import useUserStore from "@/store/modules/user";
 import store from "@/store";
+import { getCurrentInstance, onMounted, reactive, ref, watch } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const userStore = useUserStore(store);
 
-export default {
-  name: "Login",
-  data() {
-    return {
-      codeUrl: "",
-      cookiePassword: "",
-      loginForm: {
-        username: "",
-        password: "",
-        rememberMe: false,
-        code: "",
-        uuid: "",
-      },
-      loginRules: {
-        username: [
-          { required: true, trigger: "blur", message: "用户名不能为空" },
-        ],
-        password: [
-          { required: true, trigger: "blur", message: "密码不能为空" },
-        ],
-        code: [
-          { required: true, trigger: "change", message: "验证码不能为空" },
-        ],
-      },
-      loading: false,
-      redirect: undefined,
-    };
-  },
-  watch: {
-    $route: {
-      deep: true,
-      handler: function (route) {
-        this.redirect = route.query && route.query.redirect;
-      },
-      immediate: true,
-    },
-  },
-  mounted() {
-    // if (this.loginForm.username === '') {
-    //   this.$refs.username.focus()
-    // } else if (this.loginForm.password === '') {
-    //   this.$refs.password.focus()
-    // }
-  },
-  created() {
-    this.getCode();
-    this.getCookie();
-  },
-  methods: {
-    getCode() {
-      getCodeImg().then((res) => {
-        this.codeUrl = res.img;
-        this.loginForm.uuid = res.uuid;
-      });
-    },
-    getCookie() {
-      const username = Cookies.get("username");
-      const password = Cookies.get("password");
-      const rememberMe = Cookies.get("rememberMe");
-      this.loginForm = {
-        username: username === undefined ? this.loginForm.username : username,
-        password:
-          password === undefined ? this.loginForm.password : decrypt(password),
-        rememberMe: rememberMe === undefined ? false : Boolean(rememberMe),
-      };
-    },
-    handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
-        if (valid) {
-          this.loading = true;
-          if (this.loginForm.rememberMe) {
-            Cookies.set("username", this.loginForm.username, { expires: 30 });
-            Cookies.set("password", encrypt(this.loginForm.password), {
-              expires: 30,
-            });
-            Cookies.set("rememberMe", this.loginForm.rememberMe, {
-              expires: 30,
-            });
-          } else {
-            Cookies.remove("username");
-            Cookies.remove("password");
-            Cookies.remove("rememberMe");
-          }
-          userStore
-            .Login(this.loginForm)
-            .then(() => {
-              //router.push({ path: this.redirect || "/" });
-              //this.$router.push({ path: this.redirect || "/" });
-              this.$router.push({ path: "/" });
-            })
-            .catch(() => {
-              this.loading = false;
-              this.getCode();
-            });
-        }
-      });
-    },
-  },
+const codeUrl = ref();
+const cookiePassword = ref();
+const loginForm = ref({
+  username: "",
+  password: "",
+  rememberMe: false,
+  code: "",
+  uuid: "",
+});
+const loginRules = ref({
+  username: [{ required: true, trigger: "blur", message: "用户名不能为空" }],
+  password: [{ required: true, trigger: "blur", message: "密码不能为空" }],
+  code: [{ required: true, trigger: "change", message: "验证码不能为空" }],
+});
+const loading = ref(false);
+const redirect = ref();
+const loginFormRef = ref();
+
+watch(
+  () => router.path,
+  (newPath, oldPath) => {
+    redirect.value = router.query && router.query.redirect;
+  }
+);
+onMounted(() => {
+  getCode();
+  getCookie();
+});
+
+const getCode = () => {
+  getCodeImg().then((res) => {
+    codeUrl.value = res.img;
+    loginForm.value.uuid = res.uuid;
+  });
+};
+const getCookie = () => {
+  const username = Cookies.get("username");
+  const password = Cookies.get("password");
+  const rememberMe = Cookies.get("rememberMe");
+  loginForm.value = {
+    username: username === undefined ? loginForm.value.username : username,
+    password:
+      password === undefined ? loginForm.value.password : decrypt(password),
+    rememberMe: rememberMe === undefined ? false : Boolean(rememberMe),
+  };
+};
+const handleLogin = () => {
+  loginFormRef.value.validate((valid) => {
+    if (valid) {
+      loading.value = true;
+      if (loginForm.value.rememberMe) {
+        Cookies.set("username", loginForm.value.username, { expires: 30 });
+        Cookies.set("password", encrypt(loginForm.value.password), {
+          expires: 30,
+        });
+        Cookies.set("rememberMe", loginForm.value.rememberMe, {
+          expires: 30,
+        });
+      } else {
+        Cookies.remove("username");
+        Cookies.remove("password");
+        Cookies.remove("rememberMe");
+      }
+      userStore
+        .Login(loginForm)
+        .then(() => {
+          //router.push({ path: redirect || "/" });
+          //$router.push({ path: redirect || "/" });
+          router.push({ path: "/" });
+        })
+        .catch(() => {
+          loading.value = false;
+          getCode();
+        });
+    }
+  });
 };
 </script>
 

@@ -26,11 +26,11 @@ const useUserStore = defineStore("user", {
       uuid: any;
       rememberMe: any;
     }) {
-      const username = userInfo.username.trim();
-      const password = userInfo.password;
-      const code = userInfo.code;
-      const uuid = userInfo.uuid;
-      const rememberMe = userInfo.rememberMe;
+      const username = userInfo.value.username.trim();
+      const password = userInfo.value.password;
+      const code = userInfo.value.code;
+      const uuid = userInfo.value.uuid;
+      const rememberMe = userInfo.value.rememberMe;
       return new Promise((resolve, reject) => {
         login(username, password, code, uuid, rememberMe)
           .then((res: any) => {
@@ -55,8 +55,8 @@ const useUserStore = defineStore("user", {
               user.avatar == null || user.avatar == ""
                 ? defAva
                 : import.meta.env.VITE_APP_BASE_API +
-                  "/ares/system/user/profile/" +
-                  user.avatar;
+                "/ares/system/user/profile/" +
+                user.avatar;
             if (res.roles && res.roles.length > 0) {
               // 验证返回的roles是否是一个非空数组
               this.roles = res.roles;

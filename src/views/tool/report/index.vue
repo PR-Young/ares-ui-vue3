@@ -1,5 +1,3 @@
-
-
 <template>
   <div v-loading="loading" :style="'height:' + height">
     <iframe
@@ -10,24 +8,19 @@
     />
   </div>
 </template>
-<script>
-export default {
-  name: "Report",
-  data() {
-    return {
-      src: import.meta.env.VITE_APP_BASE_API + "/ares/tool/report/index",
-      height: document.documentElement.clientHeight - 94.5 + "px;",
-      loading: true,
-    };
-  },
-  mounted: function () {
-    setTimeout(() => {
-      this.loading = false;
-    }, 230);
-    const that = this;
-    window.onresize = function temp() {
-      that.height = document.documentElement.clientHeight - 94.5 + "px;";
-    };
-  },
-};
+<script setup name="Report">
+import { onMounted, ref } from "vue";
+
+const src = import.meta.env.VITE_APP_BASE_API + "/ares/tool/report/index";
+const height = ref(document.documentElement.clientHeight - 94.5 + "px;");
+const loading = ref(true);
+
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false;
+  }, 230);
+  window.onresize = function temp() {
+    height.value = document.documentElement.clientHeight - 94.5 + "px;";
+  };
+});
 </script>

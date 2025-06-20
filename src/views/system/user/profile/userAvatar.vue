@@ -10,7 +10,7 @@
       <el-row>
         <el-col :xs="24" :md="12" :style="{ height: '350px' }">
           <vue-cropper
-            ref="cropper"
+            ref="cropperRef"
             :img="options.img"
             :info="true"
             :autoCrop="options.autoCrop"
@@ -43,7 +43,7 @@
         </el-col>
         <el-col :lg="{ span: 1, offset: 2 }" :md="2">
           <el-button
-            :icon="ElIconPlus"
+            :icon="Plus"
             size="default"
             @click="changeScale(1)"
           ></el-button>
@@ -79,112 +79,95 @@
   </div>
 </template>
 
-<script>
+<script setup name="updateAvatar">
 import {
   Upload as ElIconUpload,
-  Plus as ElIconPlus,
+  Plus,
   Minus as ElIconMinus,
   RefreshLeft as ElIconRefreshLeft,
   RefreshRight as ElIconRefreshRight,
-} from "@element-plus/icons";
+} from "@element-plus/icons-vue";
 import store from "@/store";
 import "vue-cropper/dist/index.css";
 import { VueCropper } from "vue-cropper";
 import { uploadAvatar } from "@/api/system/user";
 import useUserStore from "@/store/modules/user";
-import { markRaw } from "vue";
+import { getCurrentInstance, onMounted, reactive, ref } from "vue";
 const user = useUserStore(store);
+const { proxy } = getCurrentInstance();
+// 是否显示弹出层
+const open = ref(false);
+// 弹出层标题
+const title = ref("修改头像");
+const options = ref({
+  img: user.avatar.url, //裁剪图片的地址
+  autoCrop: true, // 是否默认生成截图框
+  autoCropWidth: 200, // 默认生成截图框宽度
+  autoCropHeight: 200, // 默认生成截图框高度
+  fixedBox: true, // 固定截图框大小 不允许改变
+});
+const previews = ref({});
+const cropperRef = ref();
 
-export default {
-  data() {
-    return {
-      // 是否显示弹出层
-      open: false,
-      // 弹出层标题
-      title: "修改头像",
-      options: {
-        img: user.avatar.url, //裁剪图片的地址
-        autoCrop: true, // 是否默认生成截图框
-        autoCropWidth: 200, // 默认生成截图框宽度
-        autoCropHeight: 200, // 默认生成截图框高度
-        fixedBox: true, // 固定截图框大小 不允许改变
-      },
-      previews: {},
-      ElIconPlus,
-      ElIconMinus,
-      ElIconRefreshLeft,
-      ElIconRefreshRight,
+defineOptions({
+  user: {
+    type: Object,
+  },
+});
+
+// 编辑头像
+const editCropper = () => {
+  open.value = true;
+};
+// 覆盖默认的上传行为
+const requestUpload = () => {};
+// 向左旋转
+const rotateLeft = () => {
+  cropperRef.value.rotateLeft();
+};
+// 向右旋转
+const rotateRight = () => {
+  cropperRef.value.rotateRight();
+};
+// 图片缩放
+const changeScale = (num) => {
+  num = num || 1;
+  cropperRef.value.changeScale(num);
+};
+// 上传预处理
+const beforeUpload = (file) => {
+  if (file.type.indexOf("image/") == -1) {
+    proxy.msgError("文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。");
+  } else {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      options.value.img = reader.result;
     };
-  },
-  components: {
-    VueCropper,
-    ElIconUpload: markRaw(ElIconUpload),
-    ElIconPlus: markRaw(ElIconPlus),
-    ElIconMinus: markRaw(ElIconMinus),
-    ElIconRefreshLeft: markRaw(ElIconRefreshLeft),
-    ElIconRefreshRight: markRaw(ElIconRefreshRight),
-  },
-  props: {
-    user: {
-      type: Object,
-    },
-  },
-  methods: {
-    // 编辑头像
-    editCropper() {
-      this.open = true;
-    },
-    // 覆盖默认的上传行为
-    requestUpload() {},
-    // 向左旋转
-    rotateLeft() {
-      this.$refs.cropper.rotateLeft();
-    },
-    // 向右旋转
-    rotateRight() {
-      this.$refs.cropper.rotateRight();
-    },
-    // 图片缩放
-    changeScale(num) {
-      num = num || 1;
-      this.$refs.cropper.changeScale(num);
-    },
-    // 上传预处理
-    beforeUpload(file) {
-      if (file.type.indexOf("image/") == -1) {
-        this.msgError("文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。");
+  }
+};
+// 上传图片
+const uploadImg = () => {
+  cropperRef.value.getCropBlob((data) => {
+    let formData = new FormData();
+    formData.append("avatarfile", data);
+    uploadAvatar(formData).then((response) => {
+      if (response.code === 200) {
+        open.value = false;
+        options.value.img =
+          import.meta.env.VITE_APP_BASE_API +
+          "/ares/system/user/profile/" +
+          response.imgUrl;
+        proxy.msgSuccess("修改成功");
       } else {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-          this.options.img = reader.result;
-        };
+        proxy.msgError(response.msg);
       }
-    },
-    // 上传图片
-    uploadImg() {
-      this.$refs.cropper.getCropBlob((data) => {
-        let formData = new FormData();
-        formData.append("avatarfile", data);
-        uploadAvatar(formData).then((response) => {
-          if (response.code === 200) {
-            this.open = false;
-            this.options.img =
-              import.meta.env.VITE_APP_BASE_API +
-              "/ares/system/user/profile/" +
-              response.imgUrl;
-            this.msgSuccess("修改成功");
-          } else {
-            this.msgError(response.msg);
-          }
-          this.$refs.cropper.clearCrop();
-        });
-      });
-    },
-    // 实时预览
-    realTime(data) {
-      this.previews = data;
-    },
-  },
+      cropperRef.value.clearCrop();
+    });
+  });
+};
+// 实时预览
+const realTime = (data) => {
+  previews.value = data;
 };
 </script>

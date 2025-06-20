@@ -22,12 +22,12 @@
       <el-form-item>
         <el-button
           type="primary"
-          :icon="ElIconSearch"
+          :icon="Search"
           size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -35,7 +35,7 @@
 
     <el-table
       v-loading="loading"
-      :data="list.slice((pageNum - 1) * pageSize, pageNum * pageSize)"
+      :data="dataList.slice((pageNum - 1) * pageSize, pageNum * pageSize)"
       style="width: 100%"
     >
       <el-table-column label="序号" type="index" align="center">
@@ -84,7 +84,7 @@
           <el-button
             size="default"
             link
-            :icon="ElIconDelete"
+            :icon="Delete"
             @click="handleForceLogout(scope.row)"
             v-hasPermi="['monitor:online:forceLogout']"
             >强退</el-button
@@ -102,79 +102,65 @@
   </div>
 </template>
 
-<script>
-import {
-  Search as ElIconSearch,
-  Refresh as ElIconRefresh,
-  Delete as ElIconDelete,
-} from "@element-plus/icons";
+<script setup name="Online">
+import { Search, Refresh, Delete } from "@element-plus/icons-vue";
 import { list, forceLogout } from "@/api/monitor/online";
+import { getCurrentInstance, onMounted, reactive, ref } from "vue";
 
-export default {
-  data() {
-    return {
-      // 遮罩层
-      loading: true,
-      // 总条数
-      total: 0,
-      // 表格数据
-      list: [],
-      pageNum: 1,
-      pageSize: 10,
-      // 查询参数
-      queryParams: {
-        ipaddr: undefined,
-        userName: undefined,
-      },
-      ElIconSearch,
-      ElIconRefresh,
-      ElIconDelete,
-    };
-  },
-  name: "Online",
-  created() {
-    this.getList();
-  },
-  methods: {
-    /** 查询登录日志列表 */
-    getList() {
-      this.loading = true;
-      list(this.queryParams).then((response) => {
-        this.list = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
-    },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      this.pageNum = 1;
-      this.getList();
-    },
-    /** 重置按钮操作 */
-    resetQuery() {
-      this.resetForm("queryForm");
-      this.handleQuery();
-    },
-    /** 强退按钮操作 */
-    handleForceLogout(row) {
-      this.$confirm(
-        '是否确认强退名称为"' + row.userName + '"的数据项?',
-        "警告",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        }
-      )
-        .then(function () {
-          return forceLogout(row.tokenId);
-        })
-        .then(() => {
-          this.getList();
-          this.msgSuccess("强退成功");
-        })
-        .catch(function () {});
-    },
-  },
+const { proxy } = getCurrentInstance();
+const addFormRef = ref();
+// 遮罩层
+const loading = ref(true);
+// 总条数
+const total = ref(0);
+// 表格数据
+const dataList = ref([]);
+const pageNum = ref(1);
+const pageSize = ref(10);
+// 查询参数
+const queryParams = reactive({
+  ipaddr: undefined,
+  userName: undefined,
+});
+
+onMounted(() => {
+  getList();
+});
+
+/** 查询登录日志列表 */
+const getList = () => {
+  loading.value = true;
+  list(queryParams).then((response) => {
+    dataList.value = response.rows;
+    total.value = response.total;
+    loading.value = false;
+  });
+};
+/** 搜索按钮操作 */
+const handleQuery = () => {
+  pageNum.value = 1;
+  getList();
+};
+/** 重置按钮操作 */
+const resetQuery = () => {
+  proxy.resetForm("queryForm");
+  handleQuery();
+};
+/** 强退按钮操作 */
+const handleForceLogout = (row) => {
+  proxy
+    .$confirm('是否确认强退名称为"' + row.userName + '"的数据项?', "警告", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+    .then(function () {
+      return forceLogout(row.tokenId);
+    })
+    .then(() => {
+      getList();
+      proxy.msgSuccess("强退成功");
+    })
+    .catch(function () {});
 };
 </script>

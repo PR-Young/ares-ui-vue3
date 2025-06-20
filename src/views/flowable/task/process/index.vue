@@ -295,8 +295,8 @@ export default {
       definitionList: [],
       // 查询参数
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
+        const pageNum=ref(1)
+        const pageSize=ref(10)
         name: null,
         category: null,
         key: null,

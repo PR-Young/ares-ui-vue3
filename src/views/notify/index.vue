@@ -31,29 +31,23 @@
   </div>
 </template>
 
-<script>
+<script setup name="Message">
 import { getNotices } from "@/api/notify/message";
 import store from "@/store";
 import useUserStore from "@/store/modules/user";
+import { ref, onMounted } from "vue";
 const user = useUserStore(store);
 
-export default {
-  name: "Message",
-  data() {
-    return {
-      msgList: [],
-    };
-  },
-  created() {
-    this.getList();
-    user.GetNoticeNumber();
-  },
-  methods: {
-    getList() {
-      getNotices().then((response) => {
-        this.msgList = response.data;
-      });
-    },
-  },
+const msgList = ref([]);
+
+onMounted(() => {
+  getList();
+  user.GetNoticeNumber();
+});
+
+const getList = () => {
+  getNotices().then((response) => {
+    msgList.value = response.data;
+  });
 };
 </script>

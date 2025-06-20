@@ -443,7 +443,7 @@ export default {
   },
   methods: {
     /** 查询部门下拉树结构 */
-    getTreeselect() {
+    const getTreeselect=()=> {
       treeselect().then((response) => {
         this.deptOptions = response.data;
       });

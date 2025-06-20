@@ -2,11 +2,11 @@
   <el-card>
     <el-tabs v-model="activeName">
       <el-tab-pane label="基本信息" name="basic">
-        <basic-info-form ref="basicInfo" :info="info" />
+        <basic-info-form ref="basicInfoRef" :info="info" />
       </el-tab-pane>
       <el-tab-pane label="字段信息" name="cloum">
         <el-table
-          ref="dragTable"
+          ref="dragTableRef"
           :data="cloumns"
           row-key="columnId"
           :max-height="tableHeight"
@@ -143,7 +143,7 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="生成信息" name="genInfo">
-        <gen-info-form ref="genInfo" :info="info" />
+        <gen-info-form ref="genInfoRef" :info="info" />
       </el-tab-pane>
     </el-tabs>
     <el-form label-width="100px">
@@ -157,7 +157,7 @@
   </el-card>
 </template>
 
-<script>
+<script setup name="GenEdit">
 import { getGenTable, updateGenTable } from "@/api/tool/gen";
 import { optionselect as getDictOptionselect } from "@/api/system/dict/type";
 import basicInfoForm from "./basicInfoForm.vue";
@@ -165,94 +165,91 @@ import genInfoForm from "./genInfoForm.vue";
 import Sortable from "sortablejs";
 import store from "@/store";
 import useTagsViewStore from "@/store/modules/tagsView";
+import { onMounted, ref, getCurrentInstance } from "vue";
+import { useRouter } from "vue-router";
+
+const { proxy } = getCurrentInstance();
+const router = useRouter();
 const tagsView = useTagsViewStore(store);
-export default {
-  name: "GenEdit",
-  components: {
-    basicInfoForm,
-    genInfoForm,
-  },
-  data() {
-    return {
-      // 选中选项卡的 name
-      activeName: "cloum",
-      // 表格的高度
-      tableHeight: document.documentElement.scrollHeight - 245 + "px",
-      // 表列信息
-      cloumns: [],
-      // 字典信息
-      dictOptions: [],
-      // 表详细信息
-      info: {},
-    };
-  },
-  beforeCreate() {
-    const { tableId } = this.$route.query;
-    if (tableId) {
-      // 获取表详细信息
-      getGenTable(tableId).then((res) => {
-        this.cloumns = res.data.rows;
-        this.info = res.data.info;
+
+// 选中选项卡的 name
+const activeName = ref("cloum");
+// 表格的高度
+const tableHeight = document.documentElement.scrollHeight - 245 + "px";
+// 表列信息
+const cloumns = ref([]);
+// 字典信息
+const dictOptions = ref([]);
+// 表详细信息
+const info = ref({});
+const basicInfoRef = ref();
+const genInfoRef = ref();
+const dragTableRef = ref();
+
+const { tableId } = router.query;
+if (tableId) {
+  // 获取表详细信息
+  getGenTable(tableId).then((res) => {
+    cloumns.value = res.data.rows;
+    info.value = res.data.info;
+  });
+  /** 查询字典下拉列表 */
+  getDictOptionselect().then((response) => {
+    dictOptions.value = response.data;
+  });
+}
+
+/** 提交按钮 */
+const submitForm = () => {
+  const basicForm = basicInfoRef.value.$refs.basicInfoForm;
+  const genForm = genInfoRef.value.$refs.genInfoForm;
+  Promise.all([basicForm, genForm].map(getFormPromise)).then((res) => {
+    const validateResult = res.every((item) => !!item);
+    if (validateResult) {
+      const genTable = Object.assign({}, basicForm.model, genForm.model);
+      genTable.columns = cloumns;
+      genTable.params = {
+        treeCode: genTable.treeCode,
+        treeName: genTable.treeName,
+        treeParentCode: genTable.treeParentCode,
+      };
+      updateGenTable(genTable).then((res) => {
+        proxy.msgSuccess(res.msg);
+        if (res.code === 200) {
+          close();
+        }
       });
-      /** 查询字典下拉列表 */
-      getDictOptionselect().then((response) => {
-        this.dictOptions = response.data;
-      });
+    } else {
+      proxy.msgError("表单校验未通过，请重新检查提交内容");
     }
-  },
-  methods: {
-    /** 提交按钮 */
-    submitForm() {
-      const basicForm = this.$refs.basicInfo.$refs.basicInfoForm;
-      const genForm = this.$refs.genInfo.$refs.genInfoForm;
-      Promise.all([basicForm, genForm].map(this.getFormPromise)).then((res) => {
-        const validateResult = res.every((item) => !!item);
-        if (validateResult) {
-          const genTable = Object.assign({}, basicForm.model, genForm.model);
-          genTable.columns = this.cloumns;
-          genTable.params = {
-            treeCode: genTable.treeCode,
-            treeName: genTable.treeName,
-            treeParentCode: genTable.treeParentCode,
-          };
-          updateGenTable(genTable).then((res) => {
-            this.msgSuccess(res.msg);
-            if (res.code === 200) {
-              this.close();
-            }
-          });
-        } else {
-          this.msgError("表单校验未通过，请重新检查提交内容");
-        }
-      });
-    },
-    getFormPromise(form) {
-      return new Promise((resolve) => {
-        form.validate((res) => {
-          resolve(res);
-        });
-      });
-    },
-    /** 关闭按钮 */
-    close() {
-      tagsView.delView(this.$route);
-      this.$router.push({ path: "/tool/gen", query: { t: Date.now() } });
-    },
-  },
-  mounted() {
-    const el = this.$refs.dragTable.$el.querySelectorAll(
-      ".el-table__body-wrapper > table > tbody"
-    )[0];
-    const sortable = Sortable.create(el, {
-      handle: ".allowDrag",
-      onEnd: (evt) => {
-        const targetRow = this.cloumns.splice(evt.oldIndex, 1)[0];
-        this.cloumns.splice(evt.newIndex, 0, targetRow);
-        for (let index in this.cloumns) {
-          this.cloumns[index].sort = parseInt(index) + 1;
-        }
-      },
-    });
-  },
+  });
 };
+const getFormPromise = (form) => {
+  return new Promise((resolve) => {
+    form.validate((res) => {
+      resolve(res);
+    });
+  });
+};
+/** 关闭按钮 */
+const close = () => {
+  tagsView.delView(router.currentRoute);
+  router.push({ path: "/tool/gen", query: { t: Date.now() } });
+};
+
+onMounted(() => {
+  const el = dragTableRef.value.$el.querySelectorAll(
+    ".el-table__body-wrapper > table > tbody"
+  )[0];
+  const sortable = Sortable.create(el, {
+    handle: ".allowDrag",
+    onEnd: (evt) => {
+      const targetRow = cloumns.value.splice(evt.oldIndex, 1)[0];
+      cloumns.value.splice(evt.newIndex, 0, targetRow);
+      for (let index in cloumns) {
+        cloumns[index].sort = parseInt(index) + 1;
+      }
+    },
+  });
+});
 </script>

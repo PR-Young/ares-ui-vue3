@@ -70,39 +70,33 @@
   </div>
 </template>
 
-<script>
+<script setup name="BasicInfoForm">
 import { getBasicInfo, updateBasicInfo } from "@/api/tool/gen";
-export default {
-  name: "BasicInfoForm",
-  props: {},
-  data() {
-    return {
-      loading: true,
-      info: {},
-    };
-  },
-  created() {
-    this.getBasicInfo();
-  },
-  methods: {
-    getBasicInfo() {
-      this.loading = true;
-      getBasicInfo().then((response) => {
-        this.info = response.data;
-        this.loading = false;
-      });
-    },
-    saveBasicInfo() {
-      debugger;
-      updateBasicInfo(this.info).then((response) => {
-        if (response.code === 200) {
-          this.msgSuccess("修改成功");
-          this.getBasicInfo();
-        } else {
-          this.msgError(response.msg);
-        }
-      });
-    },
-  },
+import { ref, onMounted, getCurrentInstance } from "vue";
+
+const { proxy } = getCurrentInstance();
+const loading = ref(true);
+const info = ref({});
+
+onMounted(() => {
+  getBasicInfos();
+});
+
+const getBasicInfos = () => {
+  loading.value = true;
+  getBasicInfo().then((response) => {
+    info.value = response.data;
+    loading.value = false;
+  });
+};
+const saveBasicInfo = () => {
+  updateBasicInfo(info).then((response) => {
+    if (response.code === 200) {
+      proxy.msgSuccess("修改成功");
+      getBasicInfos();
+    } else {
+      proxy.msgError(response.msg);
+    }
+  });
 };
 </script>

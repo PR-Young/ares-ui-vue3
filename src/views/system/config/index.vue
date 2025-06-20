@@ -56,12 +56,12 @@
       <el-form-item>
         <el-button
           type="primary"
-          :icon="ElIconSearch"
+          :icon="Search"
           size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -71,7 +71,7 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-          :icon="ElIconPlus"
+          :icon="Plus"
           size="default"
           @click="handleAdd"
           v-hasPermi="['system:config:add']"
@@ -81,7 +81,7 @@
       <el-col :span="1.5">
         <el-button
           type="success"
-          :icon="ElIconEdit"
+          :icon="Edit"
           size="default"
           :disabled="single"
           @click="handleUpdate"
@@ -92,7 +92,7 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          :icon="ElIconDelete"
+          :icon="Delete"
           size="default"
           :disabled="multiple"
           @click="handleDelete"
@@ -103,7 +103,7 @@
       <el-col :span="1.5">
         <el-button
           type="warning"
-          :icon="ElIconDownload"
+          :icon="Download"
           size="default"
           @click="handleExport"
           v-hasPermi="['system:config:export']"
@@ -164,7 +164,7 @@
             size="default"
             type="primary"
             link
-            :icon="ElIconEdit"
+            :icon="Edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:config:edit']"
             >修改</el-button
@@ -173,7 +173,7 @@
             size="default"
             type="primary"
             link
-            :icon="ElIconDelete"
+            :icon="Delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:config:remove']"
             >删除</el-button
@@ -192,7 +192,7 @@
 
     <!-- 添加或修改参数配置对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="addFormRef" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="参数名称" prop="configName">
           <el-input v-model="form.configName" placeholder="请输入参数名称" />
         </el-form-item>
@@ -230,15 +230,15 @@
   </div>
 </template>
 
-<script>
+<script setup name="Config">
 import {
-  Search as ElIconSearch,
-  Refresh as ElIconRefresh,
-  Plus as ElIconPlus,
-  Edit as ElIconEdit,
-  Delete as ElIconDelete,
-  Download as ElIconDownload,
-} from "@element-plus/icons";
+  Search,
+  Refresh,
+  Plus,
+  Edit,
+  Delete,
+  Download,
+} from "@element-plus/icons-vue";
 import {
   listConfig,
   getConfig,
@@ -247,198 +247,182 @@ import {
   updateConfig,
   exportConfig,
 } from "@/api/system/config";
+import { getCurrentInstance, ref, reactive, onMounted } from "vue";
 
-export default {
-  data() {
-    return {
-      // 遮罩层
-      loading: true,
-      // 选中数组
-      ids: [],
-      // 非单个禁用
-      single: true,
-      // 非多个禁用
-      multiple: true,
-      // 总条数
-      total: 0,
-      // 参数表格数据
-      configList: [],
-      // 弹出层标题
-      title: "",
-      // 是否显示弹出层
-      open: false,
-      // 类型数据字典
-      typeOptions: [],
-      // 日期范围
-      dateRange: [],
-      // 查询参数
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        configName: undefined,
-        configKey: undefined,
-        configType: undefined,
-      },
-      // 表单参数
-      form: {},
-      // 表单校验
-      rules: {
-        configName: [
-          { required: true, message: "参数名称不能为空", trigger: "blur" },
-        ],
-        configKey: [
-          { required: true, message: "参数键名不能为空", trigger: "blur" },
-        ],
-        configValue: [
-          { required: true, message: "参数键值不能为空", trigger: "blur" },
-        ],
-      },
-      ElIconSearch,
-      ElIconRefresh,
-      ElIconPlus,
-      ElIconEdit,
-      ElIconDelete,
-      ElIconDownload,
-    };
-  },
-  name: "Config",
-  created() {
-    this.getList();
-    this.getDicts("sys_yes_no").then((response) => {
-      this.typeOptions = response.data;
-    });
-  },
-  methods: {
-    /** 查询参数列表 */
-    getList() {
-      this.loading = true;
-      listConfig(this.addDateRange(this.queryParams, this.dateRange)).then(
-        (response) => {
-          this.configList = response.rows;
-          this.total = response.total;
-          this.loading = false;
-        }
-      );
-    },
-    // 参数系统内置字典翻译
-    typeFormat(row, column) {
-      return this.selectDictLabel(this.typeOptions, row.configType);
-    },
-    // 取消按钮
-    cancel() {
-      this.open = false;
-      this.reset();
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        configId: undefined,
-        configName: undefined,
-        configKey: undefined,
-        configValue: undefined,
-        configType: "Y",
-        remark: undefined,
-      };
-      this.resetForm("form");
-    },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
-    },
-    /** 重置按钮操作 */
-    resetQuery() {
-      this.dateRange = [];
-      this.resetForm("queryForm");
-      this.handleQuery();
-    },
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "添加参数";
-    },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.configId);
-      this.single = selection.length != 1;
-      this.multiple = !selection.length;
-    },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      const configId = row.configId || this.ids;
-      getConfig(configId).then((response) => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改参数";
-      });
-    },
-    /** 提交按钮 */
-    submitForm: function () {
-      this.$refs["form"].validate((valid) => {
-        if (valid) {
-          if (this.form.configId != undefined) {
-            updateConfig(this.form).then((response) => {
-              if (response.code === 200) {
-                this.msgSuccess("修改成功");
-                this.open = false;
-                this.getList();
-              } else {
-                this.msgError(response.msg);
-              }
-            });
+const { proxy } = getCurrentInstance();
+const addFormRef = ref();
+// 遮罩层
+const loading = ref(true);
+// 选中数组
+const ids = ref([]);
+// 非单个禁用
+const single = ref(true);
+// 非多个禁用
+const multiple = ref(true);
+// 总条数
+const total = ref(0);
+// 参数表格数据
+const configList = ref([]);
+// 弹出层标题
+const title = ref();
+// 是否显示弹出层
+const open = ref(false);
+// 类型数据字典
+const typeOptions = ref([]);
+// 日期范围
+const dateRange = ref([]);
+// 查询参数
+const queryParams = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  configName: undefined,
+  configKey: undefined,
+  configType: undefined,
+});
+// 表单参数
+const form = ref({});
+// 表单校验
+const rules = ref({
+  configName: [
+    { required: true, message: "参数名称不能为空", trigger: "blur" },
+  ],
+  configKey: [{ required: true, message: "参数键名不能为空", trigger: "blur" }],
+  configValue: [
+    { required: true, message: "参数键值不能为空", trigger: "blur" },
+  ],
+});
+
+onMounted(() => {
+  getList();
+  proxy.getDicts("sys_yes_no").then((response) => {
+    typeOptions.value = response.data;
+  });
+});
+
+/** 查询参数列表 */
+const getList = () => {
+  loading.value = true;
+  listConfig(proxy.addDateRange(queryParams, dateRange)).then((response) => {
+    configList.value = response.rows;
+    total.value = response.total;
+    loading.value = false;
+  });
+};
+// 参数系统内置字典翻译
+const typeFormat = (row, column) => {
+  return proxy.selectDictLabel(typeOptions.value, row.configType);
+};
+// 取消按钮
+const cancel = () => {
+  open.value = false;
+  reset();
+};
+// 表单重置
+const reset = () => {
+  form.value = {
+    configId: undefined,
+    configName: undefined,
+    configKey: undefined,
+    configValue: undefined,
+    configType: "Y",
+    remark: undefined,
+  };
+  proxy.resetForm("form");
+};
+/** 搜索按钮操作 */
+const handleQuery = () => {
+  queryParams.pageNum = 1;
+  getList();
+};
+/** 重置按钮操作 */
+const resetQuery = () => {
+  dateRange.value = [];
+  proxy.resetForm("queryForm");
+  handleQuery();
+};
+/** 新增按钮操作 */
+const handleAdd = () => {
+  reset();
+  open.value = true;
+  title.value = "添加参数";
+};
+// 多选框选中数据
+const handleSelectionChange = (selection) => {
+  ids.value = selection.map((item) => item.configId);
+  single.value = selection.length != 1;
+  multiple.value = !selection.length;
+};
+/** 修改按钮操作 */
+const handleUpdate = (row) => {
+  reset();
+  const configId = row.configId || ids;
+  getConfig(configId).then((response) => {
+    form.value = response.data;
+    open.value = true;
+    title.value = "修改参数";
+  });
+};
+/** 提交按钮 */
+const submitForm = () => {
+  addFormRef.value.validate((valid) => {
+    if (valid) {
+      if (form.value.configId != undefined) {
+        updateConfig(form).then((response) => {
+          if (response.code === 200) {
+            proxy.msgSuccess("修改成功");
+            open.value = false;
+            getList();
           } else {
-            addConfig(this.form).then((response) => {
-              if (response.code === 200) {
-                this.msgSuccess("新增成功");
-                this.open = false;
-                this.getList();
-              } else {
-                this.msgError(response.msg);
-              }
-            });
+            proxy.msgError(response.msg);
           }
-        }
-      });
-    },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      const configIds = row.configId || this.ids;
-      this.$confirm(
-        '是否确认删除参数编号为"' + configIds + '"的数据项?',
-        "警告",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        }
-      )
-        .then(function () {
-          return delConfig(configIds);
-        })
-        .then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        })
-        .catch(function () {});
-    },
-    /** 导出按钮操作 */
-    handleExport() {
-      const queryParams = this.queryParams;
-      this.$confirm("是否确认导出所有参数数据项?", "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(function () {
-          return exportConfig(queryParams);
-        })
-        .then((response) => {
-          this.download(response.msg);
-        })
-        .catch(function () {});
-    },
-  },
+        });
+      } else {
+        addConfig(form).then((response) => {
+          if (response.code === 200) {
+            proxy.msgSuccess("新增成功");
+            open.value = false;
+            getList();
+          } else {
+            proxy.msgError(response.msg);
+          }
+        });
+      }
+    }
+  });
+};
+/** 删除按钮操作 */
+const handleDelete = (row) => {
+  const configIds = row.configId || ids;
+  proxy
+    .$confirm('是否确认删除参数编号为"' + configIds + '"的数据项?', "警告", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+    .then(function () {
+      return delConfig(configIds);
+    })
+    .then(() => {
+      getList();
+      proxy.msgSuccess("删除成功");
+    })
+    .catch(function () {});
+};
+/** 导出按钮操作 */
+const handleExport = () => {
+  const queryParams = queryParams;
+  proxy
+    .$confirm("是否确认导出所有参数数据项?", "警告", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+    .then(function () {
+      return exportConfig(queryParams);
+    })
+    .then((response) => {
+      proxy.download(response.msg);
+    })
+    .catch(function () {});
 };
 </script>

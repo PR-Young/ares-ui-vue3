@@ -283,7 +283,10 @@
                 </tr>
               </thead>
               <tbody v-if="server.sysFiles">
-                <tr v-for="sysFile in server.sysFiles">
+                <tr
+                  v-for="sysFile in server.sysFiles"
+                  v-bind:key="sysFile.dirName"
+                >
                   <td>
                     <div class="cell">{{ sysFile.dirName }}</div>
                   </td>
@@ -320,40 +323,34 @@
   </div>
 </template>
 
-<script>
+<script setup name="Server">
 import { getServer } from "@/api/monitor/server";
+import { ref, getCurrentInstance, onMounted } from "vue";
+const { proxy } = getCurrentInstance();
+// 加载层信息
+const loading = ref([]);
+// 服务器信息
+const server = ref([]);
 
-export default {
-  name: "Server",
-  data() {
-    return {
-      // 加载层信息
-      loading: [],
-      // 服务器信息
-      server: [],
-    };
-  },
-  created() {
-    this.getList();
-    this.openLoading();
-  },
-  methods: {
-    /** 查询服务器信息 */
-    getList() {
-      getServer().then((response) => {
-        this.server = response.data;
-        this.loading.close();
-      });
-    },
-    // 打开加载层
-    openLoading() {
-      this.loading = this.$loading({
-        lock: true,
-        text: "拼命读取中",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)",
-      });
-    },
-  },
+onMounted(() => {
+  getList();
+  openLoading();
+});
+
+/** 查询服务器信息 */
+const getList = () => {
+  getServer().then((response) => {
+    server.value = response.data;
+    loading.value.close();
+  });
+};
+// 打开加载层
+const openLoading = () => {
+  loading.value = proxy.$loading({
+    lock: true,
+    text: "拼命读取中",
+    spinner: "el-icon-loading",
+    background: "rgba(0, 0, 0, 0.7)",
+  });
 };
 </script>

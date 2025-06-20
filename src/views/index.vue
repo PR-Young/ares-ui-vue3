@@ -16,7 +16,7 @@
           <el-form-item>
             <el-button
               type="primary"
-              :icon="ElIconSearch"
+              :icon="Search"
               size="default"
               @click="handleQuery"
             ></el-button>
@@ -59,8 +59,8 @@
   </div>
 </template>
 
-<script>
-import { Search as ElIconSearch } from "@element-plus/icons";
+<script setup name="Index">
+import { Search } from "@element-plus/icons-vue";
 import PanelGroup from "./dashboard/PanelGroup.vue";
 import LineChart from "./dashboard/LineChart.vue";
 import RaddarChart from "./dashboard/RaddarChart.vue";
@@ -68,58 +68,44 @@ import PieChart from "./dashboard/PieChart.vue";
 import BarChart from "./dashboard/BarChart.vue";
 import TimeLineChart from "./dashboard/TimeLineChart.vue";
 import { getLineChartData, getLineChart, queryByKey } from "@/api/home";
-import { markRaw } from "vue";
+import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  data() {
-    return {
-      today: new Date(),
-      lineChartData: {
-        expected: [],
-        actual: [],
-      },
-      lineData: {},
-      queryParams: {
-        searchValue: undefined,
-      },
-      ElIconSearch,
+const router = useRouter();
+
+const today = new Date();
+const lineChartData = ref({
+  expected: [],
+  actual: [],
+});
+const lineData = ref({});
+const queryParams = reactive({
+  searchValue: undefined,
+});
+
+onMounted(() => {
+  getLineChartData().then((res) => {
+    lineChartData.value = res.data.newVisitis;
+  });
+  getLineChart().then((res) => {
+    lineData.value = res.data;
+  });
+});
+
+const handleSetLineChartData = (type) => {
+  getLineChartData().then((res) => {
+    lineChartData.value = res.data[type];
+  });
+};
+/** 搜索按钮操作 */
+const handleQuery = () => {
+  queryByKey(queryParams).then((res) => {
+    const data = {
+      searchValue: queryParams.searchValue,
+      data: res.data,
     };
-  },
-  name: "Index",
-  components: {
-    PanelGroup: PanelGroup,
-    LineChart: markRaw(LineChart),
-    RaddarChart: markRaw(RaddarChart),
-    PieChart: markRaw(PieChart),
-    BarChart: markRaw(BarChart),
-    TimeLineChart: markRaw(TimeLineChart),
-    ElIconSearch: markRaw(ElIconSearch),
-  },
-  created() {
-    getLineChartData().then((res) => {
-      this.lineChartData = res.data.newVisitis;
-    });
-    getLineChart().then((res) => {
-      this.lineData = res.data;
-    });
-  },
-  methods: {
-    handleSetLineChartData(type) {
-      getLineChartData().then((res) => {
-        this.lineChartData = res.data[type];
-      });
-    },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      queryByKey(this.queryParams).then((res) => {
-        const data = {
-          searchValue: this.queryParams.searchValue,
-          data: res.data,
-        };
-        this.$router.push({ path: "/query/result", query: data });
-      });
-    },
-  },
+    router.push({ path: "/query/result", query: data });
+  });
 };
 </script>
 

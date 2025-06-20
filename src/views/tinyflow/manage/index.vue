@@ -18,12 +18,12 @@
       <el-form-item>
         <el-button
           type="primary"
-          :icon="ElIconSearch"
+          :icon="Search"
           size="default"
           @click="handleQuery"
           >搜索
         </el-button>
-        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -33,7 +33,7 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-          :icon="ElIconPlus"
+          :icon="Plus"
           size="default"
           @click="handleAdd"
           v-hasPermi="['sysWorkflows:edit']"
@@ -43,7 +43,7 @@
       <el-col :span="1.5">
         <el-button
           type="success"
-          :icon="ElIconEdit"
+          :icon="Edit"
           size="default"
           :disabled="single"
           @click="handleUpdate"
@@ -54,7 +54,7 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          :icon="ElIconDelete"
+          :icon="Delete"
           size="default"
           :disabled="multiple"
           @click="handleDelete"
@@ -65,7 +65,7 @@
       <el-col :span="1.5">
         <el-button
           type="warning"
-          :icon="ElIconDownload"
+          :icon="Download"
           size="default"
           @click="handleExport"
           v-hasPermi="['sysWorkflows:export']"
@@ -109,7 +109,7 @@
           <el-button
             size="default"
             type="text"
-            :icon="ElIconEdit"
+            :icon="Edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['sysWorkflows:edit']"
             >修改
@@ -117,7 +117,7 @@
           <el-button
             size="default"
             type="text"
-            :icon="ElIconDelete"
+            :icon="Delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['sysWorkflows:delete']"
             >删除
@@ -136,7 +136,7 @@
 
     <!-- 添加或修改岗位对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="addFormRef" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="AppID" prop="appId">
           <el-input v-model="form.appId" placeholder="请输入AppID" />
         </el-form-item>
@@ -154,15 +154,15 @@
   </div>
 </template>
 
-<script>
+<script setup name="SysWorkflows">
 import {
-  Search as ElIconSearch,
-  Refresh as ElIconRefresh,
-  Plus as ElIconPlus,
-  Edit as ElIconEdit,
-  Delete as ElIconDelete,
-  Download as ElIconDownload,
-} from "@element-plus/icons";
+  Search,
+  Refresh,
+  Plus,
+  Edit,
+  Delete,
+  Download,
+} from "@element-plus/icons-vue";
 import {
   addSysWorkflows,
   delSysWorkflows,
@@ -171,187 +171,172 @@ import {
   listSysWorkflows,
   updateSysWorkflows,
 } from "@/api/ai/workflow";
-import { markRaw } from "vue";
-import router from "@/router";
+import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  name: "SysWorkflows",
-  data() {
-    return {
-      // 遮罩层
-      loading: true,
-      // 选中数组
-      ids: [],
-      // 非单个禁用
-      single: true,
-      // 非多个禁用
-      multiple: true,
-      // 总条数
-      total: 0,
-      // 岗位表格数据
-      sysWorkflowsList: [],
-      // 弹出层标题
-      title: "",
-      // 是否显示弹出层
-      open: false,
-      // 状态数据字典
-      statusOptions: [],
-      // 查询参数
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        workflowName: undefined,
-      },
-      // 表单参数
-      form: {},
-      // 表单校验
-      rules: {},
-      ElIconSearch,
-      ElIconRefresh,
-      ElIconPlus,
-      ElIconEdit,
-      ElIconDelete,
-      ElIconDownload,
-    };
-  },
-  components: {
-    ElIconSearch: markRaw(ElIconSearch),
-    ElIconRefresh: markRaw(ElIconRefresh),
-    ElIconPlus: markRaw(ElIconPlus),
-    ElIconEdit: markRaw(ElIconEdit),
-    ElIconDelete: markRaw(ElIconDelete),
-    ElIconDownload: markRaw(ElIconDownload),
-  },
-  created() {
-    this.getList();
-  },
-  methods: {
-    /** 查询岗位列表 */
-    getList() {
-      this.loading = true;
-      listSysWorkflows(this.queryParams).then((response) => {
-        this.sysWorkflowsList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
-    },
-    // 取消按钮
-    cancel() {
-      this.open = false;
-      this.reset();
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        id: undefined,
-        appId: undefined,
-        graph: undefined,
-        workflowName: undefined,
-      };
-      this.resetForm("form");
-    },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
-    },
-    /** 重置按钮操作 */
-    resetQuery() {
-      this.resetForm("queryForm");
-      this.handleQuery();
-    },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id);
-      this.single = selection.length != 1;
-      this.multiple = !selection.length;
-    },
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "添加流程";
-    },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      const id = row.id || this.ids;
-      getSysWorkflows(id).then((response) => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改流程";
-      });
-    },
-    /** 提交按钮 */
-    submitForm: function () {
-      this.$refs["form"].validate((valid) => {
-        if (valid) {
-          if (this.form.id != undefined) {
-            updateSysWorkflows(this.form).then((response) => {
-              if (response.code === 200) {
-                this.msgSuccess("修改成功");
-                this.open = false;
-                this.getList();
-              } else {
-                this.msgError(response.msg);
-              }
-            });
+const { proxy } = getCurrentInstance();
+const addFormRef = ref();
+const router = useRouter();
+
+// 遮罩层
+const loading = ref(true);
+// 选中数组
+const ids = ref([]);
+// 非单个禁用
+const single = ref(true);
+// 非多个禁用
+const multiple = ref(true);
+// 总条数
+const total = ref(0);
+// 岗位表格数据
+const sysWorkflowsList = ref([]);
+// 弹出层标题
+const title = ref();
+// 是否显示弹出层
+const open = ref(false);
+// 状态数据字典
+const statusOptions = ref([]);
+// 查询参数
+const queryParams = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  workflowName: undefined,
+});
+// 表单参数
+const form = ref({});
+// 表单校验
+const rules = ref({});
+
+onMounted(() => {
+  getList();
+});
+
+/** 查询岗位列表 */
+const getList = () => {
+  loading.value = true;
+  listSysWorkflows(queryParams).then((response) => {
+    sysWorkflowsList.value = response.rows;
+    total.value = response.total;
+    loading.value = false;
+  });
+};
+// 取消按钮
+const cancel = () => {
+  open.value = false;
+  reset();
+};
+// 表单重置
+const reset = () => {
+  form.value = {
+    id: undefined,
+    appId: undefined,
+    graph: undefined,
+    workflowName: undefined,
+  };
+  proxy.resetForm("form");
+};
+/** 搜索按钮操作 */
+const handleQuery = () => {
+  queryParams.pageNum = 1;
+  getList();
+};
+/** 重置按钮操作 */
+const resetQuery = () => {
+  proxy.resetForm("queryForm");
+  handleQuery();
+};
+// 多选框选中数据
+const handleSelectionChange = (selection) => {
+  ids.value = selection.map((item) => item.id);
+  single.value = selection.length != 1;
+  multiple.value = !selection.length;
+};
+/** 新增按钮操作 */
+const handleAdd = () => {
+  reset();
+  open.value = true;
+  title.value = "添加流程";
+};
+/** 修改按钮操作 */
+const handleUpdate = (row) => {
+  reset();
+  const id = row.id || ids;
+  getSysWorkflows(id).then((response) => {
+    form.value = response.data;
+    open.value = true;
+    title.value = "修改流程";
+  });
+};
+/** 提交按钮 */
+const submitForm = () => {
+  addFormRef.value.validate((valid) => {
+    if (valid) {
+      if (form.value.id != undefined) {
+        updateSysWorkflows(form).then((response) => {
+          if (response.code === 200) {
+            proxy.msgSuccess("修改成功");
+            open.value = false;
+            getList();
           } else {
-            addSysWorkflows(this.form).then((response) => {
-              if (response.code === 200) {
-                this.msgSuccess("新增成功");
-                this.open = false;
-                this.getList();
-              } else {
-                this.msgError(response.msg);
-              }
-            });
+            proxy.msgError(response.msg);
           }
-        }
-      });
-    },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      const ids = row.id || this.ids;
-      this.$confirm('是否确认删除编号为"' + ids + '"的数据项?', "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(function () {
-          return delSysWorkflows(ids);
-        })
-        .then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        })
-        .catch(function () {});
-    },
-    /** 导出按钮操作 */
-    handleExport() {
-      const queryParams = this.queryParams;
-      this.$confirm("是否确认导出所有数据项?", "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(function () {
-          return exportSysWorkflows(queryParams);
-        })
-        .then((response) => {
-          this.download(response.msg);
-        })
-        .catch(function () {});
-    },
+        });
+      } else {
+        addSysWorkflows(form).then((response) => {
+          if (response.code === 200) {
+            proxy.msgSuccess("新增成功");
+            open.value = false;
+            getList();
+          } else {
+            proxy.msgError(response.msg);
+          }
+        });
+      }
+    }
+  });
+};
+/** 删除按钮操作 */
+const handleDelete = (row) => {
+  const ids = row.id || ids;
+  proxy
+    .$confirm('是否确认删除编号为"' + ids + '"的数据项?', "警告", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+    .then(function () {
+      return delSysWorkflows(ids);
+    })
+    .then(() => {
+      getList();
+      proxy.msgSuccess("删除成功");
+    })
+    .catch(function () {});
+};
+/** 导出按钮操作 */
+const handleExport = () => {
+  const queryParams = queryParams;
+  proxy
+    .$confirm("是否确认导出所有数据项?", "警告", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+    .then(function () {
+      return exportSysWorkflows(queryParams);
+    })
+    .then((response) => {
+      proxy.download(response.msg);
+    })
+    .catch(function () {});
+};
 
-    handleBuild(row) {
-      this.$router.push({
-        path: "/tinyflow/build",
-        params: {
-          data: row,
-        },
-      });
+const handleBuild = (row) => {
+  router.push({
+    path: "/tinyflow/build",
+    params: {
+      data: row,
     },
-  },
+  });
 };
 </script>

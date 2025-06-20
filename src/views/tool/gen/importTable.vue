@@ -29,12 +29,12 @@
       <el-form-item>
         <el-button
           type="primary"
-          :icon="ElIconSearch"
+          :icon="Search"
           size="default"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="ElIconRefresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" size="default" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -42,7 +42,7 @@
     <el-row>
       <el-table
         @row-click="clickRow"
-        ref="table"
+        ref="tableRef"
         :data="dbTableList"
         @selection-change="handleSelectionChange"
         height="260px"
@@ -70,78 +70,70 @@
   </el-dialog>
 </template>
 
-<script>
-import {
-  Search as ElIconSearch,
-  Refresh as ElIconRefresh,
-} from "@element-plus/icons";
-import { $on, $off, $once, $emit } from "../../../utils/gogocodeTransfer";
+<script setup name="">
+import { Search, Refresh } from "@element-plus/icons-vue";
 import { listDbTable, importTable } from "@/api/tool/gen";
-export default {
-  data() {
-    return {
-      // 遮罩层
-      visible: false,
-      // 选中数组值
-      tables: [],
-      // 总条数
-      total: 0,
-      // 表数据
-      dbTableList: [],
-      // 查询参数
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        tableName: undefined,
-        tableComment: undefined,
-      },
-      ElIconSearch,
-      ElIconRefresh,
-    };
-  },
-  methods: {
-    // 显示弹框
-    show() {
-      this.getList();
-      this.visible = true;
-    },
-    clickRow(row) {
-      this.$refs.table.toggleRowSelection(row);
-    },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.tables = selection.map((item) => item.tableName);
-    },
-    // 查询表数据
-    getList() {
-      listDbTable(this.queryParams).then((res) => {
-        if (res.code === 200) {
-          this.dbTableList = res.rows;
-          this.total = res.total;
-        }
-      });
-    },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
-    },
-    /** 重置按钮操作 */
-    resetQuery() {
-      this.resetForm("queryForm");
-      this.handleQuery();
-    },
-    /** 导入按钮操作 */
-    handleImportTable() {
-      importTable({ tables: this.tables.join(",") }).then((res) => {
-        this.msgSuccess(res.msg);
-        if (res.code === 200) {
-          this.visible = false;
-          $emit(this, "ok");
-        }
-      });
-    },
-  },
-  emits: ["ok"],
+import { ref, reactive, getCurrentInstance } from "vue";
+const { proxy } = getCurrentInstance();
+
+// 遮罩层
+const visible = ref(false);
+// 选中数组值
+const tables = ref([]);
+// 总条数
+const total = ref(0);
+// 表数据
+const dbTableList = ref([]);
+// 查询参数
+const queryParams = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  tableName: undefined,
+  tableComment: undefined,
+});
+const tableRef = ref();
+
+const emit = defineEmits(["ok"]);
+
+// 显示弹框
+const show = () => {
+  getList();
+  visible.value = true;
+};
+const clickRow = (row) => {
+  tableRef.value.table.toggleRowSelection(row);
+};
+// 多选框选中数据
+const handleSelectionChange = (selection) => {
+  tables.value = selection.map((item) => item.tableName);
+};
+// 查询表数据
+const getList = () => {
+  listDbTable(queryParams).then((res) => {
+    if (res.code === 200) {
+      dbTableList.value = res.rows;
+      total.value = res.total;
+    }
+  });
+};
+/** 搜索按钮操作 */
+const handleQuery = () => {
+  queryParams.pageNum = 1;
+  getList();
+};
+/** 重置按钮操作 */
+const resetQuery = () => {
+  proxy.resetForm("queryForm");
+  handleQuery();
+};
+/** 导入按钮操作 */
+const handleImportTable = () => {
+  importTable({ tables: tables.value.join(",") }).then((res) => {
+    proxy.msgSuccess(res.msg);
+    if (res.code === 200) {
+      visible.value = false;
+      emit(this, "ok");
+    }
+  });
 };
 </script>

@@ -102,7 +102,7 @@
             size="default"
             type="primary"
             link
-            :icon="ElIconView"
+            :icon="View"
             @click="handleDetail(scope.row)"
             >详情</el-button
           >
@@ -179,7 +179,7 @@ import {
   Edit as ElIconEdit,
   Delete as ElIconDelete,
   Download as ElIconDownload,
-  View as ElIconView,
+  View,
 } from "@element-plus/icons";
 import {
   listForm,
@@ -219,8 +219,8 @@ export default {
       open: false,
       // 查询参数
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
+        const pageNum=ref(1)
+        const pageSize=ref(10)
         formName: null,
         formContent: null,
       },
