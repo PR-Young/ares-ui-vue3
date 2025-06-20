@@ -18,7 +18,7 @@ const definitionId = ref(proxy.$route.query.definitionId).value;
 const disabled = ref(proxy.$route.query.disabled).value;
 const iframeUrl = ref(
   import.meta.env.VITE_APP_BASE_API +
-    `/ares/warm-flow-ui/index.html?id=${definitionId}&disabled=${disabled}`
+    `/ares/warm-flow-ui/index.html?id=${definitionId}&disabled=${disabled}&showGrid=true`
 );
 
 const iframeLoaded = () => {

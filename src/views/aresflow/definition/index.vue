@@ -585,7 +585,6 @@ const handleReadImage = (id) => {
   // readImage.src = import.meta.env.VITE_APP_BASE_API + "/flowable/definition/readImage/" + deploymentId;
   // 发送请求，获取xml
   readXml(id).then((res) => {
-    debugger;
     xmlData.value = "data:image/png;base64," + res.data;
   });
 };

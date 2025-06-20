@@ -155,7 +155,12 @@
           <span class="el-icon-picture-outline">流程图</span>
         </div>
       </template>
-      <img :src="xmlData" style="width: 100%" />
+      <img v-if="handleType == 'start'" :src="xmlData" style="width: 100%" />
+      <iframe
+        v-if="handleType != 'start'"
+        :src="xmlData"
+        style="width: 100%; height: 300px; border: 0"
+      />
     </el-card>
 
     <!--审批正常流程-->
@@ -353,7 +358,6 @@ const taskFormDelegateRef = ref();
 const dateRange = ref();
 
 onMounted(() => {
-  debugger;
   const query = router.currentRoute._value.query;
   handleType.value = query && query.handleType;
   taskForm.value.defId = query && query.defId;
@@ -398,10 +402,15 @@ const getModelDetail = (id) => {
 };
 
 const getFlowChartImg = (id) => {
+  xmlData.value =
+    import.meta.env.VITE_APP_BASE_API +
+    "/ares/warm-flow-ui/index.html?id=" +
+    id +
+    "&type=FlowChart&showGrid=true";
   // 发送请求，获取xml
-  getFlowChart(id).then((res) => {
-    xmlData.value = "data:image/png;base64," + res.data;
-  });
+  // getFlowChart(id).then((res) => {
+  //   xmlData.value = "data:image/png;base64," + res.data;
+  // });
 };
 
 const setIcon = (val) => {
