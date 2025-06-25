@@ -19,27 +19,27 @@ export function complete(data: any) {
 }
 
 // 委派任务
-export function delegate(data: any) {
+export function depute(data: any) {
   return request({
-    url: "/ares/flowable/task/delegate",
+    url: "/ares/flow/task/depute",
     method: "post",
     data: data,
   });
 }
 
 // 退回任务
-export function returnTask(data: any) {
+export function transferTask(data: any) {
   return request({
-    url: "/ares/flowable/task/return",
+    url: "/ares/flow/task/transfer",
     method: "post",
     data: data,
   });
 }
 
-// 驳回任务
+// 退回任务
 export function rejectTask(data: any) {
   return request({
-    url: "/ares/flowable/task/reject",
+    url: "/ares/flow/task/reject",
     method: "post",
     data: data,
   });

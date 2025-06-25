@@ -26,47 +26,26 @@
             @click="handleComplete"
             >审批</el-button
           >
-          <!-- <el-button
-                  icon="el-icon-edit-outline"
-                  type="primary"
-                  size="default"
-                  @click="handleDelegate"
-                  >委派</el-button
-                >
-                <el-button
-                  icon="el-icon-edit-outline"
-                  type="primary"
-                  size="default"
-                  @click="handleAssign"
-                  >转办</el-button
-                >
-                <el-button
-                  icon="el-icon-edit-outline"
-                  type="primary"
-                  size="default"
-                  @click="handleDelegate"
-                  >签收</el-button
-                > -->
           <el-button
-            :icon="RefreshLeft"
+            :icon="CircleClose"
             type="warning"
             size="default"
-            @click="handleReturn"
+            @click="handleReject"
             >退回</el-button
           >
           <el-button
-            :icon="CircleClose"
-            type="danger"
+            :icon="Edit"
+            type="primary"
             size="default"
-            @click="handleReject"
-            >驳回到上一节点</el-button
+            @click="handleTransfer"
+            >转办</el-button
           >
           <el-button
-            :icon="CircleClose"
-            type="danger"
+            :icon="Edit"
+            type="primary"
             size="default"
-            @click="handleRejectNew"
-            >驳回</el-button
+            @click="handleDepute"
+            >委派</el-button
           >
         </div>
       </el-col>
@@ -191,46 +170,48 @@
       </template>
     </el-dialog>
 
-    <!--退回流程-->
+    <!--转办流程-->
     <el-dialog
-      :title="returnTitle"
-      v-model="returnOpen"
+      :title="transferTitle"
+      v-model="transferOpen"
       width="40%"
       append-to-body
     >
-      <el-form ref="taskFormReturnRef" :model="taskForm" label-width="80px">
-        <el-form-item label="退回节点" prop="targetKey">
-          <el-radio-group v-model="taskForm.targetKey">
-            <el-radio-button
-              v-for="item in returnTaskList"
+      <el-form ref="taskFormTransferRef" :model="taskForm" label-width="80px">
+        <el-form-item label="处理人" prop="handler">
+          <el-select v-model="taskForm.params.addHandlers" clearable multiple>
+            <el-option
+              v-for="item in userDataList"
               :key="item.id"
-              :label="item.id"
-              >{{ item.name }}</el-radio-button
-            >
-          </el-radio-group>
+              :label="item.userName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item
-          label="退回意见"
-          prop="comment"
-          :rules="[{ required: true, message: '请输入意见', trigger: 'blur' }]"
+          label="审批意见"
+          prop="message"
+          :rules="[
+            { required: true, message: '请输入审批意见', trigger: 'blur' },
+          ]"
         >
           <el-input
             style="width: 100%"
             type="textarea"
-            v-model="taskForm.comment"
-            placeholder="请输入意见"
+            v-model="taskForm.message"
+            placeholder="请输入审批意见"
           />
         </el-form-item>
       </el-form>
       <template v-slot:footer>
         <span class="dialog-footer">
-          <el-button @click="returnOpen = false">取 消</el-button>
-          <el-button type="primary" @click="taskReturn">确 定</el-button>
+          <el-button @click="transferOpen = false">取 消</el-button>
+          <el-button type="primary" @click="taskTransfer">确 定</el-button>
         </span>
       </template>
     </el-dialog>
 
-    <!--驳回流程-->
+    <!--退回流程-->
     <el-dialog
       :title="rejectTitle"
       v-model="rejectOpen"
@@ -239,14 +220,14 @@
     >
       <el-form ref="taskFormRejectRef" :model="taskForm" label-width="80px">
         <el-form-item
-          label="驳回意见"
-          prop="comment"
+          label="退回意见"
+          prop="message"
           :rules="[{ required: true, message: '请输入意见', trigger: 'blur' }]"
         >
           <el-input
             style="width: 100%"
             type="textarea"
-            v-model="taskForm.comment"
+            v-model="taskForm.message"
             placeholder="请输入意见"
           />
         </el-form-item>
@@ -255,6 +236,47 @@
         <span class="dialog-footer">
           <el-button @click="rejectOpen = false">取 消</el-button>
           <el-button type="primary" @click="taskReject">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
+
+    <!--委派流程-->
+    <el-dialog
+      :title="deputeTitle"
+      v-model="deputeOpen"
+      width="40%"
+      append-to-body
+    >
+      <el-form ref="taskFormDeputeRef" :model="taskForm" label-width="80px">
+        <el-form-item label="处理人" prop="handler">
+          <el-select v-model="taskForm.params.addHandlers" clearable multiple>
+            <el-option
+              v-for="item in userDataList"
+              :key="item.id"
+              :label="item.userName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="审批意见"
+          prop="message"
+          :rules="[
+            { required: true, message: '请输入审批意见', trigger: 'blur' },
+          ]"
+        >
+          <el-input
+            style="width: 100%"
+            type="textarea"
+            v-model="taskForm.message"
+            placeholder="请输入审批意见"
+          />
+        </el-form-item>
+      </el-form>
+      <template v-slot:footer>
+        <span class="dialog-footer">
+          <el-button @click="deputeOpen = false">取 消</el-button>
+          <el-button type="primary" @click="taskDepute">确 定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -269,8 +291,8 @@ import {
   complete,
   rejectTask,
   returnList,
-  returnTask,
-  delegate,
+  transferTask,
+  depute,
 } from "@/api/aresflow/todo";
 import FormParser from "@/views/aiform/AiFormParser/index.vue";
 import store from "@/store";
@@ -278,9 +300,12 @@ import useTagsViewStore from "@/store/modules/tagsView";
 import { getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { startFlow, getFlowChart } from "@/api/aresflow/process";
+import useUserStore from "@/store/modules/user";
+import { listUser } from "@/api/system/user";
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 const tagsView = useTagsViewStore(store);
+const userStore = useUserStore(store);
 
 // 模型xml数据
 const xmlData = ref();
@@ -311,11 +336,6 @@ const rules = ref({});
 // 流程变量数据
 const variablesForm = ref({});
 const taskForm = ref({
-  returnTaskShow: false, // 是否展示回退表单
-  delegateTaskShow: false, // 是否展示回退表单
-  defaultTaskShow: true, // 默认处理
-  sendUserShow: false, // 审批用户
-  multiple: false,
   message: "", // 意见内容
   instanceId: "", // 流程实例编号
   flowCode: "",
@@ -323,6 +343,9 @@ const taskForm = ref({
   defId: "", // 流程编号
   targetKey: "",
   variable: null,
+  params: {
+    addHandlers: [],
+  },
 });
 // 流程候选人
 const userDataList = ref([]);
@@ -343,19 +366,21 @@ const finished = ref("false");
 const handleType = ref();
 const completeTitle = ref();
 const completeOpen = ref(false);
-const returnTitle = ref();
-const returnOpen = ref(false);
+const transferTitle = ref();
+const transferOpen = ref(false);
 const rejectOpen = ref(false);
 const rejectTitle = ref();
 const userData = ref([]);
-const rejectOpenNew = ref(false);
 const fields = ref([]);
 const formCreateData = ref();
 const taskFormRejectRef = ref();
-const taskFormReturnRef = ref();
+const taskFormTransferRef = ref();
 const formRef = ref();
-const taskFormDelegateRef = ref();
+const taskFormDeputeRef = ref();
 const dateRange = ref();
+
+const deputeTitle = ref();
+const deputeOpen = ref(false);
 
 onMounted(() => {
   const query = router.currentRoute._value.query;
@@ -512,11 +537,7 @@ const taskComplete = () => {
   });
 };
 /** 委派任务 */
-const handleDelegate = () => {
-  taskForm.value.delegateTaskShow = true;
-  taskForm.value.defaultTaskShow = false;
-};
-const handleAssign = () => {};
+const handleDepute = () => {};
 /** 返回页面 */
 const goBack = () => {
   // 关闭当前标签页并返回上个页面
@@ -542,16 +563,16 @@ const submitForm = (data) => {
     });
   });
 };
-/** 驳回任务 */
+/** 退回任务 */
 const handleReject = () => {
   rejectOpen.value = true;
-  rejectTitle.value = "驳回流程";
+  rejectTitle.value = "退回流程";
 };
-/** 驳回任务 */
+/** 退回任务 */
 const taskReject = () => {
   taskFormRejectRef.value.validate((valid) => {
     if (valid) {
-      rejectTask(taskForm).then((res) => {
+      rejectTask(taskForm.value).then((res) => {
         proxy.msgSuccess(res.msg);
         goBack();
         rejectOpen.value = false;
@@ -560,51 +581,41 @@ const taskReject = () => {
   });
 };
 
-/** 可退回任务列表 */
-const handleReturn = () => {
-  returnOpen.value = true;
-  returnTitle.value = "退回流程";
-  returnList(taskForm).then((res) => {
-    returnTaskList.value = res.data;
-    taskForm.value.values = null;
+/** 转办任务 */
+const handleTransfer = () => {
+  transferOpen.value = true;
+  transferTitle.value = "退回流程";
+  const param = {
+    deptId: userStore.deptId,
+  };
+  listUser(param).then((res) => {
+    userDataList.value = res.rows;
   });
 };
-/** 提交退回任务 */
-const taskReturn = () => {
-  taskFormReturnRef.value.validate((valid) => {
+/** 提交转办任务 */
+const taskTransfer = () => {
+  taskFormTransferRef.value.validate((valid) => {
     if (valid) {
-      returnTask(taskForm).then((res) => {
+      transferTask(taskForm.value).then((res) => {
         proxy.msgSuccess(res.msg);
         goBack();
-        returnOpen.value = false;
+        transferOpen.value = false;
       });
     }
   });
 };
-/** 取消回退任务按钮 */
-const cancelTask = () => {
-  taskForm.value.returnTaskShow = false;
-  taskForm.value.defaultTaskShow = true;
-  taskForm.value.sendUserShow = true;
-  returnTaskList.value = [];
-};
+
 /** 委派任务 */
-const submitDelegateTask = () => {
-  taskFormDelegateRef.value.validate((valid) => {
+const taskDepute = () => {
+  taskFormDeputeRef.value.validate((valid) => {
     if (valid) {
-      delegate(taskForm).then((response) => {
+      depute(taskForm.value).then((response) => {
         proxy.msgSuccess(response.msg);
         goBack();
+        deputeOpen.value = false;
       });
     }
   });
-};
-/** 取消回退任务按钮 */
-const cancelDelegateTask = () => {
-  taskForm.value.delegateTaskShow = false;
-  taskForm.value.defaultTaskShow = true;
-  taskForm.value.sendUserShow = true;
-  returnTaskList.value = [];
 };
 </script>
 
