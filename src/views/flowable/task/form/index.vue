@@ -219,8 +219,8 @@ export default {
       open: false,
       // 查询参数
       queryParams: {
-        const pageNum=ref(1)
-        const pageSize=ref(10)
+        pageNum: 1,
+        pageSize: 10,
         formName: null,
         formContent: null,
       },

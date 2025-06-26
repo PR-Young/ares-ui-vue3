@@ -21,7 +21,7 @@
           v-model="dateRange"
           size="default"
           style="width: 240px"
-          value-format="yyyy-MM-dd"
+          value-format="YYYY-MM-DD"
           type="daterange"
           range-separator="-"
           start-placeholder="开始日期"
@@ -284,11 +284,13 @@ const sortChange = (data) => {
 /** 查询参数列表 */
 const getList = () => {
   loading.value = true;
-  listTemplate(proxy.addDateRange(queryParams, dateRange)).then((response) => {
-    templateList.value = response.rows;
-    total.value = response.total;
-    loading.value = false;
-  });
+  listTemplate(proxy.addDateRange(queryParams, dateRange.value)).then(
+    (response) => {
+      templateList.value = response.rows;
+      total.value = response.total;
+      loading.value = false;
+    }
+  );
 };
 // 取消按钮
 const cancel = () => {

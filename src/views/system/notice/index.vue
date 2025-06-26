@@ -229,7 +229,7 @@
               <el-date-picker
                 v-model="form.deadline"
                 type="datetime"
-                value-format="yyyy-MM-dd HH:mm:ss"
+                value-format="YYYY-MM-DD HH:mm:ss"
                 placeholder="选择到期时间"
               ></el-date-picker>
             </el-form-item>
@@ -296,7 +296,7 @@
                 disabled
                 v-model="form.deadline"
                 type="datetime"
-                value-format="yyyy-MM-dd HH:mm:ss"
+                value-format="YYYY-MM-DD HH:mm:ss"
                 placeholder="选择到期时间"
               ></el-date-picker>
             </el-form-item>

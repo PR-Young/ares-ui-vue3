@@ -29,7 +29,7 @@
           v-model="dateRange"
           size="default"
           style="width: 240px"
-          value-format="yyyy-MM-dd"
+          value-format="YYYY-MM-DD"
           type="daterange"
           range-separator="-"
           start-placeholder="开始日期"
@@ -227,11 +227,13 @@ const activated = () => {
 /** 查询表集合 */
 const getList = () => {
   loading.value = true;
-  listDbTable(proxy.addDateRange(queryParams, dateRange)).then((response) => {
-    tableList.value = response.rows;
-    total.value = response.total;
-    loading.value = false;
-  });
+  listDbTable(proxy.addDateRange(queryParams, dateRange.value)).then(
+    (response) => {
+      tableList.value = response.rows;
+      total.value = response.total;
+      loading.value = false;
+    }
+  );
 };
 /** 搜索按钮操作 */
 const handleQuery = () => {

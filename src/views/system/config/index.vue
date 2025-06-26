@@ -46,7 +46,7 @@
           v-model="dateRange"
           size="default"
           style="width: 240px"
-          value-format="yyyy-MM-dd"
+          value-format="YYYY-MM-DD"
           type="daterange"
           range-separator="-"
           start-placeholder="开始日期"
@@ -302,11 +302,13 @@ onMounted(() => {
 /** 查询参数列表 */
 const getList = () => {
   loading.value = true;
-  listConfig(proxy.addDateRange(queryParams, dateRange)).then((response) => {
-    configList.value = response.rows;
-    total.value = response.total;
-    loading.value = false;
-  });
+  listConfig(proxy.addDateRange(queryParams, dateRange.value)).then(
+    (response) => {
+      configList.value = response.rows;
+      total.value = response.total;
+      loading.value = false;
+    }
+  );
 };
 // 参数系统内置字典翻译
 const typeFormat = (row, column) => {

@@ -22,7 +22,7 @@
           size="default"
           v-model="queryParams.deployTime"
           type="date"
-          value-format="yyyy-MM-dd"
+          value-format="YYYY-MM-DD"
           placeholder="选择时间"
         >
         </el-date-picker>
@@ -453,8 +453,8 @@ export default {
       },
       // 查询参数
       queryParams: {
-        const pageNum=ref(1)
-        const pageSize=ref(10)
+        pageNum: 1,
+        pageSize: 10,
         name: null,
         category: null,
         key: null,
@@ -466,8 +466,8 @@ export default {
         engineVersion: null,
       },
       formQueryParams: {
-        const pageNum=ref(1)
-        const pageSize=ref(10)
+        pageNum: 1,
+        pageSize: 10,
       },
       // 挂载表单到流程实例
       formDeployParam: {

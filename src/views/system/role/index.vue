@@ -42,7 +42,7 @@
           v-model="dateRange"
           size="default"
           style="width: 240px"
-          value-format="yyyy-MM-dd"
+          value-format="YYYY-MM-DD"
           type="daterange"
           range-separator="-"
           start-placeholder="开始日期"
@@ -373,11 +373,13 @@ const sortChange = (data) => {
 /** 查询角色列表 */
 const getList = () => {
   loading.value = true;
-  listRole(proxy.addDateRange(queryParams, dateRange)).then((response) => {
-    roleList.value = response.rows;
-    total.value = response.total;
-    loading.value = false;
-  });
+  listRole(proxy.addDateRange(queryParams, dateRange.value)).then(
+    (response) => {
+      roleList.value = response.rows;
+      total.value = response.total;
+      loading.value = false;
+    }
+  );
 };
 /** 查询菜单树结构 */
 const getMenuTreeselect = () => {

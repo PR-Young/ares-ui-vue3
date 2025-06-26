@@ -53,7 +53,7 @@
           v-model="dateRange"
           size="default"
           style="width: 240px"
-          value-format="yyyy-MM-dd"
+          value-format="YYYY-MM-DD"
           type="daterange"
           range-separator="-"
           start-placeholder="开始日期"
@@ -270,7 +270,7 @@ const jobLogList = ref([]);
 // 是否显示弹出层
 const open = ref(false);
 // 日期范围
-const dateRange = ref([]);
+const dateRange = ref("");
 // 表单参数
 const form = ref({});
 // 执行状态字典
@@ -314,11 +314,13 @@ const sortChange = (data) => {
 /** 查询调度日志列表 */
 const getList = () => {
   loading.value = true;
-  listJobLog(proxy.addDateRange(queryParams, dateRange)).then((response) => {
-    jobLogList.value = response.rows;
-    total.value = response.total;
-    loading.value = false;
-  });
+  listJobLog(proxy.addDateRange(queryParams, dateRange.value)).then(
+    (response) => {
+      jobLogList.value = response.rows;
+      total.value = response.total;
+      loading.value = false;
+    }
+  );
 };
 // 执行状态字典翻译
 const statusFormat = (row, column) => {
@@ -335,7 +337,7 @@ const handleQuery = () => {
 };
 /** 重置按钮操作 */
 const resetQuery = () => {
-  dateRange.value = [];
+  dateRange.value = "";
   proxy.resetForm("queryForm");
   handleQuery();
 };

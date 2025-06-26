@@ -23,7 +23,7 @@
           size="default"
           v-model="queryParams.createTime"
           type="date"
-          value-format="yyyy-MM-dd"
+          value-format="YYYY-MM-DD"
           placeholder="选择时间"
         >
         </el-date-picker>
