@@ -45,14 +45,6 @@ export function rejectTask(data: any) {
   });
 }
 
-// 可退回任务列表
-export function returnList(data: any) {
-  return request({
-    url: "/ares/flowable/task/returnList",
-    method: "post",
-    data: data,
-  });
-}
 
 export function getFormData(id: string) {
   return request({

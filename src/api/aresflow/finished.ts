@@ -1,4 +1,5 @@
 import request from "@/utils/request";
+import { da } from "element-plus/es/locale";
 
 // 查询已办任务列表
 export function finishedList(query: any) {
@@ -21,7 +22,7 @@ export function flowRecord(query: any) {
 // 撤回任务
 export function revokeProcess(data: any) {
   return request({
-    url: "/ares/flowable/task/revokeProcess",
+    url: "/ares/flow/task/revoke/" + data.instanceId,
     method: "post",
     data: data,
   });

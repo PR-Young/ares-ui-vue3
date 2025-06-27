@@ -265,7 +265,7 @@ const handleFlowRecord = (row) => {
 /** 撤回任务 */
 const handleRevoke = (row) => {
   const params = {
-    instanceId: row.procInsId,
+    instanceId: row.instanceId,
   };
   revokeProcess(params).then((res) => {
     proxy.msgSuccess(res.msg);

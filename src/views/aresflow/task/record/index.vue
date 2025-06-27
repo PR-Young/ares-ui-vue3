@@ -77,15 +77,71 @@
               :icon="setIcon(item.flowStatus)"
               :color="setColor(item.flowStatus)"
             >
-              <p style="font-weight: 700">{{ item.nodeName }}</p>
-              <el-card :body-style="{ padding: '10px' }">
+              <p style="font-weight: 700">
+                {{ item.nodeName }}
+                <el-tag
+                  type="primary"
+                  v-if="item.flowStatus == 0"
+                  size="default"
+                  >待提交</el-tag
+                >
+                <el-tag
+                  type="primary"
+                  v-if="item.flowStatus == 1"
+                  size="default"
+                  >审批中</el-tag
+                >
+                <el-tag
+                  type="primary"
+                  v-if="item.flowStatus == 2"
+                  size="default"
+                  >审批通过</el-tag
+                >
+                <el-tag
+                  type="primary"
+                  v-if="item.flowStatus == 3"
+                  size="default"
+                  >自动通过</el-tag
+                >
+                <el-tag type="info" v-if="item.flowStatus == 4" size="default"
+                  >终止</el-tag
+                >
+                <el-tag type="info" v-if="item.flowStatus == 5" size="default"
+                  >作废</el-tag
+                >
+                <el-tag
+                  type="warning"
+                  v-if="item.flowStatus == 6"
+                  size="default"
+                  >撤销</el-tag
+                >
+                <el-tag
+                  type="warning"
+                  v-if="item.flowStatus == 7"
+                  size="default"
+                  >取回</el-tag
+                >
+                <el-tag
+                  type="success"
+                  v-if="item.flowStatus == 8"
+                  size="default"
+                  >已完成</el-tag
+                >
+                <el-tag type="danger" v-if="item.flowStatus == 9" size="default"
+                  >已退回</el-tag
+                >
+                <el-tag type="info" v-if="item.flowStatus == 10" size="default"
+                  >失效</el-tag
+                >
+              </p>
+              <el-card
+                style="margin-top: 2px"
+                :body-style="{ padding: '10px' }"
+              >
                 <label
                   v-if="item.approver"
                   style="font-weight: normal; margin-right: 30px"
                   >实际办理： {{ item.approver }}
-                  <!-- <el-tag type="info" size="default">{{
-                    item.deptName
-                  }}</el-tag> -->
                 </label>
                 <label
                   v-if="item.collaborator"
@@ -307,7 +363,6 @@ import { readXml } from "@/api/aresflow/definition";
 import {
   complete,
   rejectTask,
-  returnList,
   transferTask,
   depute,
 } from "@/api/aresflow/todo";
@@ -326,32 +381,10 @@ const userStore = useUserStore(store);
 
 // 模型xml数据
 const xmlData = ref();
-const taskList = ref([]);
-// 部门名称
-const deptName = ref();
-// 部门树选项
-const deptOptions = ref();
-// 用户表格数据
-const userList = ref();
-const total = ref(0);
-const defaultProps = ref({
-  children: "children",
-  label: "label",
-});
-// 查询参数
-const queryParams = reactive({
-  deptId: undefined,
-});
-// 遮罩层
-const loading = ref(true);
+
 // 流程流转数据
 const flowRecordList = ref([]);
-const formConfCopy = ref();
-const src = ref();
-// 表单校验
-const rules = ref({});
-// 流程变量数据
-const variablesForm = ref({});
+
 const taskForm = ref({
   message: "", // 意见内容
   instanceId: "", // 流程实例编号
@@ -366,7 +399,6 @@ const taskForm = ref({
 });
 // 流程候选人
 const userDataList = ref([]);
-const assignee = ref();
 // 默认表单数据
 const formConf = ref();
 // 是否加载默认表单数据
@@ -377,9 +409,7 @@ const variables = ref([]);
 const variablesData = ref({});
 // 是否加载流程变量数据
 const variableOpen = ref(false);
-// 回退列表数据
-const returnTaskList = ref([]);
-const finished = ref("false");
+
 const handleType = ref();
 const completeTitle = ref();
 const completeOpen = ref(false);
@@ -387,14 +417,13 @@ const transferTitle = ref();
 const transferOpen = ref(false);
 const rejectOpen = ref(false);
 const rejectTitle = ref();
-const userData = ref([]);
+
 const fields = ref([]);
-const formCreateData = ref();
+
 const taskFormRejectRef = ref();
 const taskFormTransferRef = ref();
 const formRef = ref();
 const taskFormDeputeRef = ref();
-const dateRange = ref();
 
 const deputeTitle = ref();
 const deputeOpen = ref(false);
@@ -451,10 +480,6 @@ const getFlowChartImg = (id) => {
     "/ares/warm-flow-ui/index.html?id=" +
     id +
     "&type=FlowChart&showGrid=true";
-  // 发送请求，获取xml
-  // getFlowChart(id).then((res) => {
-  //   xmlData.value = "data:image/png;base64," + res.data;
-  // });
 };
 
 const setIcon = (val) => {
@@ -594,7 +619,7 @@ const submitForm = (data) => {
     variables.variables = formData;
     // 启动流程并将表单数据加入流程变量
     startFlow(JSON.stringify(variables)).then((res) => {
-      proxy.msgSuccess(res.msg);
+      proxy.msgSuccess("成功");
       goBack();
     });
   });

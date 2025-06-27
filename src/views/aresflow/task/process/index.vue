@@ -438,7 +438,7 @@ const handleStartProcess = (row) => {
 /**  取消流程申请 */
 const handleStop = (row) => {
   const params = {
-    instanceId: row.procInsId,
+    taskId: row.taskId,
   };
   stopProcess(params).then((res) => {
     proxy.msgSuccess(res.msg);
