@@ -62,7 +62,7 @@
     </el-card>
 
     <!--流程流转记录-->
-    <el-card class="box-card" v-if="flowRecordList">
+    <el-card class="box-card" v-if="handleHistoryData">
       <template v-slot:header>
         <div class="clearfix">
           <span class="el-icon-notebook-1">审批记录</span>
@@ -72,54 +72,57 @@
         <div class="block">
           <el-timeline>
             <el-timeline-item
-              v-for="(item, index) in flowRecordList"
+              v-for="(item, index) in handleHistoryData"
               :key="index"
-              :icon="setIcon(item.finishTime)"
-              :color="setColor(item.finishTime)"
+              :icon="setIcon(item.flowStatus)"
+              :color="setColor(item.flowStatus)"
             >
-              <p style="font-weight: 700">{{ item.taskName }}</p>
+              <p style="font-weight: 700">{{ item.nodeName }}</p>
               <el-card :body-style="{ padding: '10px' }">
                 <label
-                  v-if="item.assigneeName"
+                  v-if="item.approver"
                   style="font-weight: normal; margin-right: 30px"
-                  >实际办理： {{ item.assigneeName }}
-                  <el-tag type="info" size="default">{{
+                  >实际办理： {{ item.approver }}
+                  <!-- <el-tag type="info" size="default">{{
                     item.deptName
-                  }}</el-tag></label
-                >
+                  }}</el-tag> -->
+                </label>
                 <label
-                  v-if="item.candidate"
+                  v-if="item.collaborator"
                   style="font-weight: normal; margin-right: 30px"
-                  >候选办理： {{ item.candidate }}</label
+                  >候选办理： {{ item.collaborator }}</label
                 >
                 <label style="font-weight: normal">接收时间： </label
-                ><label style="color: #8a909c; font-weight: normal">{{
-                  item.createTime
-                }}</label>
+                ><label style="color: #8a909c; font-weight: normal">
+                  {{ parseTime(item.createTime) }}</label
+                >
                 <label
-                  v-if="item.finishTime"
+                  v-if="item.updateTime"
                   style="margin-left: 30px; font-weight: normal"
                   >办结时间： </label
                 ><label style="color: #8a909c; font-weight: normal">{{
-                  item.finishTime
+                  parseTime(item.updateTime)
                 }}</label>
                 <label
                   v-if="item.duration"
                   style="margin-left: 30px; font-weight: normal"
                   >耗时： </label
-                ><label style="color: #8a909c; font-weight: normal">{{
-                  item.duration
-                }}</label>
+                ><label style="color: #8a909c; font-weight: normal"
+                  >{{ item.duration }}秒</label
+                >
 
-                <p v-if="item.comment">
-                  <el-tag type="success" v-if="item.comment.type === '1'">
-                    {{ item.comment.comment }}</el-tag
+                <p v-if="item.message">
+                  <label style="margin-left: 30px; font-weight: normal"
+                    >审批意见：
+                  </label>
+                  <el-tag type="success" v-if="item.flowStatus === '2'">
+                    {{ item.message }}</el-tag
                   >
-                  <el-tag type="warning" v-if="item.comment.type === '2'">
-                    {{ item.comment.comment }}</el-tag
+                  <el-tag type="warning" v-if="item.flowStatus === '1'">
+                    {{ item.message }}</el-tag
                   >
-                  <el-tag type="danger" v-if="item.comment.type === '3'">
-                    {{ item.comment.comment }}</el-tag
+                  <el-tag type="danger" v-if="item.flowStatus === '9'">
+                    {{ item.message }}</el-tag
                   >
                 </p>
               </el-card>
@@ -178,13 +181,20 @@
       append-to-body
     >
       <el-form ref="taskFormTransferRef" :model="taskForm" label-width="80px">
-        <el-form-item label="处理人" prop="handler">
+        <el-form-item
+          label="处理人"
+          prop="handler"
+          :rules="[
+            { required: true, message: '请选择处理人', trigger: 'blur' },
+          ]"
+        >
           <el-select v-model="taskForm.params.addHandlers" clearable multiple>
             <el-option
               v-for="item in userDataList"
               :key="item.id"
               :label="item.userName"
               :value="item.id"
+              :disabled="item.id === userStore.userId"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -248,13 +258,20 @@
       append-to-body
     >
       <el-form ref="taskFormDeputeRef" :model="taskForm" label-width="80px">
-        <el-form-item label="处理人" prop="handler">
+        <el-form-item
+          label="处理人"
+          prop="handler"
+          :rules="[
+            { required: true, message: '请选择处理人', trigger: 'blur' },
+          ]"
+        >
           <el-select v-model="taskForm.params.addHandlers" clearable multiple>
             <el-option
               v-for="item in userDataList"
               :key="item.id"
               :label="item.userName"
               :value="item.id"
+              :disabled="item.id === userStore.userId"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -329,7 +346,7 @@ const queryParams = reactive({
 const loading = ref(true);
 // 流程流转数据
 const flowRecordList = ref([]);
-const formConfCopy = ref({});
+const formConfCopy = ref();
 const src = ref();
 // 表单校验
 const rules = ref({});
@@ -351,7 +368,7 @@ const taskForm = ref({
 const userDataList = ref([]);
 const assignee = ref();
 // 默认表单数据
-const formConf = ref({});
+const formConf = ref();
 // 是否加载默认表单数据
 const formConfOpen = ref(false);
 // 流程变量数据
@@ -381,6 +398,8 @@ const dateRange = ref();
 
 const deputeTitle = ref();
 const deputeOpen = ref(false);
+
+const handleHistoryData = ref();
 
 onMounted(() => {
   const query = router.currentRoute._value.query;
@@ -439,14 +458,14 @@ const getFlowChartImg = (id) => {
 };
 
 const setIcon = (val) => {
-  if (val) {
-    return "el-icon-check";
+  if (val == 2) {
+    return "Check";
   } else {
-    return "el-icon-time";
+    return "Timer";
   }
 };
 const setColor = (val) => {
-  if (val) {
+  if (val == 2) {
     return "#2bc418";
   } else {
     return "#b3bdbb";
@@ -494,6 +513,9 @@ const getFlowRecordList = (procInsId, deployId) => {
           activity: {},
         };
       }
+      if (res.data.hisTasks) {
+        handleHistoryData.value = res.data.hisTasks;
+      }
     })
     .catch((res) => {
       console.log(res);
@@ -508,6 +530,7 @@ const processVariables = (taskId, procInsId, deployId) => {
     flowRecord(params).then((res) => {
       // 流程过程中不存在初始化表单 直接读取的流程变量中存储的表单值
       if (res.data.formData) {
+        variableOpen.value = true;
         fields.value = res.data.formData.fields;
 
         variablesData.value = {
@@ -518,7 +541,9 @@ const processVariables = (taskId, procInsId, deployId) => {
         };
       }
 
-      variableOpen.value = true;
+      if (res.data.hisTasks) {
+        handleHistoryData.value = res.data.hisTasks;
+      }
     });
   }
 };
@@ -529,7 +554,9 @@ const handleComplete = () => {
 };
 /** 审批任务 */
 const taskComplete = () => {
-  taskForm.value.message = "同意";
+  if (taskForm.value.message == undefined || taskForm.value.message == "") {
+    taskForm.value.message = "同意";
+  }
   complete(taskForm.value).then((response) => {
     proxy.msgSuccess(response.msg);
     goBack();
@@ -537,7 +564,16 @@ const taskComplete = () => {
   });
 };
 /** 委派任务 */
-const handleDepute = () => {};
+const handleDepute = () => {
+  deputeOpen.value = true;
+  deputeTitle.value = "委派任务";
+  const param = {
+    deptId: userStore.deptId,
+  };
+  listUser(param).then((res) => {
+    userDataList.value = res.rows;
+  });
+};
 /** 返回页面 */
 const goBack = () => {
   // 关闭当前标签页并返回上个页面

@@ -213,7 +213,10 @@
                   <el-icon><Tickets /></el-icon>
                   详情
                 </el-dropdown-item>
-                <el-dropdown-item @click="handleStop(scope.row)">
+                <el-dropdown-item
+                  @click="handleStop(scope.row)"
+                  v-if="scope.row.flowStatus == 1"
+                >
                   <el-icon><CircleClose /></el-icon>
                   取消申请
                 </el-dropdown-item>

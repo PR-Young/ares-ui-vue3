@@ -15,7 +15,8 @@ const useUserStore = defineStore("user", {
       notice: 0,
       account: "",
       notice_num: 0,
-      deptId: ""
+      deptId: "",
+      userId: null
     };
   },
   actions: {
@@ -69,6 +70,7 @@ const useUserStore = defineStore("user", {
             this.avatar = avatar;
             this.account = user.account;
             this.deptId = user.deptId
+            this.userId = user.id;
             resolve(res);
           })
           .catch((error) => {
