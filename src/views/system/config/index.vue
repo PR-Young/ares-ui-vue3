@@ -369,7 +369,7 @@ const submitForm = () => {
   addFormRef.value.validate((valid) => {
     if (valid) {
       if (form.value.configId != undefined) {
-        updateConfig(form).then((response) => {
+        updateConfig(form.value).then((response) => {
           if (response.code === 200) {
             proxy.msgSuccess("修改成功");
             open.value = false;
@@ -379,7 +379,7 @@ const submitForm = () => {
           }
         });
       } else {
-        addConfig(form).then((response) => {
+        addConfig(form.value).then((response) => {
           if (response.code === 200) {
             proxy.msgSuccess("新增成功");
             open.value = false;

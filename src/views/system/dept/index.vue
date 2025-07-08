@@ -337,7 +337,7 @@ const submitForm = () => {
   addFormRef.value.validate((valid) => {
     if (valid) {
       if (form.value.deptId != undefined) {
-        updateDept(form).then((response) => {
+        updateDept(form.value).then((response) => {
           if (response.code === 200) {
             proxy.msgSuccess("修改成功");
             open.value = false;
@@ -347,7 +347,7 @@ const submitForm = () => {
           }
         });
       } else {
-        addDept(form).then((response) => {
+        addDept(form.value).then((response) => {
           if (response.code === 200) {
             proxy.msgSuccess("新增成功");
             open.value = false;

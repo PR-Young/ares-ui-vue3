@@ -398,7 +398,7 @@ const submitForm = () => {
   addFormRef.value.validate((valid) => {
     if (valid) {
       if (form.value.id != undefined) {
-        updateMenu(form).then((response) => {
+        updateMenu(form.value).then((response) => {
           if (response.code === 200) {
             proxy.msgSuccess("修改成功");
             open.value = false;
@@ -408,7 +408,7 @@ const submitForm = () => {
           }
         });
       } else {
-        addMenu(form).then((response) => {
+        addMenu(form.value).then((response) => {
           if (response.code === 200) {
             proxy.msgSuccess("新增成功");
             open.value = false;

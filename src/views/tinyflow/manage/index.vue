@@ -272,7 +272,7 @@ const submitForm = () => {
   addFormRef.value.validate((valid) => {
     if (valid) {
       if (form.value.id != undefined) {
-        updateSysWorkflows(form).then((response) => {
+        updateSysWorkflows(form.value).then((response) => {
           if (response.code === 200) {
             proxy.msgSuccess("修改成功");
             open.value = false;
@@ -282,7 +282,7 @@ const submitForm = () => {
           }
         });
       } else {
-        addSysWorkflows(form).then((response) => {
+        addSysWorkflows(form.value).then((response) => {
           if (response.code === 200) {
             proxy.msgSuccess("新增成功");
             open.value = false;

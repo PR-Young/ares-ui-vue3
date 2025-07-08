@@ -549,7 +549,7 @@ const submitForm = () => {
     if (valid) {
       if (form.value.id != undefined) {
         form.value.menuIds = getMenuAllCheckedKeys();
-        updateRole(form).then((response) => {
+        updateRole(form.value).then((response) => {
           if (response.code === 200) {
             proxy.msgSuccess("修改成功");
             open.value = false;
@@ -560,7 +560,7 @@ const submitForm = () => {
         });
       } else {
         form.value.menuIds = getMenuAllCheckedKeys();
-        addRole(form).then((response) => {
+        addRole(form.value).then((response) => {
           if (response.code === 200) {
             proxy.msgSuccess("新增成功");
             open.value = false;
@@ -577,7 +577,7 @@ const submitForm = () => {
 const submitDataScope = () => {
   if (form.value.id != undefined) {
     form.value.userIds = selectedUsers;
-    dataScope(form).then((response) => {
+    dataScope(form.value).then((response) => {
       if (response.code === 200) {
         proxy.msgSuccess("修改成功");
         openDataScope.value = false;

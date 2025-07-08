@@ -361,7 +361,7 @@ const submitForm = () => {
     if (valid) {
       form.value.userIds = selectedUsers;
       if (form.value.id != undefined) {
-        updateSysTenants(form).then((response) => {
+        updateSysTenants(form.value).then((response) => {
           if (response.code === 200) {
             proxy.msgSuccess("修改成功");
             open.value = false;
@@ -371,7 +371,7 @@ const submitForm = () => {
           }
         });
       } else {
-        addSysTenants(form).then((response) => {
+        addSysTenants(form.value).then((response) => {
           if (response.code === 200) {
             proxy.msgSuccess("新增成功");
             open.value = false;

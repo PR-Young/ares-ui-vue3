@@ -370,7 +370,7 @@ const submitForm = () => {
   addFormRef.value.validate((valid) => {
     if (valid) {
       if (form.value.id != undefined) {
-        editData(form).then((response) => {
+        editData(form.value).then((response) => {
           if (response.code === 200) {
             proxy.msgSuccess("修改成功");
             open.value = false;
@@ -380,7 +380,7 @@ const submitForm = () => {
           }
         });
       } else {
-        editData(form).then((response) => {
+        editData(form.value).then((response) => {
           if (response.code === 200) {
             proxy.msgSuccess("新增成功");
             open.value = false;

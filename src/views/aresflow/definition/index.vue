@@ -662,7 +662,7 @@ const submitForm = () => {
   addFormRef.value.validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
-        updateDeployment(form).then((response) => {
+        updateDeployment(form.value).then((response) => {
           proxy.msgSuccess("修改成功");
           open.value = false;
           getList();
