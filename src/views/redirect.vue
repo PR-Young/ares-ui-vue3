@@ -7,5 +7,5 @@ const { params, query } = router;
 const { path } = params;
 router.replace({ path: "/" + path, query });
 
-return () => Vue.h(); // avoid warning message
+() => Vue.h(); // avoid warning message
 </script>
