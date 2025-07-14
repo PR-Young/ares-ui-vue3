@@ -240,7 +240,7 @@ const reset = () => {
     postCode: undefined,
     postName: undefined,
   };
-  proxy.resetForm("form");
+  proxy.resetForm("addFormRef");
 };
 /** 搜索按钮操作 */
 const handleQuery = () => {

@@ -18,9 +18,12 @@ export function getDept(deptId: string) {
 }
 
 // 查询部门下拉树结构
-export function treeselect() {
+export function getTreeselect() {
+  // 发起请求
   return request({
+    // 请求的URL
     url: "/ares/sysDept/treeselect",
+    // 请求的方法
     method: "get",
   });
 }

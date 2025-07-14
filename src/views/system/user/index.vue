@@ -400,7 +400,7 @@
       width="600px"
       append-to-body
     >
-      <el-form ref="addFormRef" :model="deptForm" label-width="80px">
+      <el-form ref="addDeptFormRef" :model="deptForm" label-width="80px">
         <el-row>
           <el-input v-model="deptForm.id" type="hidden" />
           <el-input v-model="deptForm.parentDeptId" type="hidden" />
@@ -460,7 +460,7 @@ import {
 } from "@/api/system/user";
 import { getToken } from "@/utils/auth";
 import {
-  treeselect,
+  getTreeselect,
   delDept,
   addDept,
   updateDept,
@@ -473,6 +473,7 @@ import { useRouter } from "vue-router";
 
 const { proxy } = getCurrentInstance();
 const addFormRef = ref();
+const addDeptFormRef = ref();
 const router = useRouter();
 
 const selectedTreeNode = ref();
@@ -586,7 +587,7 @@ watch(rightVisible, (value) => {
 });
 onMounted(() => {
   getList();
-  getTreeselect();
+  getTreeselectData();
 });
 
 const sortChange = (data) => {
@@ -607,8 +608,8 @@ const getList = () => {
   );
 };
 /** 查询部门下拉树结构 */
-const getTreeselect = () => {
-  treeselect().then((response) => {
+const getTreeselectData = () => {
+  getTreeselect().then((response) => {
     deptOptions.value = response.data;
   });
 };
@@ -640,7 +641,7 @@ const reset = () => {
     postId: undefined,
     roleIds: [],
   };
-  proxy.resetForm("form");
+  proxy.resetForm("addFormRef");
 };
 /** 搜索按钮操作 */
 const handleQuery = () => {
@@ -662,7 +663,7 @@ const handleSelectionChange = (selection) => {
 /** 新增按钮操作 */
 const handleAdd = () => {
   reset();
-  getTreeselect();
+  getTreeselectData();
   getUser().then((response) => {
     postOptions.value = response.posts;
     roleOptions.value = response.roles;
@@ -674,7 +675,7 @@ const handleAdd = () => {
 /** 修改按钮操作 */
 const handleUpdate = (row) => {
   reset();
-  getTreeselect();
+  getTreeselectData();
   const userId = row.id || ids;
   getUser(userId).then((response) => {
     form.value = response.data;
@@ -858,7 +859,7 @@ const deptReset = () => {
     code: undefined,
     deptName: undefined,
   };
-  proxy.resetForm("form");
+  proxy.resetForm("addDeptFormRef");
 };
 const addDeptment = () => {
   deptReset();
@@ -877,14 +878,14 @@ const updateDeptment = () => {
   });
 };
 const submitDeptForm = () => {
-  addFormRef.value.validate((valid) => {
+  addDeptFormRef.value.validate((valid) => {
     if (valid) {
       if (deptForm.value.id != undefined) {
         updateDept(deptForm).then((response) => {
           if (response.code === 200) {
             proxy.msgSuccess("修改成功");
             deptOpen.value = false;
-            getTreeselect();
+            getTreeselectData();
             getList();
           } else {
             proxy.msgError(response.msg);
@@ -895,7 +896,7 @@ const submitDeptForm = () => {
           if (response.code === 200) {
             proxy.msgSuccess("新增成功");
             deptOpen.value = false;
-            getTreeselect();
+            getTreeselectData();
             getList();
           } else {
             proxy.msgError(response.msg);
@@ -922,13 +923,13 @@ const deleteDept = () => {
     })
     .then(() => {
       getList();
-      getTreeselect();
+      getTreeselectData();
       proxy.msgSuccess("删除成功");
     })
     .catch(function () {});
 };
 const refreshTree = () => {
-  getTreeselect();
+  getTreeselectData();
 };
 const handleKickUser = (row) => {
   const userName = row.userName;

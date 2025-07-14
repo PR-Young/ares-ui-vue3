@@ -358,7 +358,7 @@ const cancel = () => {
 const reset = () => {
   form.value = {
     id: undefined,
-    pId: "0",
+    pId: undefined,
     name: undefined,
     icon: undefined,
     type: 1,
@@ -367,7 +367,7 @@ const reset = () => {
     perms: "#",
     url: "#",
   };
-  proxy.resetForm("form");
+  proxy.resetForm("addFormRef");
 };
 /** 搜索按钮操作 */
 const handleQuery = () => {
