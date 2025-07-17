@@ -567,9 +567,13 @@ const handleSelectionChange = (selection) => {
 };
 /** 新增按钮操作 */
 const handleAdd = () => {
-  reset();
-  open.value = true;
-  title.value = "添加流程定义";
+  // reset();
+  // open.value = true;
+  // title.value = "添加流程定义";
+  router.push({
+    path: "/aresflow/definition/model",
+    query: { definitionId: "", disabled: false },
+  });
 };
 /** 跳转到流程设计页面 */
 const handleLoadXml = (row) => {
