@@ -273,7 +273,7 @@ import {
   roleMenuTreeselect,
 } from "@/api/system/menu";
 import {
-  treeselect as deptTreeselect,
+  getTreeselect as deptTreeselect,
   roleDeptTreeselect,
 } from "@/api/system/dept";
 import { getCurrentInstance, onMounted, reactive, ref, nextTick } from "vue";

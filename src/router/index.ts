@@ -1,4 +1,4 @@
-import * as VueRouter from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 
 /* Layout */
 import Layout from "@/layout/index.vue";
@@ -91,7 +91,7 @@ export const constantRoutes = [
       {
         path: "index",
         component: () => import("@/views/index.vue"),
-        name: "首页",
+        name: "Index",
         meta: { title: "首页", icon: "dashboard", noCache: true, affix: true },
       },
     ],
@@ -275,12 +275,13 @@ export const constantRoutes = [
   },
 ];
 
-export default VueRouter.createRouter({
-  history: VueRouter.createWebHashHistory(),
+export default createRouter({
+  history: createWebHistory(),
   routes: constantRoutes,
-  strict: true,
-  scrollBehavior: () => ({
-    left: 0,
-    top: 0,
-  }),
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+    return { top: 0 };
+  },
 });

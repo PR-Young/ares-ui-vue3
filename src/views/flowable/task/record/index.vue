@@ -309,7 +309,7 @@ import {
   rejectTaskNew,
 } from "@/api/flowable/todo";
 import flow from "@/views/flowable/task/record/flow.vue";
-import { treeselect } from "@/api/system/dept";
+import { getTreeselect as deptTreeselect } from "@/api/system/dept";
 import "vue3-treeselect/dist/vue3-treeselect.css";
 import Treeselect from "vue3-treeselect";
 import { listUser } from "@/api/system/user";
@@ -444,7 +444,7 @@ export default {
   methods: {
     /** 查询部门下拉树结构 */
     getTreeselect() {
-      treeselect().then((response) => {
+      deptTreeselect().then((response) => {
         this.deptOptions = response.data;
       });
     },
