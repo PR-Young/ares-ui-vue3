@@ -1,9 +1,9 @@
-@import './variables.module.scss';
-@import './mixin.scss';
-@import './transition.scss';
-@import './element-ui.scss';
-@import './sidebar.scss';
-@import './btn.scss';
+@use './variables.module.scss';
+@use './mixin.scss';
+@use './transition.scss';
+@use './element-ui.scss';
+@use './sidebar.scss';
+@use './btn.scss';
 
 body {
   height: 100%;
@@ -193,35 +193,35 @@ aside {
 
 
 .table_link_btn {
-    margin: 0 5px;
-    padding: 0 1px 0 1px
+  margin: 0 5px;
+  padding: 0 1px 0 1px
 }
 
 .table_link_text {
-    margin-left: 2px;
+  margin-left: 2px;
 }
 
 .el-link-spacing {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 /* 动画 */
 .fade-enter-active,
 .fade-leave-active {
-	transition: all 0.5s;
+  transition: all 0.5s;
 }
 
 .fade-enter-active,
 .fade-leave-active {
-	transition: all 0.5s;
+  transition: all 0.5s;
 }
 
 .fade-enter,
 .fade-leave-to {
-	opacity: 0.1;
-	transform: translateY(-20px);
+  opacity: 0.1;
+  transform: translateY(-20px);
 }
 
 .item-search .el-button--primary {
-    margin-left: 22px;
+  margin-left: 22px;
 }

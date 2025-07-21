@@ -25,6 +25,11 @@ import BlogLayout from "@/layout-blog/index.vue";
 // 公共路由
 export const constantRoutes = [
   {
+    path: "/",
+    component: Layout,
+    name: "Pages",
+  },
+  {
     path: "/redirect",
     component: Layout,
     hidden: true,
@@ -84,12 +89,12 @@ export const constantRoutes = [
     ],
   },
   {
-    path: "/",
+    path: "",
     component: Layout,
-    redirect: "index",
+    redirect: "/index",
     children: [
       {
-        path: "index",
+        path: "/index",
         component: () => import("@/views/index.vue"),
         name: "Index",
         meta: { title: "首页", icon: "dashboard", noCache: true, affix: true },

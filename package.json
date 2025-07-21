@@ -46,6 +46,7 @@
     "@element-plus/icons-vue": "^2.3.1",
     "@tinyflow-ai/vue": "^0.2.0",
     "@tinymce/tinymce-vue": "^5.1.0",
+    "@vtj/web": "latest",
     "@vue/compiler-sfc": "^3.5.13",
     "@vueup/vue-quill": "^1.2.0",
     "@vueuse/core": "^10.6.1",
@@ -114,6 +115,8 @@
     "@typescript-eslint/parser": "^8.33.0",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vitejs/plugin-vue-jsx": "^4.1.1",
+    "@vtj/cli": "latest",
+    "@vtj/pro": "latest",
     "@vue/compiler-sfc": "^3.3.4",
     "autoprefixer": "^10.4.14",
     "babel-core": "7.0.0-bridge.0",
@@ -146,7 +149,6 @@
     "tslint-config-standard": "^9.0.0",
     "tslint-loader": "^3.5.4",
     "typescript": "^5.8.3",
-    "vite": "^6.2.1",
     "vite-plugin-env-compatible": "^2.0.1",
     "vite-plugin-html": "3.2.2"
   },
@@ -160,5 +162,9 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "vtj": {
+    "history": "web",
+    "noMask": "true"
+  }
 }
