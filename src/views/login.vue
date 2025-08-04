@@ -17,7 +17,11 @@
               placeholder="账号"
             >
               <template v-slot:prefix>
-                <svg-icon icon-class="user" class="el-input__icon input-icon" />
+                <svg-icon
+                  style="margin-left: 10px"
+                  icon-class="user"
+                  class="el-input__icon input-icon"
+                />
               </template>
             </el-input>
           </el-form-item>
@@ -31,6 +35,7 @@
             >
               <template v-slot:prefix>
                 <svg-icon
+                  style="margin-left: 10px"
                   icon-class="password"
                   class="el-input__icon input-icon"
                 />
@@ -47,6 +52,7 @@
             >
               <template v-slot:prefix>
                 <svg-icon
+                  style="margin-left: 10px"
                   icon-class="validCode"
                   class="el-input__icon input-icon"
                 />
@@ -214,22 +220,6 @@ input {
   display: grid;
   grid-template-columns: 1fr;
   z-index: 5;
-}
-
-form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0rem 5rem;
-  transition: all 0.2s 0.7s;
-  overflow: hidden;
-  grid-column: 1 / 2;
-  grid-row: 1 / 2;
-}
-
-form.login-form {
-  z-index: 2;
 }
 
 .title {
@@ -448,6 +438,16 @@ form.login-form {
 }
 
 .login-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0rem 5rem;
+  transition: all 0.2s 0.7s;
+  overflow: hidden;
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  z-index: 2;
   border-radius: 6px;
   background: #ffffff;
   .el-form-item {
@@ -494,6 +494,7 @@ form.login-form {
   .input-icon {
     height: 39px;
     width: 14px;
+    margin-left: 10px;
   }
 
   .el-button {
