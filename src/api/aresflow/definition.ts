@@ -70,3 +70,10 @@ export function delDefinition(ids: any) {
     method: "delete",
   });
 }
+
+export function updatePublishStatus(ids: any, status: any) {
+  return request({
+    url: "/ares/flow/definition/updatePublishStatus/" + ids + "/" + status,
+    method: "put",
+  });
+}

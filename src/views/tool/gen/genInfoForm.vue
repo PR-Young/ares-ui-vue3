@@ -22,7 +22,7 @@
                 content="生成在哪个java包下，例如 com.system"
                 placement="top"
               >
-                <el-icon><el-icon-question /></el-icon>
+                <el-icon><QuestionFilled /></el-icon>
               </el-tooltip>
             </span>
           </template>
@@ -39,7 +39,7 @@
                 content="可理解为子系统名，例如 system"
                 placement="top"
               >
-                <el-icon><el-icon-question /></el-icon>
+                <el-icon><QuestionFilled /></el-icon>
               </el-tooltip>
             </span>
           </template>
@@ -56,7 +56,7 @@
                 content="可理解为功能英文名，例如 user"
                 placement="top"
               >
-                <el-icon><el-icon-question /></el-icon>
+                <el-icon><QuestionFilled /></el-icon>
               </el-tooltip>
             </span>
           </template>
@@ -70,7 +70,7 @@
             <span>
               生成功能名
               <el-tooltip content="用作类描述，例如 用户" placement="top">
-                <el-icon><el-icon-question /></el-icon>
+                <el-icon><QuestionFilled /></el-icon>
               </el-tooltip>
             </span>
           </template>
@@ -90,7 +90,7 @@
                 content="树显示的编码字段名， 如：dept_id"
                 placement="top"
               >
-                <el-icon><el-icon-question /></el-icon>
+                <el-icon><QuestionFilled /></el-icon>
               </el-tooltip>
             </span>
           </template>
@@ -113,7 +113,7 @@
                 content="树显示的父编码字段名， 如：parent_Id"
                 placement="top"
               >
-                <el-icon><el-icon-question /></el-icon>
+                <el-icon><QuestionFilled /></el-icon>
               </el-tooltip>
             </span>
           </template>
@@ -136,7 +136,7 @@
                 content="树节点的显示名称字段名， 如：dept_name"
                 placement="top"
               >
-                <el-icon><el-icon-question /></el-icon>
+                <el-icon><QuestionFilled /></el-icon>
               </el-tooltip>
             </span>
           </template>

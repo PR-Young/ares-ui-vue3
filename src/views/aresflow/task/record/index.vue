@@ -472,6 +472,11 @@ const getModelDetail = (id) => {
   readXml(id).then((res) => {
     xmlData.value = "data:image/png;base64," + res.data;
   });
+  // xmlData.value =
+  //   import.meta.env.VITE_APP_BASE_API +
+  //   "/warm-flow-ui/index.html?id=" +
+  //   id +
+  //   "&type=FlowChart";
 };
 
 const getFlowChartImg = (id) => {

@@ -37,7 +37,7 @@
           >
             <el-button size="default">
               上传
-              <el-icon class="el-icon--right"><el-icon-upload /></el-icon>
+              <el-icon class="el-icon--right"><Upload /></el-icon>
             </el-button>
           </el-upload>
         </el-col>

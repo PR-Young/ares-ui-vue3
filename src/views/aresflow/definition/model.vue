@@ -15,10 +15,10 @@ import { onMounted, ref, getCurrentInstance } from "vue";
 const { proxy } = getCurrentInstance();
 
 const definitionId = ref(proxy.$route.query.definitionId).value;
-const disabled = ref(proxy.$route.query.disabled).value;
+const onlyDesignShow = ref(proxy.$route.query.onlyDesignShow).value;
 const iframeUrl = ref(
   import.meta.env.VITE_APP_BASE_API +
-    `/ares/warm-flow-ui/index.html?id=${definitionId}&disabled=${disabled}&showGrid=true`
+    `/ares/warm-flow-ui/index.html?id=${definitionId}&showGrid=true`
 );
 
 const iframeLoaded = () => {

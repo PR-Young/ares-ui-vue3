@@ -267,7 +267,7 @@
         :auto-upload="false"
         drag
       >
-        <el-icon><el-icon-upload /></el-icon>
+        <el-icon><Upload /></el-icon>
         <div class="el-upload__text">
           将文件拖到此处，或
           <em>点击上传</em>

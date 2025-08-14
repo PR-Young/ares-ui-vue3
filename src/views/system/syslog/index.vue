@@ -201,7 +201,7 @@
 </template>
 
 <script setup name="SysLog">
-import { Search, Refresh, View as ElIconView } from "@element-plus/icons-vue";
+import { Search, Refresh, View } from "@element-plus/icons-vue";
 import { listLog } from "@/api/system/log";
 import { getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";

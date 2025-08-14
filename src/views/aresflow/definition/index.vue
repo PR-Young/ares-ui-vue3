@@ -212,6 +212,13 @@
                 >
                   激活
                 </el-dropdown-item>
+                <el-dropdown-item
+                  :icon="VideoPlay"
+                  @click="handleFlowStatus(scope.row)"
+                  v-if="scope.row.isPublish === 9"
+                >
+                  更新发布状态
+                </el-dropdown-item>
                 <el-dropdown-item @click="handleDelete(scope.row)">
                   <el-icon><Delete /></el-icon>
                   删除
@@ -302,7 +309,7 @@
         :auto-upload="false"
         drag
       >
-        <el-icon><el-icon-upload /></el-icon>
+        <el-icon><Upload /></el-icon>
         <div class="el-upload__text">
           将文件拖到此处，或
           <em>点击上传</em>
@@ -335,7 +342,8 @@
       width="70%"
       append-to-body
     >
-      <img :src="xmlData" style="width: 100%" />
+      <img :src="xmlData" style="width: 100%; height: 100%" />
+      <!-- <iframe :src="readImage.url" style="width: 100%; height: 100%" /> -->
     </el-dialog>
 
     <!--表单配置详情-->
@@ -414,6 +422,7 @@ import {
   VideoPlay,
   Connection,
   Edit,
+  Download,
 } from "@element-plus/icons-vue";
 import {
   listDefinition,
@@ -425,6 +434,7 @@ import {
   delDefinition,
   addDefinition,
   readXml,
+  updatePublishStatus,
 } from "@/api/aresflow/definition";
 import { getToken } from "@/utils/auth";
 import {
@@ -572,21 +582,25 @@ const handleAdd = () => {
   // title.value = "添加流程定义";
   router.push({
     path: "/aresflow/definition/model",
-    query: { definitionId: "", disabled: false },
+    query: { definitionId: "", onlyDesignShow: false },
   });
 };
 /** 跳转到流程设计页面 */
 const handleLoadXml = (row) => {
   router.push({
     path: "/aresflow/definition/model",
-    query: { definitionId: row.id, disabled: false },
+    query: { definitionId: row.id, onlyDesignShow: true },
   });
 };
 /** 流程图查看 */
 const handleReadImage = (id) => {
   readImage.value.title = "流程图";
   readImage.value.open = true;
-  // readImage.src = import.meta.env.VITE_APP_BASE_API + "/flowable/definition/readImage/" + deploymentId;
+  // readImage.value.url =
+  //   import.meta.env.VITE_APP_BASE_API +
+  //   "/warm-flow-ui/index.html?id=" +
+  //   id +
+  //   "&type=FlowChart";
   // 发送请求，获取xml
   readXml(id).then((res) => {
     xmlData.value = "data:image/png;base64," + res.data;
@@ -729,6 +743,13 @@ const handleFileSuccess = (response, file, fileList) => {
 // 提交上传文件
 const submitFileForm = () => {
   proxy.$refs.upload.submit();
+};
+
+const handleFlowStatus = (row) => {
+  updatePublishStatus(row.id, 0).then((res) => {
+    proxy.msgSuccess(res.msg);
+    getList();
+  });
 };
 </script>
 

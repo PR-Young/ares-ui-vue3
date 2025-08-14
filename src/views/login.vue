@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="base-container">
     <div class="form-container">
       <div class="login-container">
         <el-form
@@ -194,7 +194,7 @@ input {
   font-family: "Poppins", sans-serif;
 }
 
-.container {
+.base-container {
   position: relative;
   width: 100%;
   background-color: #fff;
@@ -304,7 +304,7 @@ input {
   grid-template-columns: repeat(2, 1fr);
 }
 
-.container:before {
+.base-container:before {
   content: "";
   position: absolute;
   height: 2000px;
@@ -355,7 +355,7 @@ input {
 }
 
 @media (max-width: 870px) {
-  .container {
+  .base-container {
     min-height: 800px;
     height: 100vh;
   }
@@ -404,7 +404,7 @@ input {
     padding: 0.5rem 0;
   }
 
-  .container:before {
+  .base-container:before {
     width: 1500px;
     height: 1500px;
     transform: translateX(-50%);
@@ -427,11 +427,11 @@ input {
   .panel .content {
     padding: 0.5rem 1rem;
   }
-  .container {
+  .base-container {
     padding: 1.5rem;
   }
 
-  .container:before {
+  .base-container:before {
     bottom: 72%;
     left: 50%;
   }
