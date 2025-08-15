@@ -282,7 +282,7 @@ import { useRouter } from "vue-router";
 const { proxy } = getCurrentInstance();
 const addFormRef = ref();
 const router = useRouter();
-const menumRef = ref();
+const menuRef = ref();
 const deptRef = ref();
 // 遮罩层
 const loading = ref(true);
@@ -396,9 +396,9 @@ const getDeptTreeselect = () => {
 // 所有菜单节点数据
 const getMenuAllCheckedKeys = () => {
   // 目前被选中的菜单节点
-  let checkedKeys = menumRef.value.getHalfCheckedKeys();
+  let checkedKeys = menuRef.value.getHalfCheckedKeys();
   // 半选中的菜单节点
-  let halfCheckedKeys = menumRef.value.getCheckedKeys();
+  let halfCheckedKeys = menuRef.value.getCheckedKeys();
   checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
   return checkedKeys;
 };
@@ -415,7 +415,7 @@ const getDeptAllCheckedKeys = () => {
 const getRoleMenuTreeselect = (roleId) => {
   roleMenuTreeselect(roleId).then((response) => {
     menuOptions.value = response.menus;
-    menumRef.value.setCheckedKeys(response.checkedKeys);
+    menuRef.value.setCheckedKeys(response.checkedKeys);
   });
 };
 /** 根据角色ID查询部门树结构 */
@@ -479,8 +479,8 @@ const cancelDataScope = () => {
 };
 // 表单重置
 const reset = () => {
-  if (menumRef.value != undefined) {
-    menumRef.value.setCheckedKeys([]);
+  if (menuRef.value != undefined) {
+    menuRef.value.setCheckedKeys([]);
   }
   form.value = {
     id: undefined,
