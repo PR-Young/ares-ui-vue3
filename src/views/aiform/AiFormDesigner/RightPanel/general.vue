@@ -1,9 +1,5 @@
 <template>
-  <el-form-item
-    v-if="props.data.vModel !== undefined"
-    v-show="false"
-    label="字段名"
-  >
+  <el-form-item v-if="props.data.vModel !== undefined" label="字段名">
     <el-input
       v-model="props.data.vModel"
       placeholder="请输入字段名（v-model）"
