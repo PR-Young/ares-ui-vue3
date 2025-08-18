@@ -25,10 +25,9 @@
           <div>
             <div>
               <p>请输入运行参数：</p>
-              <el-input></el-input>
             </div>
             <div ref="paramsContainer"></div>
-            <el-button @click="submitParams()">提交</el-button>
+
             <div class="modal-right">
               <p>执行结果：</p>
               <pre ref="resultText"></pre>
@@ -37,6 +36,7 @@
         </template>
         <template #footer>
           <div style="flex: auto">
+            <el-button @click="submitParams()">提交</el-button>
             <el-button @click="save()">保存</el-button>
             <el-button @click="openModal()">运行</el-button>
           </div>
@@ -47,14 +47,15 @@
 </template>
 
 <script setup lang="ts" name="Tinyflow">
-import router from "@/router";
+import { useRouter } from "vue-router";
 import { Tinyflow } from "@tinyflow-ai/vue";
 import "@tinyflow-ai/vue/dist/index.css";
 import { ref, reactive, onMounted } from "vue";
 import { addSysWorkflows, execute } from "@/api/ai/workflow";
-
+debugger;
+const router = useRouter();
 const height = document.documentElement.clientHeight - 94.5 + "px;";
-const params = router.currentRoute.value.params;
+const params = router.currentRoute.value.query;
 
 const state = reactive({
   isCollapse: false,
@@ -187,7 +188,7 @@ const save = () => {
     data.name = name;
   }
   addSysWorkflows(JSON.stringify(data)).then((response) => {
-    if (response.data.code != 200) throw new Error("请求失败");
+    if (response.code != 200) throw new Error("请求失败");
   });
 };
 
@@ -197,7 +198,7 @@ const exec = (param: string) => {
     data: tinyflow.value.getData(),
   };
 
-  execute(JSON.stringify(data)).then((response) => {
+  execute(data).then((response) => {
     showResult(response.data);
   });
 };

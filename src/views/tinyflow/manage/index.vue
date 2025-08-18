@@ -102,7 +102,7 @@
           <el-button
             size="default"
             type="text"
-            icon=""
+            icon="Plus"
             @click="handleBuild(scope.row)"
             >流程设计
           </el-button>
@@ -334,8 +334,8 @@ const handleExport = () => {
 const handleBuild = (row) => {
   router.push({
     path: "/tinyflow/build",
-    params: {
-      data: row,
+    query: {
+      id: row.id,
     },
   });
 };
