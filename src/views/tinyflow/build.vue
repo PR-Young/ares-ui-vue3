@@ -51,8 +51,12 @@ import { useRouter } from "vue-router";
 import { Tinyflow } from "@tinyflow-ai/vue";
 import "@tinyflow-ai/vue/dist/index.css";
 import { ref, reactive, onMounted } from "vue";
-import { addSysWorkflows, execute } from "@/api/ai/workflow";
-debugger;
+import {
+  updateSysWorkflows,
+  getSysWorkflows,
+  execute,
+} from "@/api/ai/workflow";
+
 const router = useRouter();
 const height = document.documentElement.clientHeight - 94.5 + "px;";
 const params = router.currentRoute.value.query;
@@ -61,14 +65,6 @@ const state = reactive({
   isCollapse: false,
   mounted: false,
 });
-
-onMounted(() => {
-  state.mounted = true;
-});
-const collapse = () => {
-  state.isCollapse = !state.isCollapse;
-  console.log(state.isCollapse);
-};
 
 const tinyflow = ref();
 const paramsContainer = ref();
@@ -99,7 +95,31 @@ const initialData = ref({
   edges: [],
 });
 
-const load = () => {};
+onMounted(() => {
+  state.mounted = true;
+  load();
+});
+const collapse = () => {
+  state.isCollapse = !state.isCollapse;
+  console.log(state.isCollapse);
+};
+const load = () => {
+  getSysWorkflows(params.id).then((res) => {
+    initialData.value = JSON.parse(res.data.graph);
+    tinyflow.value = {
+      data: JSON.parse(res.data.graph),
+      provider: {
+        llm: () => [
+          {
+            value: "llm",
+            label: "llm",
+          },
+        ],
+        knowledge: () => [],
+      },
+    };
+  });
+};
 
 const openModal = () => {
   debugger;
@@ -180,14 +200,14 @@ const save = () => {
   // 创建 data 对象
   var data = {
     id: id,
-    data: tinyflow.value.getData(),
+    graph: JSON.stringify(tinyflow.value.getData()),
   };
 
   // 如果 id 为空，添加 name 字段到 data 中
   if (id === undefined || id === "" || id == null) {
-    data.name = name;
+    data.workflowName = name;
   }
-  addSysWorkflows(JSON.stringify(data)).then((response) => {
+  updateSysWorkflows(data).then((response) => {
     if (response.code != 200) throw new Error("请求失败");
   });
 };
