@@ -239,7 +239,7 @@
       <el-form ref="taskFormTransferRef" :model="taskForm" label-width="80px">
         <el-form-item
           label="处理人"
-          prop="handler"
+          prop="params.addHandlers"
           :rules="[
             { required: true, message: '请选择处理人', trigger: 'blur' },
           ]"
@@ -316,7 +316,7 @@
       <el-form ref="taskFormDeputeRef" :model="taskForm" label-width="80px">
         <el-form-item
           label="处理人"
-          prop="handler"
+          prop="params.addHandlers"
           :rules="[
             { required: true, message: '请选择处理人', trigger: 'blur' },
           ]"
@@ -501,6 +501,24 @@ const setColor = (val) => {
     return "#b3bdbb";
   }
 };
+
+// 表单重置
+const reset = (formRef) => {
+  taskForm.value = {
+    message: "", // 意见内容
+    instanceId: "", // 流程实例编号
+    flowCode: "",
+    taskId: "", // 流程任务编号
+    defId: "", // 流程编号
+    targetKey: "",
+    variable: null,
+    params: {
+      addHandlers: [],
+    },
+  };
+  proxy.resetForm(formRef);
+};
+
 /** 流程流转记录 */
 const getFlowRecordInit = (deployId) => {
   const params = { procInsId: null, deployId: deployId };
@@ -597,6 +615,7 @@ const taskComplete = () => {
 const handleDepute = () => {
   deputeOpen.value = true;
   deputeTitle.value = "委派任务";
+  reset("taskFormDeputeRef");
   const param = {
     deptId: userStore.deptId,
   };
@@ -633,6 +652,7 @@ const submitForm = (data) => {
 const handleReject = () => {
   rejectOpen.value = true;
   rejectTitle.value = "退回流程";
+  reset("taskFormRejectRef");
 };
 /** 退回任务 */
 const taskReject = () => {
@@ -650,7 +670,8 @@ const taskReject = () => {
 /** 转办任务 */
 const handleTransfer = () => {
   transferOpen.value = true;
-  transferTitle.value = "退回流程";
+  transferTitle.value = "转办流程";
+  reset("taskFormTransferRef");
   const param = {
     deptId: userStore.deptId,
   };
