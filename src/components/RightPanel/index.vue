@@ -1,5 +1,5 @@
 <template>
-  <div ref="rightPanel" :class="{ show: show }" class="rightPanel-container">
+  <div ref="rightPanelRef" :class="{ show: show }" class="rightPanel-container">
     <div class="rightPanel-background" />
     <div class="rightPanel">
       <div class="rightPanel-items">
@@ -9,76 +9,79 @@
   </div>
 </template>
 
-<script>
+<script setup name="RightPanel">
 import { addClass, removeClass } from "@/utils";
 import store from "@/store";
 import useSettingsStore from "@/store/modules/settings";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 const settings = useSettingsStore(store);
-export default {
-  name: "RightPanel",
-  props: {
-    clickNotClose: {
-      default: false,
-      type: Boolean,
-    },
-    buttonTop: {
-      default: 250,
-      type: Number,
-    },
+
+const rightPanelRef = ref();
+
+const props = defineProps({
+  clickNotClose: {
+    default: false,
+    type: Boolean,
   },
-  computed: {
-    show: {
-      get() {
-        return settings.showSettings;
-      },
-      set(val) {
-        settings.changeSetting({
-          key: "showSettings",
-          value: val,
-        });
-      },
-    },
-    theme() {
-      return settings.theme;
-    },
+  buttonTop: {
+    default: 250,
+    type: Number,
   },
-  watch: {
-    show(value) {
-      if (value && !this.clickNotClose) {
-        this.addEventClick();
-      }
-      if (value) {
-        addClass(document.body, "showRightPanel");
-      } else {
-        removeClass(document.body, "showRightPanel");
-      }
-    },
+});
+
+const show = computed({
+  get() {
+    return settings.showSettings;
   },
-  mounted() {
-    this.insertToBody();
-    this.addEventClick();
+  set(val) {
+    settings.changeSetting({
+      key: "showSettings",
+      value: val,
+    });
   },
-  beforeUnmount() {
-    const elx = this.$refs.rightPanel;
-    elx.remove();
+});
+
+const theme = computed(() => {
+  return settings.theme;
+});
+
+watch(
+  () => show.value,
+  (value) => {
+    if (value && !props.clickNotClose) {
+      addEventClick();
+    }
+    if (value) {
+      addClass(document.body, "showRightPanel");
+    } else {
+      removeClass(document.body, "showRightPanel");
+    }
   },
-  methods: {
-    addEventClick() {
-      window.addEventListener("click", this.closeSidebar);
-    },
-    closeSidebar(evt) {
-      const parent = evt.target.closest(".rightPanel");
-      if (!parent) {
-        this.show = false;
-        window.removeEventListener("click", this.closeSidebar);
-      }
-    },
-    insertToBody() {
-      const elx = this.$refs.rightPanel;
-      const body = document.querySelector("body");
-      body.insertBefore(elx, body.firstChild);
-    },
-  },
+);
+onMounted(() => {
+  insertToBody();
+  addEventClick();
+});
+
+onBeforeUnmount(() => {
+  const elx = rightPanelRef.value;
+  elx.remove();
+});
+
+const addEventClick = () => {
+  window.addEventListener("click", closeSidebar);
+};
+const closeSidebar = (evt) => {
+  const parent = evt.target.closest(".rightPanel");
+  if (!parent) {
+    show.value = false;
+    window.removeEventListener("click", closeSidebar);
+  }
+};
+const insertToBody = () => {
+  const elx = rightPanelRef.value;
+  const body = document.querySelector("body");
+  body.insertBefore(elx, body.firstChild);
 };
 </script>
 
@@ -143,6 +146,7 @@ export default {
   cursor: pointer;
   color: #fff;
   line-height: 48px;
+
   i {
     font-size: 24px;
     line-height: 48px;

@@ -5,10 +5,10 @@
       <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"
-        :background-color="variables.menuBg"
-        :text-color="variables.menuText"
+        :background-color="variabless.menuBg"
+        :text-color="variabless.menuText"
         :unique-opened="true"
-        :active-text-color="variables.menuActiveText"
+        :active-text-color="variabless.menuActiveText"
         :collapse-transition="false"
         mode="vertical"
       >
@@ -23,7 +23,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import store from "@/store";
 import Logo from "./Logo.vue";
 import SidebarItem from "./SidebarItem.vue";
@@ -31,38 +31,36 @@ import variables from "@/assets/styles/variables.module.scss?inlineq";
 import usePermissionStore from "@/store/modules/permission";
 import useAppStore from "@/store/modules/app";
 import useSettingsStore from "@/store/modules/settings";
+import { computed } from "vue";
+import { useRouter } from "vue-router";
 
 const permission = usePermissionStore(store);
 const app = useAppStore(store);
 const settings = useSettingsStore(store);
+const { currentRoute } = useRouter();
 
-export default {
-  components: { SidebarItem, Logo },
-  computed: {
-    permission_routes() {
-      return permission.permissionRoutes;
-    },
-    sidebar() {
-      return app.sidebar;
-    },
-    activeMenu() {
-      const route = this.$route;
-      const { meta, path } = route;
-      // if set path, the sidebar will highlight the path you set
-      if (meta.activeMenu) {
-        return meta.activeMenu;
-      }
-      return path;
-    },
-    showLogo() {
-      return settings.sidebarLogo;
-    },
-    variables() {
-      return variables;
-    },
-    isCollapse() {
-      return !this.sidebar.opened;
-    },
-  },
-};
+const permission_routes = computed(() => {
+  return permission.permissionRoutes;
+});
+const sidebar = computed(() => {
+  return app.sidebar;
+});
+const activeMenu = computed(() => {
+  const route = currentRoute.value;
+  const { meta, path } = route;
+  // if set path, the sidebar will highlight the path you set
+  if (meta.activeMenu) {
+    return meta.activeMenu;
+  }
+  return path;
+});
+const showLogo = computed(() => {
+  return settings.sidebarLogo;
+});
+const variabless = computed(() => {
+  return variables;
+});
+const isCollapse = computed(() => {
+  return !sidebar.value.opened;
+});
 </script>

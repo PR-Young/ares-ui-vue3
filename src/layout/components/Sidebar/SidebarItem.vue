@@ -50,77 +50,70 @@
   </div>
 </template>
 
-<script>
+<script setup name="SidebarItem">
 import { isExternal } from "@/utils/validate";
 import Item from "./Item.vue";
 import AppLink from "./Link.vue";
 import FixiOSBug from "./FixiOSBug.js";
 import path from "path-browserify";
+import { ref } from "vue";
 
-export default {
-  name: "SidebarItem",
-  components: { Item, AppLink },
-  mixins: [FixiOSBug],
-  props: {
-    // route object
-    item: {
-      type: Object,
-      required: true,
-    },
-    isNest: {
-      type: Boolean,
-      default: false,
-    },
-    basePath: {
-      type: String,
-      default: "",
-    },
+const props = defineProps({
+  // route object
+  item: {
+    type: Object,
+    required: true,
   },
-  data() {
-    this.onlyOneChild = null;
-    return {};
+  isNest: {
+    type: Boolean,
+    default: false,
   },
-  methods: {
-    hasOneShowingChild(children = [], parent) {
-      const showingChildren = children.filter((item) => {
-        if (item.hidden) {
-          return false;
-        } else {
-          // Temp set(will be used if only has one showing child)
-          this.onlyOneChild = item;
-          return true;
-        }
-      });
+  basePath: {
+    type: String,
+    default: "",
+  },
+});
 
-      // When there is only one child router, the child router is displayed by default
-      if (showingChildren.length === 1) {
-        return true;
-      }
+const onlyOneChild = ref(null);
 
-      // Show parent if there are no child router to display
-      if (showingChildren.length === 0) {
-        this.onlyOneChild = { ...parent, path: "", noShowingChildren: true };
-        return true;
-      }
-
+const hasOneShowingChild = (children = [], parent) => {
+  const showingChildren = children.filter((item) => {
+    if (item.hidden) {
       return false;
-    },
-    resolvePath(routePath) {
-      if (isExternal(routePath)) {
-        return routePath;
-      }
-      if (isExternal(this.basePath)) {
-        return this.basePath;
-      }
-      return path.resolve(this.basePath, routePath);
-    },
-    hasTitle(title) {
-      if (title.length > 5) {
-        return title;
-      } else {
-        return "";
-      }
-    },
-  },
+    } else {
+      // Temp set(will be used if only has one showing child)
+      onlyOneChild.value = item;
+      return true;
+    }
+  });
+
+  // When there is only one child router, the child router is displayed by default
+  if (showingChildren.length === 1) {
+    return true;
+  }
+
+  // Show parent if there are no child router to display
+  if (showingChildren.length === 0) {
+    onlyOneChild.value = { ...parent, path: "", noShowingChildren: true };
+    return true;
+  }
+
+  return false;
+};
+const resolvePath = (routePath) => {
+  if (isExternal(routePath)) {
+    return routePath;
+  }
+  if (isExternal(props.basePath)) {
+    return props.basePath;
+  }
+  return path.resolve(props.basePath, routePath);
+};
+const hasTitle = (title) => {
+  if (title.length > 5) {
+    return title;
+  } else {
+    return "";
+  }
 };
 </script>

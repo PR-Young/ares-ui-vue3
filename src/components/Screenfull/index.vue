@@ -7,48 +7,43 @@
   </div>
 </template>
 
-<script>
-import screenfull from 'screenfull'
+<script setup name="Screenfull">
+import screenfull from "screenfull";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 
-export default {
-  name: 'Screenfull',
-  data() {
-    return {
-      isFullscreen: false,
-    }
-  },
-  mounted() {
-    this.init()
-  },
-  beforeUnmount() {
-    this.destroy()
-  },
-  methods: {
-    click() {
-      if (!screenfull.enabled) {
-        this.$message({
-          message: 'you browser can not work',
-          type: 'warning',
-        })
-        return false
-      }
-      screenfull.toggle()
-    },
-    change() {
-      this.isFullscreen = screenfull.isFullscreen
-    },
-    init() {
-      if (screenfull.enabled) {
-        screenfull.on('change', this.change)
-      }
-    },
-    destroy() {
-      if (screenfull.enabled) {
-        screenfull.off('change', this.change)
-      }
-    },
-  },
-}
+const isFullscreen = ref(false);
+
+onMounted(() => {
+  init();
+});
+onBeforeUnmount(() => {
+  destroy();
+});
+
+const click = () => {
+  if (!screenfull.isEnabled) {
+    this.$message({
+      message: "you browser can not work",
+      type: "warning",
+    });
+    return false;
+  }
+  screenfull.toggle();
+};
+const change = () => {
+  isFullscreen.value = screenfull.isFullscreen;
+};
+const init = () => {
+  if (screenfull.isEnabled) {
+    screenfull.on("change", change);
+  }
+};
+
+const destroy = () => {
+  if (screenfull.isEnabled) {
+    screenfull.off("change", change);
+  }
+};
 </script>
 
 <style scoped>

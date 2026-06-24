@@ -14,22 +14,16 @@
   </section>
 </template>
 
-<script>
+<script setup name="AppMain">
 import useTagsViewStore from "@/store/modules/tagsView";
 import store from "@/store";
+import { computed } from "vue";
 const tagsViewStore = useTagsViewStore(store);
-export default {
-  name: "AppMain",
-  computed: {
-    cachedViews() {
-      const cachedViews = tagsViewStore.cachedViews;
-      return [cachedViews];
-    },
-    key() {
-      return this.$route.fullPath;
-    },
-  },
-};
+
+const cachedViews = computed(() => {
+  const cachedViews = tagsViewStore.cachedViews;
+  return [cachedViews];
+});
 </script>
 
 <style lang="scss" scoped>
@@ -39,9 +33,11 @@ export default {
   position: relative;
   overflow: hidden;
 }
+
 .fixed-header + .app-main {
   padding-top: 50px;
 }
+
 .hasTagsView {
   .app-main {
     /* 84 = navbar + tags-view = 50 + 34 */
@@ -52,6 +48,7 @@ export default {
     padding-top: 84px;
   }
 }
+
 // fix css style bug in open el-dialog
 .el-popup-parent--hidden {
   .fixed-header {

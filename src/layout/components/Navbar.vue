@@ -64,7 +64,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import {
   Bell as ElIconBell,
   CaretBottom as ElIconCaretBottom,
@@ -79,110 +79,94 @@ import useUserStore from "@/store/modules/user";
 import useSettingsStore from "@/store/modules/settings";
 import store from "@/store";
 import url from "@/assets/image/profile.jpeg";
+import { computed, onMounted, watch } from "vue";
 
 const app = useAppStore(store);
 const user = useUserStore(store);
 const settings = useSettingsStore(store);
 
-export default {
-  components: {
-    Breadcrumb,
-    Hamburger,
-    Screenfull,
-    SizeSelect,
-    Search,
-    ElIconBell,
-    ElIconCaretBottom,
+onMounted(() => {
+  connectWebsocket();
+});
+const sidebar = computed(() => {
+  return app.sidebar;
+});
+const avatar = computed(() => {
+  return user.avatar;
+});
+const device = computed(() => {
+  return app.device;
+});
+const notice_num = computed(() => {
+  return user.getNoticeNum;
+});
+const setting = computed({
+  get() {
+    return settings.showSettings;
   },
-  created() {
-    this.connectWebsocket();
+  set(val) {
+    settings.changeSetting({ key: "showSettings", value: val });
   },
-  unmounted() {
-    //clearInterval();
-  },
-  computed: {
-    sidebar() {
-      return app.sidebar;
-    },
-    avatar() {
-      return user.avatar;
-    },
-    device() {
-      return app.device;
-    },
-    notice_num() {
-      return user.getNoticeNum;
-    },
-    setting: {
-      get() {
-        return settings.showSettings;
-      },
-      set(val) {
-        settings.changeSetting(val);
-      },
-    },
-  },
-  methods: {
-    imgError(avatar) {
-      avatar.url = url;
-    },
-    toggleSideBar() {
-      app.toggleSideBar();
-    },
-    async logout() {
-      this.$confirm("确定注销并退出系统吗？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      }).then(() => {
-        user.LogOut().then(() => {
-          location.reload();
-        });
-      });
-    },
-    connectWebsocket() {
-      let userAccount = user.getUserAccount;
-      let websocket;
-      if (typeof WebSocket === "undefined") {
-        console.log("您的浏览器不支持WebSocket");
-        return;
-      } else {
-        let protocol = "ws";
-        let url = "";
-        if (window.location.protocol == "https:") {
-          protocol = "wss";
-        }
+});
 
-        url =
-          `${protocol}://` +
-          import.meta.env.VITE_VUE_APP_ADDR +
-          `:8080/ares/ws/` +
-          userAccount;
+const imgError = (avatar) => {
+  avatar.url = url;
+};
+const toggleSideBar = () => {
+  app.toggleSideBar();
+};
+const logout = async () => {
+  this.$confirm("确定注销并退出系统吗？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  }).then(() => {
+    user.LogOut().then(() => {
+      location.reload();
+    });
+  });
+};
+const connectWebsocket = () => {
+  let userAccount = user.getUserAccount;
+  let websocket;
+  if (typeof WebSocket === "undefined") {
+    console.log("您的浏览器不支持WebSocket");
+    return;
+  } else {
+    let protocol = "ws";
+    let url = "";
+    if (window.location.protocol == "https:") {
+      protocol = "wss";
+    }
 
-        // 打开一个websocket
-        websocket = new WebSocket(url);
-        // 建立连接
-        websocket.onopen = () => {
-          // 发送数据
-          //websocket.send("发送数据");
-          console.log("websocket发送数据中");
-        };
-        // 客户端接收服务端返回的数据
-        websocket.onmessage = (evt) => {
-          user.updateNoticeNumber(evt.data);
-          console.log("websocket返回的数据:", evt);
-        };
-        // 发生错误时
-        websocket.onerror = (evt) => {
-          console.log("websocket错误:", evt);
-        };
-        // 关闭连接
-        websocket.onclose = (evt) => {
-          console.log("websocket关闭:", evt);
-        };
-      }
-    },
-  },
+    url =
+      `${protocol}://` +
+      import.meta.env.VITE_VUE_APP_ADDR +
+      `:8080/ares/ws/` +
+      userAccount;
+
+    // 打开一个websocket
+    websocket = new WebSocket(url);
+    // 建立连接
+    websocket.onopen = () => {
+      // 发送数据
+      //websocket.send("发送数据");
+      console.log("websocket发送数据中");
+    };
+    // 客户端接收服务端返回的数据
+    websocket.onmessage = (evt) => {
+      user.updateNoticeNumber(evt.data);
+      console.log("websocket返回的数据:", evt);
+    };
+    // 发生错误时
+    websocket.onerror = (evt) => {
+      console.log("websocket错误:", evt);
+    };
+    // 关闭连接
+    websocket.onclose = (evt) => {
+      console.log("websocket关闭:", evt);
+    };
+  }
 };
 </script>
 
@@ -193,6 +177,7 @@ export default {
   position: relative;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+
   .hamburger-container {
     line-height: 46px;
     height: 100%;
