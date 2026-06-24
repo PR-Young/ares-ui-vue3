@@ -22,28 +22,28 @@
           <el-button
             :icon="Edit"
             type="success"
-            size="default"
+            :size="size"
             @click="handleComplete"
             >审批</el-button
           >
           <el-button
             :icon="CircleClose"
             type="warning"
-            size="default"
+            :size="size"
             @click="handleReject"
             >退回</el-button
           >
           <el-button
             :icon="Edit"
             type="primary"
-            size="default"
+            :size="size"
             @click="handleTransfer"
             >转办</el-button
           >
           <el-button
             :icon="Edit"
             type="primary"
-            size="default"
+            :size="size"
             @click="handleDepute"
             >委派</el-button
           >
@@ -79,58 +79,37 @@
             >
               <p style="font-weight: 700">
                 {{ item.nodeName }}
-                <el-tag
-                  type="primary"
-                  v-if="item.flowStatus == 0"
-                  size="default"
+                <el-tag type="primary" v-if="item.flowStatus == 0" :size="size"
                   >待提交</el-tag
                 >
-                <el-tag
-                  type="primary"
-                  v-if="item.flowStatus == 1"
-                  size="default"
+                <el-tag type="primary" v-if="item.flowStatus == 1" :size="size"
                   >审批中</el-tag
                 >
-                <el-tag
-                  type="primary"
-                  v-if="item.flowStatus == 2"
-                  size="default"
+                <el-tag type="primary" v-if="item.flowStatus == 2" :size="size"
                   >审批通过</el-tag
                 >
-                <el-tag
-                  type="primary"
-                  v-if="item.flowStatus == 3"
-                  size="default"
+                <el-tag type="primary" v-if="item.flowStatus == 3" :size="size"
                   >自动通过</el-tag
                 >
-                <el-tag type="info" v-if="item.flowStatus == 4" size="default"
+                <el-tag type="info" v-if="item.flowStatus == 4" :size="size"
                   >终止</el-tag
                 >
-                <el-tag type="info" v-if="item.flowStatus == 5" size="default"
+                <el-tag type="info" v-if="item.flowStatus == 5" :size="size"
                   >作废</el-tag
                 >
-                <el-tag
-                  type="warning"
-                  v-if="item.flowStatus == 6"
-                  size="default"
+                <el-tag type="warning" v-if="item.flowStatus == 6" :size="size"
                   >撤销</el-tag
                 >
-                <el-tag
-                  type="warning"
-                  v-if="item.flowStatus == 7"
-                  size="default"
+                <el-tag type="warning" v-if="item.flowStatus == 7" :size="size"
                   >取回</el-tag
                 >
-                <el-tag
-                  type="success"
-                  v-if="item.flowStatus == 8"
-                  size="default"
+                <el-tag type="success" v-if="item.flowStatus == 8" :size="size"
                   >已完成</el-tag
                 >
-                <el-tag type="danger" v-if="item.flowStatus == 9" size="default"
+                <el-tag type="danger" v-if="item.flowStatus == 9" :size="size"
                   >已退回</el-tag
                 >
-                <el-tag type="info" v-if="item.flowStatus == 10" size="default"
+                <el-tag type="info" v-if="item.flowStatus == 10" :size="size"
                   >失效</el-tag
                 >
               </p>
@@ -369,11 +348,18 @@ import {
 import FormParser from "@/views/aiform/AiFormParser/index.vue";
 import store from "@/store";
 import useTagsViewStore from "@/store/modules/tagsView";
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { startFlow, getFlowChart } from "@/api/aresflow/process";
 import useUserStore from "@/store/modules/user";
 import { listUser } from "@/api/system/user";
+import useAppStore from "@/store/modules/app";
+
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 const tagsView = useTagsViewStore(store);
@@ -452,7 +438,7 @@ onMounted(() => {
     processVariables(
       taskForm.value.taskId,
       taskForm.value.instanceId,
-      taskForm.value.defId
+      taskForm.value.defId,
     );
     getFlowChartImg(taskForm.value.instanceId);
   } else if (handleType.value == "finished") {
@@ -462,7 +448,7 @@ onMounted(() => {
     processVariables(
       taskForm.value.taskId,
       taskForm.value.instanceId,
-      taskForm.value.defId
+      taskForm.value.defId,
     );
   }
 });
@@ -712,18 +698,22 @@ const taskDepute = () => {
   width: 800px;
   padding: 15px;
 }
+
 .clearfix:before,
 .clearfix:after {
   display: table;
   content: "";
 }
+
 .clearfix:after {
   clear: both;
 }
+
 .box-card {
   width: 100%;
   margin-bottom: 20px;
 }
+
 .el-tag + .el-tag {
   margin-left: 10px;
 }

@@ -23,7 +23,7 @@
               <div class="card-panel-description">
                 <div class="card-panel-text">
                   {{ flow.flowName }}
-                  <el-tag size="default">v{{ flow.version }}</el-tag>
+                  <el-tag :size="size">v{{ flow.version }}</el-tag>
                 </div>
               </div>
             </div>
@@ -36,8 +36,16 @@
 
 <script setup name="Workbench">
 import { activeFlowList } from "@/api/aresflow/process";
-import { onMounted, ref, getCurrentInstance } from "vue";
+import { onMounted, ref, getCurrentInstance, computed } from "vue";
 import { useRouter } from "vue-router";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
+
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 // 遮罩层
@@ -97,6 +105,7 @@ const handleChange = (val) => {
 <style lang="scss" scoped>
 .panel-group {
   margin-top: 18px;
+
   .card-panel-col {
     margin-bottom: 32px;
   }
@@ -181,15 +190,18 @@ const handleChange = (val) => {
     }
   }
 }
+
 @media (max-width: 550px) {
   .card-panel-description {
     display: none;
   }
+
   .card-panel-icon-wrapper {
     float: none !important;
     width: 100%;
     height: 100%;
     margin: 0 !important;
+
     .svg-icon {
       display: block;
       margin: 14px auto !important;

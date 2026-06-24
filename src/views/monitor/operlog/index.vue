@@ -12,7 +12,7 @@
           placeholder="请输入系统模块"
           clearable
           style="width: 240px"
-          size="default"
+          :size="size"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -22,7 +22,7 @@
           placeholder="请输入操作人员"
           clearable
           style="width: 240px"
-          size="default"
+          :size="size"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -31,7 +31,7 @@
           v-model="queryParams.businessType"
           placeholder="操作类型"
           clearable
-          size="default"
+          :size="size"
           style="width: 240px"
         >
           <el-option
@@ -47,7 +47,7 @@
           v-model="queryParams.status"
           placeholder="操作状态"
           clearable
-          size="default"
+          :size="size"
           style="width: 240px"
         >
           <el-option
@@ -61,7 +61,7 @@
       <el-form-item label="操作时间">
         <el-date-picker
           v-model="dateRange"
-          size="default"
+          :size="size"
           style="width: 240px"
           value-format="YYYY-MM-DD"
           type="daterange"
@@ -74,11 +74,11 @@
         <el-button
           type="primary"
           :icon="Search"
-          size="default"
+          :size="size"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="Refresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" :size="size" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -89,7 +89,7 @@
         <el-button
           type="danger"
           :icon="Delete"
-          size="default"
+          :size="size"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['monitor:operlog:remove']"
@@ -100,7 +100,7 @@
         <el-button
           type="danger"
           :icon="Delete"
-          size="default"
+          :size="size"
           @click="handleClean"
           v-hasPermi="['monitor:operlog:remove']"
           >清空</el-button
@@ -110,7 +110,7 @@
         <el-button
           type="warning"
           :icon="Download"
-          size="default"
+          :size="size"
           @click="handleExport"
           v-hasPermi="['system:config:export']"
           >导出</el-button
@@ -165,7 +165,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="View"
@@ -187,12 +187,7 @@
 
     <!-- 操作日志详细 -->
     <el-dialog title="操作日志详细" v-model="open" width="700px" append-to-body>
-      <el-form
-        ref="addFormRef"
-        :model="form"
-        label-width="100px"
-        size="default"
-      >
+      <el-form ref="addFormRef" :model="form" label-width="100px" :size="size">
         <el-row>
           <el-col :span="12">
             <el-form-item label="操作模块："
@@ -261,8 +256,15 @@ import {
   cleanOperlog,
   exportOperlog,
 } from "@/api/monitor/operlog";
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref } from "vue";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
 
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 // 遮罩层
 const loading = ref(true);

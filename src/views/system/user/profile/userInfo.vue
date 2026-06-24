@@ -16,8 +16,8 @@
             </el-radio-group>
           </el-form-item> -->
     <el-form-item>
-      <el-button type="primary" size="default" @click="submit">保存</el-button>
-      <el-button type="danger" size="default" @click="close">关闭</el-button>
+      <el-button type="primary" :size="size" @click="submit">保存</el-button>
+      <el-button type="danger" :size="size" @click="close">关闭</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -26,9 +26,15 @@
 import { updateUserProfile } from "@/api/system/user";
 import store from "@/store";
 import useTagsViewStore from "@/store/modules/tagsView";
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import useAppStore from "@/store/modules/app";
 
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const addFormRef = ref();
 const router = useRouter();

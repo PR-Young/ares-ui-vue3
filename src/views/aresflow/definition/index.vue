@@ -1,44 +1,19 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
   <div class="app-container">
-    <el-form
-      :model="queryParams"
-      ref="queryForm"
-      :inline="true"
-      v-show="showSearch"
-      label-width="68px"
-    >
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="名称" prop="flowName">
-        <el-input
-          v-model="queryParams.flowName"
-          placeholder="请输入名称"
-          clearable
-          size="default"
-          @keyup.enter="handleQuery"
-        />
+        <el-input v-model="queryParams.flowName" placeholder="请输入名称" clearable :size="size"
+          @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item label="开始时间" prop="createTime">
-        <el-date-picker
-          clearable
-          size="default"
-          v-model="queryParams.createTime"
-          type="date"
-          value-format="YYYY-MM-DD"
-          placeholder="选择时间"
-        >
+        <el-date-picker clearable :size="size" v-model="queryParams.createTime" type="date" value-format="YYYY-MM-DD"
+          placeholder="选择时间">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button
-          type="primary"
-          :icon="Search"
-          size="default"
-          @click="handleQuery"
-          >搜索</el-button
-        >
-        <el-button :icon="Refresh" size="default" @click="resetQuery"
-          >重置</el-button
-        >
+        <el-button type="primary" :icon="Search" :size="size" @click="handleQuery">搜索</el-button>
+        <el-button :icon="Refresh" :size="size" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
@@ -48,71 +23,29 @@
           type="primary"
           plain
           :icon="Upload"
-          size="default"
+          :size="size"
           @click="handleImport"
           >导入</el-button
         >
       </el-col> -->
       <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          :icon="Plus"
-          size="default"
-          @click="handleAdd"
-          >新增</el-button
-        >
+        <el-button type="success" plain :icon="Plus" :size="size" @click="handleAdd">新增</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          :icon="Delete"
-          size="default"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:deployment:remove']"
-          >删除</el-button
-        >
+        <el-button type="danger" plain :icon="Delete" :size="size" :disabled="multiple" @click="handleDelete"
+          v-hasPermi="['system:deployment:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          :icon="Download"
-          size="default"
-          @click="handleExport"
-          v-hasPermi="['system:deployment:export']"
-          >导出</el-button
-        >
+        <el-button type="warning" plain :icon="Download" :size="size" @click="handleExport"
+          v-hasPermi="['system:deployment:export']">导出</el-button>
       </el-col>
     </el-row>
 
-    <el-table
-      v-loading="loading"
-      fit
-      :data="definitionList"
-      border
-      @selection-change="handleSelectionChange"
-    >
+    <el-table v-loading="loading" fit :data="definitionList" border @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column
-        label="流程编码"
-        align="center"
-        prop="flowCode"
-        :show-overflow-tooltip="true"
-      />
-      <el-table-column
-        label="流程类别"
-        align="center"
-        prop="category"
-        :formatter="categoryFormat"
-      />
-      <el-table-column
-        label="流程名称"
-        align="center"
-        :show-overflow-tooltip="true"
-      >
+      <el-table-column label="流程编码" align="center" prop="flowCode" :show-overflow-tooltip="true" />
+      <el-table-column label="流程类别" align="center" prop="category" :formatter="categoryFormat" />
+      <el-table-column label="流程名称" align="center" :show-overflow-tooltip="true">
         <template v-slot="scope">
           <el-button type="primary" link @click="handleReadImage(scope.row.id)">
             <span>{{ scope.row.flowName }}</span>
@@ -121,106 +54,64 @@
       </el-table-column>
       <el-table-column label="是否发布" align="center" width="90">
         <template v-slot="scope">
-          <el-tag type="warning" v-if="scope.row.isPublish === 0"
-            >未发布</el-tag
-          >
-          <el-tag type="success" v-if="scope.row.isPublish === 1"
-            >已发布</el-tag
-          >
+          <el-tag type="warning" v-if="scope.row.isPublish === 0">未发布</el-tag>
+          <el-tag type="success" v-if="scope.row.isPublish === 1">已发布</el-tag>
           <el-tag type="info" v-if="scope.row.isPublish === 9">失效</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="流程版本" align="center" width="90">
         <template v-slot="scope">
-          <el-tag size="default">v{{ scope.row.version }}</el-tag>
+          <el-tag :size="size">v{{ scope.row.version }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="状态" align="center" width="90">
         <template v-slot="scope">
-          <el-tag type="success" v-if="scope.row.activityStatus === 1"
-            >激活</el-tag
-          >
-          <el-tag type="warning" v-if="scope.row.activityStatus === 0"
-            >挂起</el-tag
-          >
+          <el-tag type="success" v-if="scope.row.activityStatus === 1">激活</el-tag>
+          <el-tag type="warning" v-if="scope.row.activityStatus === 0">挂起</el-tag>
         </template>
       </el-table-column>
-      <el-table-column
-        label="创建时间"
-        align="center"
-        prop="createTime"
-        width="180"
-      >
+      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="操作"
-        align="center"
-        class-name="small-padding fixed-width"
-      >
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
-          <el-button
-            size="default"
-            type="primary"
-            link
-            :icon="Edit"
-            @click="handleLoadXml(scope.row)"
-            >设计流程</el-button
-          >
-          <el-button
-            size="default"
-            type="primary"
-            link
-            :icon="Connection"
-            @click="handleAddForm(scope.row)"
-            v-if="scope.row.formId == null"
-            >配置表单</el-button
-          >
+          <el-button :size="size" type="primary" link :icon="Edit" @click="handleLoadXml(scope.row)">设计流程</el-button>
+          <el-button :size="size" type="primary" link :icon="Connection" @click="handleAddForm(scope.row)"
+            v-if="scope.row.formId == null">配置表单</el-button>
           <el-dropdown>
             <span class="el-dropdown-link">
-              更多操作<el-icon class="el-icon--right"><ArrowDown /></el-icon>
+              更多操作<el-icon class="el-icon--right">
+                <ArrowDown />
+              </el-icon>
             </span>
             <template v-slot:dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item
-                  :icon="VideoPause"
-                  @click="handleUpdatePublishState(scope.row)"
-                  v-if="scope.row.isPublish === 0"
-                >
+                <el-dropdown-item :icon="VideoPause" @click="handleUpdatePublishState(scope.row)"
+                  v-if="scope.row.isPublish === 0">
                   发布
                 </el-dropdown-item>
-                <el-dropdown-item
-                  :icon="VideoPlay"
-                  @click="handleUpdatePublishState(scope.row)"
-                  v-if="scope.row.isPublish === 1"
-                >
+                <el-dropdown-item :icon="VideoPlay" @click="handleUpdatePublishState(scope.row)"
+                  v-if="scope.row.isPublish === 1">
                   取消发布
                 </el-dropdown-item>
-                <el-dropdown-item
-                  :icon="VideoPause"
-                  @click="handleUpdateSuspensionState(scope.row)"
-                  v-if="scope.row.activityStatus === 1"
-                >
+                <el-dropdown-item :icon="VideoPause" @click="handleUpdateSuspensionState(scope.row)"
+                  v-if="scope.row.activityStatus === 1">
                   挂起
                 </el-dropdown-item>
-                <el-dropdown-item
-                  :icon="VideoPlay"
-                  @click="handleUpdateSuspensionState(scope.row)"
-                  v-if="scope.row.activityStatus === 0"
-                >
+                <el-dropdown-item :icon="VideoPlay" @click="handleUpdateSuspensionState(scope.row)"
+                  v-if="scope.row.activityStatus === 0">
                   激活
                 </el-dropdown-item>
-                <el-dropdown-item
-                  :icon="VideoPlay"
-                  @click="handleFlowStatus(scope.row)"
-                  v-if="scope.row.isPublish === 9"
-                >
+                <el-dropdown-item :icon="VideoPlay" @click="handleFlowStatus(scope.row)"
+                  v-if="scope.row.isPublish === 9">
                   更新发布状态
                 </el-dropdown-item>
                 <el-dropdown-item @click="handleDelete(scope.row)">
-                  <el-icon><Delete /></el-icon>
+                  <el-icon>
+                    <Delete />
+                  </el-icon>
                   删除
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -230,22 +121,12 @@
       </el-table-column>
     </el-table>
 
-    <pagination
-      v-show="total > 0"
-      :total="total"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
-      @pagination="getList"
-    />
+    <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
+      v-model:limit="queryParams.pageSize" @pagination="getList" />
 
     <!-- 添加或修改流程定义对话框 -->
     <el-dialog :title="title" v-model="open" width="800px" append-to-body>
-      <el-form
-        ref="addFormRef"
-        :model="form"
-        :rules="rules"
-        label-width="120px"
-      >
+      <el-form ref="addFormRef" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="流程编码" required prop="flowCode">
           <el-input v-model="form.flowCode" placeholder="请输入流程编码" />
         </el-form-item>
@@ -253,19 +134,15 @@
           <el-input v-model="form.flowName" placeholder="请输入流程名称" />
         </el-form-item>
         <el-form-item label="流程类别" required prop="category">
-          <el-select v-model="form.category" size="default">
-            <el-option
-              v-for="item in categorys"
-              :key="item.dictValue"
-              :label="item.dictLabel"
-              :value="item.dictValue"
-            />
+          <el-select v-model="form.category" :size="size">
+            <el-option v-for="item in categorys" :key="item.dictValue" :label="item.dictLabel"
+              :value="item.dictValue" />
           </el-select>
         </el-form-item>
         <!-- <el-form-item label="是否自定义表单" prop="formCustom">
           <el-select
             v-model="form.formCustom"
-            size="default"
+            :size="size"
             @change="isCustom"
           >
             <el-option label="是" value="Y" />
@@ -289,36 +166,20 @@
     </el-dialog>
 
     <!-- bpmn20.xml导入对话框 -->
-    <el-dialog
-      :title="upload.title"
-      v-model="upload.open"
-      width="400px"
-      append-to-body
-    >
-      <el-upload
-        ref="upload"
-        :limit="1"
-        accept=".xml"
-        :headers="upload.headers"
-        :action="
-          upload.url + '?name=' + upload.name + '&category=' + upload.category
-        "
-        :disabled="upload.isUploading"
-        :on-progress="handleFileUploadProgress"
-        :on-success="handleFileSuccess"
-        :auto-upload="false"
-        drag
-      >
-        <el-icon><Upload /></el-icon>
+    <el-dialog :title="upload.title" v-model="upload.open" width="400px" append-to-body>
+      <el-upload ref="upload" :limit="1" accept=".xml" :headers="upload.headers" :action="upload.url + '?name=' + upload.name + '&category=' + upload.category
+        " :disabled="upload.isUploading" :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess"
+        :auto-upload="false" drag>
+        <el-icon>
+          <Upload />
+        </el-icon>
         <div class="el-upload__text">
           将文件拖到此处，或
           <em>点击上传</em>
         </div>
         <template v-slot:tip>
           <div class="el-upload__tip">
-            流程名称：<el-input v-model="upload.name" /> 流程分类：<el-input
-              v-model="upload.category"
-            />
+            流程名称：<el-input v-model="upload.name" /> 流程分类：<el-input v-model="upload.category" />
           </div>
         </template>
         <template>
@@ -336,77 +197,38 @@
     </el-dialog>
 
     <!-- 流程图 -->
-    <el-dialog
-      :title="readImage.title"
-      v-model="readImage.open"
-      width="70%"
-      append-to-body
-    >
+    <el-dialog :title="readImage.title" v-model="readImage.open" width="70%" append-to-body>
       <img :src="xmlData" style="width: 100%; height: 100%" />
       <!-- <iframe :src="readImage.url" style="width: 100%; height: 100%" /> -->
     </el-dialog>
 
     <!--表单配置详情-->
-    <el-dialog
-      :title="formTitle"
-      v-model="formConfOpen"
-      width="50%"
-      append-to-body
-    >
+    <el-dialog :title="formTitle" v-model="formConfOpen" width="50%" append-to-body>
       <div class="test-form">
         <form-parser :conf="formConf" ref="formRef"></form-parser>
       </div>
     </el-dialog>
 
     <!--挂载表单-->
-    <el-dialog
-      :title="formDeployTitle"
-      v-model="formDeployOpen"
-      width="60%"
-      append-to-body
-    >
-      <el-table
-        ref="singleTable"
-        :data="formList"
-        border
-        highlight-current-row
-        style="width: 100%"
-      >
+    <el-dialog :title="formDeployTitle" v-model="formDeployOpen" width="60%" append-to-body>
+      <el-table ref="singleTable" :data="formList" border highlight-current-row style="width: 100%">
         <el-table-column label="表单编号" align="center" prop="id" />
         <el-table-column label="表单名称" align="center" prop="formName" />
         <el-table-column label="是否绑定" align="center" prop="formName">
           <template v-slot="scope">
-            <el-tag type="success" v-if="scope.row.id === bindFormId"
-              >是</el-tag
-            >
+            <el-tag type="success" v-if="scope.row.id === bindFormId">是</el-tag>
             <el-tag type="info" v-if="scope.row.id !== bindFormId">否</el-tag>
           </template>
         </el-table-column>
-        <el-table-column
-          label="操作"
-          align="center"
-          class-name="small-padding fixed-width"
-        >
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template v-slot="scope">
-            <el-button
-              size="default"
-              type="primary"
-              link
-              @click="submitFormDeploy(scope.row)"
-              >确定</el-button
-            >
+            <el-button :size="size" type="primary" link @click="submitFormDeploy(scope.row)">确定</el-button>
           </template>
         </el-table-column>
       </el-table>
 
-      <pagination
-        layout="prev, pager, next"
-        v-show="formTotal > 0"
-        :total="formTotal"
-        v-model:page="formQueryParams.pageNum"
-        v-model:limit="formQueryParams.pageSize"
-        @pagination="ListFormDeploy"
-      />
+      <pagination layout="prev, pager, next" v-show="formTotal > 0" :total="formTotal"
+        v-model:page="formQueryParams.pageNum" v-model:limit="formQueryParams.pageSize" @pagination="ListFormDeploy" />
     </el-dialog>
   </div>
 </template>
@@ -443,9 +265,17 @@ import {
   listForm,
   getBindForm,
 } from "@/api/aresflow/form";
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref } from "vue";
 import FormParser from "@/views/aiform/AiFormParser/index.vue";
 import { useRouter } from "vue-router";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
+
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 // 遮罩层

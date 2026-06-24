@@ -11,7 +11,7 @@
           v-model="queryParams.tableName"
           placeholder="请输入表名称"
           clearable
-          size="default"
+          :size="size"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -20,14 +20,14 @@
           v-model="queryParams.tableComment"
           placeholder="请输入表描述"
           clearable
-          size="default"
+          :size="size"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker
           v-model="dateRange"
-          size="default"
+          :size="size"
           style="width: 240px"
           value-format="YYYY-MM-DD"
           type="daterange"
@@ -50,11 +50,11 @@
         <el-button
           type="primary"
           :icon="Search"
-          size="default"
+          :size="size"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="Refresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" :size="size" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -65,7 +65,7 @@
         <el-button
           type="primary"
           :icon="Operation"
-          size="default"
+          :size="size"
           @click="handleGenBasicInfo"
           >生成配置</el-button
         >
@@ -116,7 +116,7 @@
         <template v-slot="scope">
           <el-button
             link
-            size="default"
+            :size="size"
             type="primary"
             :icon="View"
             @click="handlePreview(scope.row)"
@@ -124,7 +124,7 @@
           >
           <el-button
             link
-            size="default"
+            :size="size"
             type="primary"
             :icon="Download"
             @click="handleGenTable(scope.row)"
@@ -174,8 +174,16 @@ import {
 import { listDbTable, previewTable, delTable } from "@/api/tool/gen";
 import importTable from "./importTable.vue";
 import { downLoadZip } from "@/utils/zipdownload";
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
+
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 // 遮罩层
@@ -232,7 +240,7 @@ const getList = () => {
       tableList.value = response.rows;
       total.value = response.total;
       loading.value = false;
-    }
+    },
   );
 };
 /** 搜索按钮操作 */
@@ -249,7 +257,7 @@ const handleGenTable = (row) => {
   }
   downLoadZip(
     "ares/tool/gen/genCode/" + queryParams.flag + "/" + tableNames,
-    "code"
+    "code",
   );
 };
 const handleGenBasicInfo = () => {

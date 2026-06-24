@@ -8,7 +8,7 @@
             v-model="queryParams.searchValue"
             placeholder="请输入"
             clearable
-            size="default"
+            :size="size"
             @keyup.enter="handleQuery"
           />
         </el-form-item>
@@ -16,7 +16,7 @@
           <el-button
             type="primary"
             :icon="Search"
-            size="default"
+            :size="size"
             @click="handleQuery"
           ></el-button>
         </el-form-item>
@@ -39,8 +39,22 @@
 import { Search } from "@element-plus/icons-vue";
 import { queryByKey } from "@/api/home";
 import { useRouter } from "vue-router";
-import { getCurrentInstance, onMounted, reactive, ref, watch } from "vue";
+import {
+  computed,
+  getCurrentInstance,
+  onMounted,
+  reactive,
+  ref,
+  watch,
+} from "vue";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
 
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const router = useRouter();
 
 // 遮罩层

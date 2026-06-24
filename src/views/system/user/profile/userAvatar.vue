@@ -35,42 +35,44 @@
             :show-file-list="false"
             :before-upload="beforeUpload"
           >
-            <el-button size="default">
+            <el-button :size="size">
               上传
-              <el-icon class="el-icon--right"><Upload /></el-icon>
+              <el-icon class="el-icon--right">
+                <Upload />
+              </el-icon>
             </el-button>
           </el-upload>
         </el-col>
         <el-col :lg="{ span: 1, offset: 2 }" :md="2">
           <el-button
             :icon="Plus"
-            size="default"
+            :size="size"
             @click="changeScale(1)"
           ></el-button>
         </el-col>
         <el-col :lg="{ span: 1, offset: 1 }" :md="2">
           <el-button
             :icon="ElIconMinus"
-            size="default"
+            :size="size"
             @click="changeScale(-1)"
           ></el-button>
         </el-col>
         <el-col :lg="{ span: 1, offset: 1 }" :md="2">
           <el-button
             :icon="ElIconRefreshLeft"
-            size="default"
+            :size="size"
             @click="rotateLeft()"
           ></el-button>
         </el-col>
         <el-col :lg="{ span: 1, offset: 1 }" :md="2">
           <el-button
             :icon="ElIconRefreshRight"
-            size="default"
+            :size="size"
             @click="rotateRight()"
           ></el-button>
         </el-col>
         <el-col :lg="{ span: 2, offset: 6 }" :md="2">
-          <el-button type="primary" size="default" @click="uploadImg()"
+          <el-button type="primary" :size="size" @click="uploadImg()"
             >提 交</el-button
           >
         </el-col>
@@ -92,7 +94,14 @@ import "vue-cropper/dist/index.css";
 import { VueCropper } from "vue-cropper";
 import { uploadAvatar } from "@/api/system/user";
 import useUserStore from "@/store/modules/user";
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref } from "vue";
+import useAppStore from "@/store/modules/app";
+
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const user = useUserStore(store);
 const { proxy } = getCurrentInstance();
 // 是否显示弹出层

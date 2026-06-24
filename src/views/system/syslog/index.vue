@@ -11,7 +11,7 @@
           v-model="queryParams.hostIp"
           placeholder="请输入IP"
           clearable
-          size="default"
+          :size="size"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -20,7 +20,7 @@
           v-model="queryParams.userName"
           placeholder="请输入用户名"
           clearable
-          size="default"
+          :size="size"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -30,7 +30,7 @@
           placeholder="请求方式"
           clearable
           style="width: 120px"
-          size="default"
+          :size="size"
         >
           <el-option
             v-for="dict in methodOptions"
@@ -44,11 +44,11 @@
         <el-button
           type="primary"
           :icon="Search"
-          size="default"
+          :size="size"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="Refresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" :size="size" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -124,7 +124,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="View"
@@ -203,9 +203,16 @@
 <script setup name="SysLog">
 import { Search, Refresh, View } from "@element-plus/icons-vue";
 import { listLog } from "@/api/system/log";
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
 
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const addFormRef = ref();
 

@@ -6,7 +6,7 @@
           v-model="queryParams.roleName"
           placeholder="请输入角色名称"
           clearable
-          size="default"
+          :size="size"
           style="width: 240px"
           @keyup.enter="handleQuery"
         />
@@ -16,7 +16,7 @@
                 v-model="queryParams.roleKey"
                 placeholder="请输入权限字符"
                 clearable
-                size="default"
+                :size="size"
                 style="width: 240px"
                 @keyup.enter.native="handleQuery"
               />
@@ -26,7 +26,7 @@
                 v-model="queryParams.status"
                 placeholder="角色状态"
                 clearable
-                size="default"
+                :size="size"
                 style="width: 240px"
               >
                 <el-option
@@ -40,7 +40,7 @@
       <el-form-item label="创建时间">
         <el-date-picker
           v-model="dateRange"
-          size="default"
+          :size="size"
           style="width: 240px"
           value-format="YYYY-MM-DD"
           type="daterange"
@@ -53,11 +53,11 @@
         <el-button
           type="primary"
           :icon="Search"
-          size="default"
+          :size="size"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="Refresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" :size="size" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -68,7 +68,7 @@
         <el-button
           type="primary"
           :icon="Plus"
-          size="default"
+          :size="size"
           @click="handleAdd"
           v-hasPermi="['role:edit']"
           >新增</el-button
@@ -78,7 +78,7 @@
         <el-button
           type="success"
           :icon="Edit"
-          size="default"
+          :size="size"
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['role:edit']"
@@ -89,7 +89,7 @@
         <el-button
           type="danger"
           :icon="Delete"
-          size="default"
+          :size="size"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['role:delete']"
@@ -100,7 +100,7 @@
         <el-button
           type="warning"
           :icon="Download"
-          size="default"
+          :size="size"
           @click="handleExport"
           v-hasPermi="['role:export']"
           >导出</el-button
@@ -147,7 +147,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="Edit"
@@ -156,7 +156,7 @@
             >修改</el-button
           >
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="CircleCheck"
@@ -164,7 +164,7 @@
             >数据权限</el-button
           >
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="Delete"
@@ -276,9 +276,23 @@ import {
   getTreeselect as deptTreeselect,
   roleDeptTreeselect,
 } from "@/api/system/dept";
-import { getCurrentInstance, onMounted, reactive, ref, nextTick } from "vue";
+import {
+  getCurrentInstance,
+  onMounted,
+  reactive,
+  ref,
+  nextTick,
+  computed,
+} from "vue";
 import { useRouter } from "vue-router";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
 
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const addFormRef = ref();
 const router = useRouter();
@@ -378,7 +392,7 @@ const getList = () => {
       roleList.value = response.rows;
       total.value = response.total;
       loading.value = false;
-    }
+    },
   );
 };
 /** 查询菜单树结构 */

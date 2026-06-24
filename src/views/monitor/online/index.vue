@@ -6,7 +6,7 @@
           v-model="queryParams.ipaddr"
           placeholder="请输入登录地址"
           clearable
-          size="default"
+          :size="size"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -15,7 +15,7 @@
           v-model="queryParams.userName"
           placeholder="请输入用户名称"
           clearable
-          size="default"
+          :size="size"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -23,11 +23,11 @@
         <el-button
           type="primary"
           :icon="Search"
-          size="default"
+          :size="size"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="Refresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" :size="size" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -82,7 +82,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="default"
+            :size="size"
             link
             :icon="Delete"
             @click="handleForceLogout(scope.row)"
@@ -105,8 +105,15 @@
 <script setup name="Online">
 import { Search, Refresh, Delete } from "@element-plus/icons-vue";
 import { list, forceLogout } from "@/api/monitor/online";
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref } from "vue";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
 
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const addFormRef = ref();
 // 遮罩层

@@ -6,7 +6,7 @@
           v-model="queryParams.deptName"
           placeholder="请输入部门名称"
           clearable
-          size="default"
+          :size="size"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -15,7 +15,7 @@
           v-model="queryParams.status"
           placeholder="部门状态"
           clearable
-          size="default"
+          :size="size"
         >
           <el-option
             v-for="dict in statusOptions"
@@ -30,7 +30,7 @@
           class="filter-item"
           type="primary"
           :icon="Search"
-          size="default"
+          :size="size"
           @click="handleQuery"
           >搜索</el-button
         >
@@ -38,7 +38,7 @@
           class="filter-item"
           type="primary"
           :icon="Plus"
-          size="default"
+          :size="size"
           @click="handleAdd"
           v-hasPermi="['system:dept:add']"
           >新增</el-button
@@ -86,7 +86,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="Edit"
@@ -95,7 +95,7 @@
             >修改</el-button
           >
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="Plus"
@@ -105,7 +105,7 @@
           >
           <el-button
             v-if="scope.row.parentId != 0"
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="Delete"
@@ -207,9 +207,16 @@ import {
 } from "@/api/system/dept";
 import Treeselect from "vue3-treeselect";
 import "vue3-treeselect/dist/vue3-treeselect.css";
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
 
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const addFormRef = ref();
 const router = useRouter();

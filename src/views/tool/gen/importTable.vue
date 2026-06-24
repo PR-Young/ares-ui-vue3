@@ -13,7 +13,7 @@
           v-model="queryParams.tableName"
           placeholder="请输入表名称"
           clearable
-          size="default"
+          :size="size"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -22,7 +22,7 @@
           v-model="queryParams.tableComment"
           placeholder="请输入表描述"
           clearable
-          size="default"
+          :size="size"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -30,11 +30,11 @@
         <el-button
           type="primary"
           :icon="Search"
-          size="default"
+          :size="size"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="Refresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" :size="size" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -73,7 +73,15 @@
 <script setup name="">
 import { Search, Refresh } from "@element-plus/icons-vue";
 import { listDbTable, importTable } from "@/api/tool/gen";
-import { ref, reactive, getCurrentInstance } from "vue";
+import { ref, reactive, getCurrentInstance, computed } from "vue";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
+
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 
 // 遮罩层

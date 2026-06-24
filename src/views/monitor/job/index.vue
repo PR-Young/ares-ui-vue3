@@ -11,7 +11,7 @@
           v-model="queryParams.jobName"
           placeholder="请输入任务名称"
           clearable
-          size="default"
+          :size="size"
           style="width: 240px"
           @keyup.enter="handleQuery"
         />
@@ -21,7 +21,7 @@
           v-model="queryParams.jobGroup"
           placeholder="请选择任务组名"
           clearable
-          size="default"
+          :size="size"
           style="width: 240px"
         >
           <el-option
@@ -37,7 +37,7 @@
           v-model="queryParams.status"
           placeholder="请选择任务状态"
           clearable
-          size="default"
+          :size="size"
           style="width: 240px"
         >
           <el-option
@@ -52,11 +52,11 @@
         <el-button
           type="primary"
           :icon="Search"
-          size="default"
+          :size="size"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="Refresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" :size="size" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -67,7 +67,7 @@
         <el-button
           type="primary"
           :icon="Plus"
-          size="default"
+          :size="size"
           @click="handleAdd"
           v-hasPermi="['quartz:edit']"
           >新增</el-button
@@ -77,7 +77,7 @@
         <el-button
           type="success"
           :icon="Edit"
-          size="default"
+          :size="size"
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['quartz:edit']"
@@ -88,7 +88,7 @@
         <el-button
           type="danger"
           :icon="Delete"
-          size="default"
+          :size="size"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['quartz:delete']"
@@ -99,7 +99,7 @@
         <el-button
           type="warning"
           :icon="Download"
-          size="default"
+          :size="size"
           @click="handleExport"
           v-hasPermi="['quartz:export']"
           >导出</el-button
@@ -109,7 +109,7 @@
         <el-button
           type="info"
           :icon="Operation"
-          size="default"
+          :size="size"
           @click="handleJobLog"
           v-hasPermi="['quartz:logList']"
           >日志</el-button
@@ -165,7 +165,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="Edit"
@@ -174,7 +174,7 @@
             >修改</el-button
           >
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="CaretRight"
@@ -182,7 +182,7 @@
             >执行一次</el-button
           >
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="View"
@@ -244,7 +244,9 @@
                         <!-- <br />参数说明：支持字符串，布尔类型，长整型，浮点型，整型 -->
                       </div>
                     </template>
-                    <el-icon><QuestionFilled /></el-icon>
+                    <el-icon>
+                      <QuestionFilled />
+                    </el-icon>
                   </el-tooltip>
                 </span>
               </template>
@@ -264,7 +266,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="是否并发" prop="conCurrent">
-              <el-radio-group v-model="form.conCurrent" size="default">
+              <el-radio-group v-model="form.conCurrent" :size="size">
                 <el-radio-button label="0">允许</el-radio-button>
                 <el-radio-button label="1">禁止</el-radio-button>
               </el-radio-group>
@@ -272,7 +274,7 @@
           </el-col>
           <!-- <el-col :span="24">
                   <el-form-item label="错误策略" prop="misfirePolicy">
-                    <el-radio-group v-model="form.misfirePolicy" size="default">
+                    <el-radio-group v-model="form.misfirePolicy" :size="size">
                       <el-radio-button label="1">立即执行</el-radio-button>
                       <el-radio-button label="2">执行一次</el-radio-button>
                       <el-radio-button label="3">放弃执行</el-radio-button>
@@ -303,12 +305,7 @@
 
     <!-- 任务日志详细 -->
     <el-dialog title="任务详细" v-model="openView" width="700px" append-to-body>
-      <el-form
-        ref="addFormRef"
-        :model="form"
-        label-width="120px"
-        size="default"
-      >
+      <el-form ref="addFormRef" :model="form" label-width="120px" :size="size">
         <el-row>
           <el-col :span="12">
             <el-form-item label="任务编号：">{{ form.id }}</el-form-item>
@@ -378,9 +375,16 @@ import {
   runJob,
   changeJobStatus,
 } from "@/api/monitor/job";
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
 
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const addFormRef = ref();
 const router = useRouter();

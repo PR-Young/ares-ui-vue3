@@ -11,7 +11,7 @@
           v-model="queryParams.configName"
           placeholder="请输入参数名称"
           clearable
-          size="default"
+          :size="size"
           style="width: 240px"
           @keyup.enter="handleQuery"
         />
@@ -21,7 +21,7 @@
           v-model="queryParams.configKey"
           placeholder="请输入参数键名"
           clearable
-          size="default"
+          :size="size"
           style="width: 240px"
           @keyup.enter="handleQuery"
         />
@@ -31,7 +31,7 @@
           v-model="queryParams.configType"
           placeholder="系统内置"
           clearable
-          size="default"
+          :size="size"
         >
           <el-option
             v-for="dict in typeOptions"
@@ -44,7 +44,7 @@
       <el-form-item label="创建时间">
         <el-date-picker
           v-model="dateRange"
-          size="default"
+          :size="size"
           style="width: 240px"
           value-format="YYYY-MM-DD"
           type="daterange"
@@ -57,11 +57,11 @@
         <el-button
           type="primary"
           :icon="Search"
-          size="default"
+          :size="size"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="Refresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" :size="size" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -72,7 +72,7 @@
         <el-button
           type="primary"
           :icon="Plus"
-          size="default"
+          :size="size"
           @click="handleAdd"
           v-hasPermi="['system:config:add']"
           >新增</el-button
@@ -82,7 +82,7 @@
         <el-button
           type="success"
           :icon="Edit"
-          size="default"
+          :size="size"
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:config:edit']"
@@ -93,7 +93,7 @@
         <el-button
           type="danger"
           :icon="Delete"
-          size="default"
+          :size="size"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:config:remove']"
@@ -104,7 +104,7 @@
         <el-button
           type="warning"
           :icon="Download"
-          size="default"
+          :size="size"
           @click="handleExport"
           v-hasPermi="['system:config:export']"
           >导出</el-button
@@ -161,7 +161,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="Edit"
@@ -170,7 +170,7 @@
             >修改</el-button
           >
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="Delete"
@@ -247,8 +247,15 @@ import {
   updateConfig,
   exportConfig,
 } from "@/api/system/config";
-import { getCurrentInstance, ref, reactive, onMounted } from "vue";
+import { getCurrentInstance, ref, reactive, onMounted, computed } from "vue";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
 
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const addFormRef = ref();
 // 遮罩层
@@ -307,7 +314,7 @@ const getList = () => {
       configList.value = response.rows;
       total.value = response.total;
       loading.value = false;
-    }
+    },
   );
 };
 // 参数系统内置字典翻译

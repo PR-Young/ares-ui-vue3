@@ -11,7 +11,7 @@
           v-model="queryParams.jobName"
           placeholder="请输入任务名称"
           clearable
-          size="default"
+          :size="size"
           style="width: 240px"
           @keyup.enter="handleQuery"
         />
@@ -21,7 +21,7 @@
           v-model="queryParams.jobGroup"
           placeholder="请任务组名"
           clearable
-          size="default"
+          :size="size"
           style="width: 240px"
         >
           <el-option
@@ -37,7 +37,7 @@
           v-model="queryParams.status"
           placeholder="请选择执行状态"
           clearable
-          size="default"
+          :size="size"
           style="width: 240px"
         >
           <el-option
@@ -51,7 +51,7 @@
       <el-form-item label="执行时间">
         <el-date-picker
           v-model="dateRange"
-          size="default"
+          :size="size"
           style="width: 240px"
           value-format="YYYY-MM-DD"
           type="daterange"
@@ -64,11 +64,11 @@
         <el-button
           type="primary"
           :icon="Search"
-          size="default"
+          :size="size"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="Refresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" :size="size" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -79,7 +79,7 @@
         <el-button
           type="danger"
           :icon="Delete"
-          size="default"
+          :size="size"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['quartz:logDelete']"
@@ -90,7 +90,7 @@
         <el-button
           type="danger"
           :icon="Delete"
-          size="default"
+          :size="size"
           @click="handleClean"
           v-hasPermi="['quartz:logDelete']"
           >清空</el-button
@@ -100,7 +100,7 @@
         <el-button
           type="warning"
           :icon="Download"
-          size="default"
+          :size="size"
           @click="handleExport"
           v-hasPermi="['quartz:logExport']"
           >导出</el-button
@@ -166,7 +166,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="View"
@@ -187,12 +187,7 @@
 
     <!-- 调度日志详细 -->
     <el-dialog title="调度日志详细" v-model="open" width="700px" append-to-body>
-      <el-form
-        ref="addFormRef"
-        :model="form"
-        label-width="100px"
-        size="default"
-      >
+      <el-form ref="addFormRef" :model="form" label-width="100px" :size="size">
         <el-row>
           <el-col :span="12">
             <el-form-item label="日志序号：">{{ form.jobLogId }}</el-form-item>
@@ -250,9 +245,16 @@ import {
   exportJobLog,
   cleanJobLog,
 } from "@/api/monitor/jobLog";
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
 
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const addFormRef = ref();
 const router = useRouter();
@@ -319,7 +321,7 @@ const getList = () => {
       jobLogList.value = response.rows;
       total.value = response.total;
       loading.value = false;
-    }
+    },
   );
 };
 // 执行状态字典翻译
@@ -362,7 +364,7 @@ const handleDelete = (row) => {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      }
+      },
     )
     .then(function () {
       return delJobLog(jobLogIds);

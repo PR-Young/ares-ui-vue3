@@ -12,14 +12,14 @@
           v-model="queryParams.name"
           placeholder="请输入名称"
           clearable
-          size="default"
+          :size="size"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="开始时间" prop="deployTime">
         <el-date-picker
           clearable
-          size="default"
+          :size="size"
           v-model="queryParams.deployTime"
           type="date"
           value-format="YYYY-MM-DD"
@@ -31,11 +31,11 @@
         <el-button
           type="primary"
           :icon="Search"
-          size="default"
+          :size="size"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="Refresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" :size="size" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -47,7 +47,7 @@
           type="primary"
           plain
           :icon="Plus"
-          size="default"
+          :size="size"
           @click="handleAdd"
           v-hasPermi="['system:deployment:add']"
           >新增流程</el-button
@@ -58,7 +58,7 @@
           type="danger"
           plain
           :icon="Delete"
-          size="default"
+          :size="size"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:deployment:remove']"
@@ -70,7 +70,7 @@
           type="warning"
           plain
           :icon="Download"
-          size="default"
+          :size="size"
           @click="handleExport"
           v-hasPermi="['system:deployment:export']"
           >导出</el-button
@@ -121,7 +121,7 @@
       />
       <el-table-column label="流程版本" align="center" width="80px">
         <template v-slot="scope">
-          <el-tag size="default">v{{ scope.row.version }}</el-tag>
+          <el-tag :size="size">v{{ scope.row.version }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -136,37 +136,37 @@
       </el-table-column>
       <el-table-column label="流程状态" align="center" width="100">
         <template v-slot="scope">
-          <el-tag type="primary" v-if="scope.row.flowStatus == 0" size="default"
+          <el-tag type="primary" v-if="scope.row.flowStatus == 0" :size="size"
             >待提交</el-tag
           >
-          <el-tag type="primary" v-if="scope.row.flowStatus == 1" size="default"
+          <el-tag type="primary" v-if="scope.row.flowStatus == 1" :size="size"
             >审批中</el-tag
           >
-          <el-tag type="primary" v-if="scope.row.flowStatus == 2" size="default"
+          <el-tag type="primary" v-if="scope.row.flowStatus == 2" :size="size"
             >审批通过</el-tag
           >
-          <el-tag type="primary" v-if="scope.row.flowStatus == 3" size="default"
+          <el-tag type="primary" v-if="scope.row.flowStatus == 3" :size="size"
             >自动通过</el-tag
           >
-          <el-tag type="info" v-if="scope.row.flowStatus == 4" size="default"
+          <el-tag type="info" v-if="scope.row.flowStatus == 4" :size="size"
             >终止</el-tag
           >
-          <el-tag type="info" v-if="scope.row.flowStatus == 5" size="default"
+          <el-tag type="info" v-if="scope.row.flowStatus == 5" :size="size"
             >作废</el-tag
           >
-          <el-tag type="warning" v-if="scope.row.flowStatus == 6" size="default"
+          <el-tag type="warning" v-if="scope.row.flowStatus == 6" :size="size"
             >撤销</el-tag
           >
-          <el-tag type="warning" v-if="scope.row.flowStatus == 7" size="default"
+          <el-tag type="warning" v-if="scope.row.flowStatus == 7" :size="size"
             >取回</el-tag
           >
-          <el-tag type="success" v-if="scope.row.flowStatus == 8" size="default"
+          <el-tag type="success" v-if="scope.row.flowStatus == 8" :size="size"
             >已完成</el-tag
           >
-          <el-tag type="danger" v-if="scope.row.flowStatus == 9" size="default"
+          <el-tag type="danger" v-if="scope.row.flowStatus == 9" :size="size"
             >已退回</el-tag
           >
-          <el-tag type="info" v-if="scope.row.flowStatus == 10" size="default"
+          <el-tag type="info" v-if="scope.row.flowStatus == 10" :size="size"
             >失效</el-tag
           >
         </template>
@@ -189,7 +189,7 @@
             v-for="(item, index) in scope.row.permissionFlag.split(',')"
             :key="index"
             type="info"
-            size="default"
+            :size="size"
           >
             {{ item }}
           </el-tag>
@@ -205,26 +205,34 @@
         <template v-slot="scope">
           <el-dropdown>
             <span class="el-dropdown-link">
-              更多操作<el-icon class="el-icon--right"><ArrowDown /></el-icon>
+              更多操作<el-icon class="el-icon--right">
+                <ArrowDown />
+              </el-icon>
             </span>
             <template v-slot:dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item @click="handleFlowRecord(scope.row)">
-                  <el-icon><Tickets /></el-icon>
+                  <el-icon>
+                    <Tickets />
+                  </el-icon>
                   详情
                 </el-dropdown-item>
                 <el-dropdown-item
                   @click="handleStop(scope.row)"
                   v-if="scope.row.flowStatus == 1"
                 >
-                  <el-icon><CircleClose /></el-icon>
+                  <el-icon>
+                    <CircleClose />
+                  </el-icon>
                   取消申请
                 </el-dropdown-item>
                 <el-dropdown-item
                   @click="handleDelete(scope.row)"
                   v-hasPermi="['system:deployment:remove']"
                 >
-                  <el-icon><Delete /></el-icon>
+                  <el-icon>
+                    <Delete />
+                  </el-icon>
                   删除
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -253,7 +261,7 @@
         <el-table-column label="流程名称" align="center" prop="flowName" />
         <el-table-column label="流程版本" align="center">
           <template v-slot="scope">
-            <el-tag size="default">v{{ scope.row.version }}</el-tag>
+            <el-tag :size="size">v{{ scope.row.version }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column
@@ -270,7 +278,7 @@
         >
           <template v-slot="scope">
             <el-button
-              size="default"
+              :size="size"
               type="primary"
               link
               :icon="EditOutline"
@@ -308,8 +316,16 @@ import {
   stopProcess,
   activeFlowList,
 } from "@/api/aresflow/process";
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
+
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 

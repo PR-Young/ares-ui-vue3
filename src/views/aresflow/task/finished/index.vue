@@ -12,14 +12,14 @@
           v-model="queryParams.name"
           placeholder="请输入名称"
           clearable
-          size="default"
+          :size="size"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="开始时间" prop="deployTime">
         <el-date-picker
           clearable
-          size="default"
+          :size="size"
           v-model="queryParams.deployTime"
           type="date"
           value-format="YYYY-MM-DD"
@@ -31,11 +31,11 @@
         <el-button
           type="primary"
           :icon="Search"
-          size="default"
+          :size="size"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="Refresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" :size="size" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -47,7 +47,7 @@
           type="danger"
           plain
           :icon="Delete"
-          size="default"
+          :size="size"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:deployment:remove']"
@@ -118,7 +118,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="Tickets"
@@ -126,7 +126,7 @@
             >流转记录</el-button
           >
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             v-if="scope.row.nodeName != '结束'"
@@ -151,8 +151,16 @@
 <script setup name="Finished">
 import { Search, Refresh, Delete, Tickets } from "@element-plus/icons-vue";
 import { finishedList, revokeProcess } from "@/api/aresflow/finished";
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
+
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 

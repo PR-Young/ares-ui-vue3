@@ -6,12 +6,12 @@
           v-model="queryParams.name"
           placeholder="请输入菜单名称"
           clearable
-          size="default"
+          :size="size"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <!-- <el-form-item label="状态">
-              <el-select v-model="queryParams.status" placeholder="菜单状态" clearable size="default">
+              <el-select v-model="queryParams.status" placeholder="菜单状态" clearable :size="size">
                 <el-option
                   v-for="dict in statusOptions"
                   :key="dict.dictValue"
@@ -24,11 +24,11 @@
         <el-button
           type="primary"
           :icon="Search"
-          size="default"
+          :size="size"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button type="primary" :icon="Plus" size="default" @click="handleAdd"
+        <el-button type="primary" :icon="Plus" :size="size" @click="handleAdd"
           >新增</el-button
         >
       </el-form-item>
@@ -97,7 +97,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="Edit"
@@ -106,7 +106,7 @@
             >修改</el-button
           >
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="Plus"
@@ -115,7 +115,7 @@
             >新增</el-button
           >
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="Delete"
@@ -177,7 +177,9 @@
                       />
                     </template>
                     <template v-slot:prefix v-else>
-                      <el-icon class="el-input__icon"><Search /></el-icon>
+                      <el-icon class="el-input__icon">
+                        <Search />
+                      </el-icon>
                     </template>
                   </el-input>
                 </template>
@@ -253,9 +255,16 @@ import {
 import Treeselect from "vue3-treeselect";
 import "vue3-treeselect/dist/vue3-treeselect.css";
 import IconSelect from "@/components/IconSelect/index.vue";
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
 
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const addFormRef = ref();
 const router = useRouter();

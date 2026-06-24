@@ -12,14 +12,14 @@
           v-model="queryParams.name"
           placeholder="请输入名称"
           clearable
-          size="default"
+          :size="size"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="开始时间" prop="deployTime">
         <el-date-picker
           clearable
-          size="default"
+          :size="size"
           v-model="queryParams.deployTime"
           type="date"
           value-format="YYYY-MM-DD"
@@ -31,11 +31,11 @@
         <el-button
           type="primary"
           :icon="Search"
-          size="default"
+          :size="size"
           @click="handleQuery"
           >搜索</el-button
         >
-        <el-button :icon="Refresh" size="default" @click="resetQuery"
+        <el-button :icon="Refresh" :size="size" @click="resetQuery"
           >重置</el-button
         >
       </el-form-item>
@@ -47,7 +47,7 @@
           type="danger"
           plain
           :icon="Delete"
-          size="default"
+          :size="size"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:deployment:remove']"
@@ -77,7 +77,7 @@
       <el-table-column label="任务节点" align="center" prop="nodeName" />
       <el-table-column label="流程版本" align="center">
         <template v-slot="scope">
-          <el-tag size="default">v{{ scope.row.version }}</el-tag>
+          <el-tag :size="size">v{{ scope.row.version }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="流程发起人" align="center">
@@ -102,7 +102,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="default"
+            :size="size"
             type="primary"
             link
             :icon="Edit"
@@ -126,8 +126,16 @@
 <script setup name="Todo">
 import { Search, Refresh, Delete, Edit } from "@element-plus/icons-vue";
 import { todoList, complete, rejectTask } from "@/api/aresflow/todo";
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import store from "@/store";
+import useAppStore from "@/store/modules/app";
+
+const app = useAppStore(store);
+
+const size = computed(() => {
+  return app.size;
+});
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 
