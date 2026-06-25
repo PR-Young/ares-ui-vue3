@@ -250,7 +250,12 @@
     </el-dialog>
 
     <el-dialog :title="title" v-model="showDetail" width="880px" append-to-body>
-      <el-form ref="addFormRef" :model="form" :rules="rules" label-width="80px">
+      <el-form
+        ref="showFormRef"
+        :model="form"
+        :rules="rules"
+        label-width="80px"
+      >
         <el-row>
           <el-col :span="12">
             <el-form-item label="公告标题" prop="noticeTitle">

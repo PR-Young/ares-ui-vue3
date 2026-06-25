@@ -18,50 +18,46 @@
   </el-dropdown>
 </template>
 
-<script>
+<script setup>
 import store from "@/store";
 import useAppStore from "@/store/modules/app";
 import useTagsViewStore from "@/store/modules/tagsView";
-import { nextTick } from "vue";
+import { computed, getCurrentInstance, nextTick, ref } from "vue";
+import { useRouter } from "vue-router";
 const app = useAppStore(store);
 const tagsView = useTagsViewStore(store);
-export default {
-  data() {
-    return {
-      sizeOptions: [
-        { label: "Default", value: "default" },
-        { label: "Small", value: "small" },
-        { label: "Large", value: "large" },
-      ],
-    };
-  },
-  computed: {
-    size() {
-      return app.size;
-    },
-  },
-  methods: {
-    handleSetSize(size) {
-      // this.$ELEMENT.size = size;
-      app.setSize(size);
-      this.refreshView();
-      this.$message({
-        message: "Switch Size Success",
-        type: "success",
-      });
-    },
-    async refreshView() {
-      // In order to make the cached page re-rendered
-      tagsView.delAllCachedViews(this.$route);
+const router = useRouter();
+const { proxy } = getCurrentInstance();
 
-      const { fullPath } = this.$route;
+const sizeOptions = ref([
+  { label: "Default", value: "default" },
+  { label: "Small", value: "small" },
+  { label: "Large", value: "large" },
+]);
 
-      await nextTick(() => {
-        this.$router.replace({
-          path: "/redirect" + fullPath,
-        });
-      });
-    },
-  },
+const size = computed(() => {
+  return app.size;
+});
+
+const handleSetSize = (size) => {
+  // this.$ELEMENT.size = size;
+  app.setSize(size);
+  refreshView();
+  proxy.$message({
+    message: "Switch Size Success",
+    type: "success",
+  });
+};
+const refreshView = async () => {
+  // In order to make the cached page re-rendered
+  tagsView.delAllCachedViews(router.currentRoute.value);
+
+  const { fullPath } = router.currentRoute.value;
+
+  await nextTick(() => {
+    router.replace({
+      path: "/redirect" + fullPath,
+    });
+  });
 };
 </script>

@@ -15,23 +15,17 @@
   </div>
 </template>
 
-<script>
-import { $on, $off, $once, $emit } from '../../utils/gogocodeTransfer'
-export default {
-  name: 'Hamburger',
-  props: {
-    isActive: {
-      type: Boolean,
-      default: false,
-    },
+<script setup name="Hamburger">
+const emit = defineEmits(["toggleClick"]);
+const props = defineProps({
+  isActive: {
+    type: Boolean,
+    default: false,
   },
-  methods: {
-    toggleClick() {
-      $emit(this, 'toggleClick')
-    },
-  },
-  emits: ['toggleClick'],
-}
+});
+const toggleClick = () => {
+  emit("toggleClick");
+};
 </script>
 
 <style scoped>

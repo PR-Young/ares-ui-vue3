@@ -9,8 +9,9 @@
 
 <script setup name="Screenfull">
 import screenfull from "screenfull";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref, getCurrentInstance } from "vue";
 
+const { proxy } = getCurrentInstance();
 const isFullscreen = ref(false);
 
 onMounted(() => {
@@ -22,7 +23,7 @@ onBeforeUnmount(() => {
 
 const click = () => {
   if (!screenfull.isEnabled) {
-    this.$message({
+    proxy.$message({
       message: "you browser can not work",
       type: "warning",
     });

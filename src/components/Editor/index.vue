@@ -27,8 +27,7 @@
   </div>
 </template>
 
-<script>
-import { $emit } from "../../utils/gogocodeTransfer";
+<script setup>
 import { getToken } from "@/utils/auth";
 
 // 工具栏配置
@@ -49,101 +48,101 @@ import { QuillEditor, Quill } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.core.css";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
+import { getCurrentInstance, ref, watch } from "vue";
 
-export default {
-  props: {
-    /* 编辑器的内容 */
-    value: {
-      type: String,
-    },
-    /* 图片大小 */
-    maxSize: {
-      type: Number,
-      default: 4000, //kb
-    },
+const { proxy } = getCurrentInstance();
+
+const emit = defineEmits(["update:value"]);
+
+const props = defineProps({
+  /* 编辑器的内容 */
+  value: {
+    type: String,
   },
-  components: { QuillEditor },
-  data() {
-    return {
-      content: this.value,
-      uploadImgUrl: "",
-      editorOption: {
-        placeholder: "",
-        theme: "snow", // or 'bubble'
-        placeholder: "请输入内容",
-        modules: {
-          toolbar: {
-            container: toolbarOptions,
-            handlers: {
-              image: function (value) {
-                if (value) {
-                  // 触发input框选择图片文件
-                  document.querySelector(".quill-img input").click();
-                } else {
-                  this.quill.format("image", false);
-                }
-              },
-            },
-          },
+  /* 图片大小 */
+  maxSize: {
+    type: Number,
+    default: 4000, //kb
+  },
+});
+
+const content = ref(props.value);
+const editorOption = ref({
+  theme: "snow", // or 'bubble'
+  placeholder: "请输入内容",
+  modules: {
+    toolbar: {
+      container: toolbarOptions,
+      handlers: {
+        image: function (value) {
+          if (value) {
+            // 触发input框选择图片文件
+            document.querySelector(".quill-img input").click();
+          } else {
+            this.quill.format("image", false);
+          }
         },
       },
-      uploadImgUrl: import.meta.env.VITE_APP_BASE_API + "/common/upload", // 上传的图片服务器地址
-      headers: {
-        Authorization: "Bearer " + getToken(),
-      },
-    };
-  },
-  watch: {
-    value: function () {
-      this.content = this.value;
     },
   },
-  methods: {
-    onEditorBlur() {
-      //失去焦点事件
-    },
-    onEditorFocus() {
-      //获得焦点事件
-    },
-    onEditorChange() {
-      //内容改变事件
-      $emit(this, "update:value", this.content);
-    },
+});
+const uploadImgUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload"); // 上传的图片服务器地址
+const headers = ref({
+  Authorization: "Bearer " + getToken(),
+});
 
-    // 富文本图片上传前
-    quillImgBefore(file) {
-      let fileType = file.type;
-      if (fileType === "image/jpeg" || fileType === "image/png") {
-        return true;
-      } else {
-        this.$message.error("请插入图片类型文件(jpg/jpeg/png)");
-        return false;
-      }
-    },
-
-    quillImgSuccess(res, file) {
-      // res为图片服务器返回的数据
-      // 获取富文本组件实例
-      let quill = Quill;
-      // 如果上传成功
-      if (res.code == 200) {
-        // 获取光标所在位置
-        let length = quill.getSelection().index;
-        // 插入图片  res.url为服务器返回的图片地址
-        quill.insertEmbed(length, "image", res.url);
-        // 调整光标到最后
-        quill.setSelection(length + 1);
-      } else {
-        this.$message.error("图片插入失败");
-      }
-    },
-    // 富文本图片上传失败
-    uploadError() {
-      // loading动画消失
-      this.$message.error("图片插入失败");
-    },
+watch(
+  () => props.value,
+  () => {
+    debugger;
+    console.log(props.value);
+    content.value = props.value;
   },
-  emits: ["update:value"],
+);
+
+const onEditorBlur = () => {
+  //失去焦点事件
+};
+const onEditorFocus = () => {
+  //获得焦点事件
+};
+const onEditorChange = () => {
+  debugger;
+  //内容改变事件
+  emit("update:value", content.value);
+};
+
+// 富文本图片上传前
+const quillImgBefore = (file) => {
+  let fileType = file.type;
+  if (fileType === "image/jpeg" || fileType === "image/png") {
+    return true;
+  } else {
+    proxy.$message.error("请插入图片类型文件(jpg/jpeg/png)");
+    return false;
+  }
+};
+
+const quillImgSuccess = (res, file) => {
+  // res为图片服务器返回的数据
+  // 获取富文本组件实例
+  let quill = Quill;
+  // 如果上传成功
+  if (res.code == 200) {
+    // 获取光标所在位置
+    let length = quill.getSelection().index;
+    // 插入图片  res.url为服务器返回的图片地址
+    quill.insertEmbed(length, "image", res.url);
+    // 调整光标到最后
+    quill.setSelection(length + 1);
+  } else {
+    proxy.$message.error("图片插入失败");
+  }
+};
+// 富文本图片上传失败
+const uploadError = () => {
+  // loading动画消失
+  proxy.$message.error("图片插入失败");
 };
 </script>
 

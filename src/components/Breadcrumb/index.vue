@@ -13,63 +13,60 @@
   </el-breadcrumb>
 </template>
 
-<script>
+<script setup>
 import * as pathToRegexp from "path-to-regexp";
+import { onMounted, ref, watch } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  data() {
-    return {
-      levelList: null,
-    };
-  },
-  watch: {
-    $route(route) {
-      // if you go to the redirect page, do not update the breadcrumbs
-      if (route.path.startsWith("/redirect/")) {
-        return;
-      }
-      this.getBreadcrumb();
-    },
-  },
-  created() {
-    this.getBreadcrumb();
-  },
-  methods: {
-    getBreadcrumb() {
-      // only show routes with meta.title
-      let matched = this.$route.matched.filter(
-        (item) => item.meta && item.meta.title
-      );
-      const first = matched[0];
+const router = useRouter();
+const levelList = ref(null);
 
-      if (!this.isDashboard(first)) {
-        matched = [{ path: "/", meta: { title: "首页" } }].concat(matched);
-      }
-      this.levelList = matched.filter(
-        (item) => item.meta && item.meta.title && item.meta.breadcrumb !== false
-      );
-    },
-    isDashboard(route) {
-      const name = route && route.name;
-      if (!name) {
-        return false;
-      }
-      return name.trim() === "首页";
-    },
-    pathCompile(path) {
-      const { params } = this.$route;
-      var toPath = pathToRegexp.compile(path);
-      return toPath(params);
-    },
-    handleLink(item) {
-      const { redirect, path } = item;
-      if (redirect) {
-        this.$router.push(redirect);
-        return;
-      }
-      this.$router.push(this.pathCompile(path));
-    },
+watch(
+  () => router.currentRoute.value,
+  (route) => {
+    // if you go to the redirect page, do not update the breadcrumbs
+    if (route.path.startsWith("/redirect/")) {
+      return;
+    }
+    getBreadcrumb();
   },
+);
+onMounted(() => {
+  getBreadcrumb();
+});
+const getBreadcrumb = () => {
+  // only show routes with meta.title
+  let matched = router.currentRoute.value.matched.filter(
+    (item) => item.meta && item.meta.title,
+  );
+  const first = matched[0];
+
+  if (!isDashboard(first)) {
+    matched = [{ path: "/", meta: { title: "首页" } }].concat(matched);
+  }
+  levelList.value = matched.filter(
+    (item) => item.meta && item.meta.title && item.meta.breadcrumb !== false,
+  );
+};
+const isDashboard = (route) => {
+  const name = route && route.name;
+  if (!name) {
+    return false;
+  }
+  return name.trim() === "首页";
+};
+const pathCompile = (path) => {
+  const { params } = router.currentRoute.value;
+  let toPath = pathToRegexp.compile(path);
+  return toPath(params);
+};
+const handleLink = (item) => {
+  const { redirect, path } = item;
+  if (redirect) {
+    router.push(redirect);
+    return;
+  }
+  router.push(pathCompile(path));
 };
 </script>
 
