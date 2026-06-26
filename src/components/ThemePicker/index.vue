@@ -64,7 +64,7 @@ watch(
       iconClass: "el-icon-loading",
     });
 
-    const getHandler = (id) => {
+    const getHandler = (variable, id) => {
       return () => {
         const originalCluster = getThemeCluster(
           ORIGINAL_THEME.replace("#", ""),
