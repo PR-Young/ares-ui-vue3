@@ -125,7 +125,7 @@ watch(
   () => router.path,
   (newPath, oldPath) => {
     redirect.value = router.query && router.query.redirect;
-  }
+  },
 );
 onMounted(() => {
   getCode();

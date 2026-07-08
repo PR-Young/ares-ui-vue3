@@ -79,11 +79,12 @@ import useUserStore from "@/store/modules/user";
 import useSettingsStore from "@/store/modules/settings";
 import store from "@/store";
 import url from "@/assets/image/profile.jpeg";
-import { computed, onMounted, watch } from "vue";
+import { computed, getCurrentInstance, onMounted, watch } from "vue";
 
 const app = useAppStore(store);
 const user = useUserStore(store);
 const settings = useSettingsStore(store);
+const { proxy } = getCurrentInstance();
 
 onMounted(() => {
   connectWebsocket();
@@ -116,15 +117,17 @@ const toggleSideBar = () => {
   app.toggleSideBar();
 };
 const logout = async () => {
-  this.$confirm("确定注销并退出系统吗？", "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  }).then(() => {
-    user.LogOut().then(() => {
-      location.reload();
+  proxy
+    .$confirm("确定注销并退出系统吗？", "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+    .then(() => {
+      user.LogOut().then(() => {
+        location.reload();
+      });
     });
-  });
 };
 const connectWebsocket = () => {
   let userAccount = user.getUserAccount;
